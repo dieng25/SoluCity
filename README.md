@@ -1,4 +1,4 @@
 # Auteur
-Clara Adamaly
-Dieng Moussa
-Mounoumi Yassir
+Clara Adamaly  
+Dieng Moussa  
+Mounoumi Yassir  
