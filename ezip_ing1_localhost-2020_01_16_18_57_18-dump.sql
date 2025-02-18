@@ -2,20 +2,22 @@
 
 --
 CREATE TABLE Citoyen(
-        tel_num VARCHAR(50),
-        Nom VARCHAR(50) NOT NULL,
-        Prénom VARCHAR(50) NOT NULL,
-        email VARCHAR(50),
-        PRIMARY KEY(tel_num),
-        UNIQUE(email)
+            tel_num VARCHAR(50),
+            Nom VARCHAR(50) NOT NULL,
+            Prénom VARCHAR(50) NOT NULL,
+            email VARCHAR(50),
+            Identifiant VARCHAR(50) NOT NULL,
+            PRIMARY KEY(tel_num),
+            UNIQUE(email),
+            UNIQUE(Identifiant)
 );
 
 CREATE TABLE Mairie(
-       Code_Postal VARCHAR(50),
-       email VARCHAR(50),
-       mdp VARCHAR(50) NOT NULL,
-       PRIMARY KEY(Code_Postal),
-       UNIQUE(email)
+           Code_Postal VARCHAR(50),
+           email VARCHAR(50),
+           mdp VARCHAR(50) NOT NULL,
+           PRIMARY KEY(Code_Postal),
+           UNIQUE(email)
 );
 
 CREATE TABLE Incident_Suggestion(
@@ -34,4 +36,5 @@ CREATE TABLE Incident_Suggestion(
             FOREIGN KEY(tel_num) REFERENCES Citoyen(tel_num),
             FOREIGN KEY(Code_Postal) REFERENCES Mairie(Code_Postal)
 );
+
 
