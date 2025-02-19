@@ -21,7 +21,7 @@ CREATE TABLE Mairie(
 );
 
 CREATE TABLE Suggestion(
-                           Id_ticket INT,
+                           Id_ticket VARCHAR(50),
                            Titre VARCHAR(50),
                            Description VARCHAR(50),
                            date_emis DATE,
