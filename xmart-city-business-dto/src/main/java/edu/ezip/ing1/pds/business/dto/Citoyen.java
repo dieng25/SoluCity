@@ -77,7 +77,7 @@ public class Citoyen {
 
     public final Citoyen build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        setFieldsFromResulset(resultSet, "telNum", "nom","prenom","email","identifiant");
+        setFieldsFromResulset(resultSet, "tel_Num", "Nom","Prénom","email","Identifiant");
         return this;
     }
     public final PreparedStatement build(PreparedStatement preparedStatement)

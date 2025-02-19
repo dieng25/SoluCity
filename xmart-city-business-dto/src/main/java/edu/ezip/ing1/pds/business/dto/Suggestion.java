@@ -12,7 +12,6 @@ import java.sql.SQLException;
 
 @JsonRootName(value = "suggestion")
 public class Suggestion {
-    private String Id_ticket;
     private String Titre;
     private String Description;
     private String Date;
@@ -25,8 +24,7 @@ public class Suggestion {
     }
 
 
-    public Suggestion(String Id_ticket, String Titre, String Description, String Date, String Categorie, int Statut, int CP_Ticket) {
-        this.Id_ticket = Id_ticket;
+    public Suggestion(String Titre, String Description, String Date, String Categorie, int Statut, int CP_Ticket) {
         this.Titre = Titre;
         this.Description = Description;
         this.Date = Date;
@@ -35,9 +33,6 @@ public class Suggestion {
         this.CP_Ticket = CP_Ticket;
     }
 
-    public String getId_ticket() {
-        return Id_ticket;
-    }
 
     public String getTitre() {
         return Titre;
@@ -63,10 +58,6 @@ public class Suggestion {
         return CP_Ticket;
     }
 
-    @JsonProperty("suggestion_IdTicket")
-    public void setId_ticket(String Id_ticket) {
-        this.Id_ticket = Id_ticket;
-    }
 
     @JsonProperty("suggestion_Titre")
     public void setTitre(String Titre) {
@@ -95,13 +86,13 @@ public class Suggestion {
 
     public final Suggestion build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        setFieldsFromResultSet(resultSet, "Id_ticket", "Titre", "Description", "Date", "Categorie", "Statut", "CP_Ticket");
+        setFieldsFromResultSet(resultSet,  "Titre", "Description", "date_emis", "Catégorie", "statut", "CodePostal_ticket");
         return this;
     }
 
     public final PreparedStatement build(PreparedStatement preparedStatement)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        return buildPreparedStatement(preparedStatement, Id_ticket, Titre, Description, Date, Categorie, Statut, CP_Ticket);
+        return buildPreparedStatement(preparedStatement, Titre, Description, Date, Categorie, Statut, CP_Ticket);
     }
 
     private void setFieldsFromResultSet(final ResultSet resultSet, final String... fieldNames)
@@ -124,7 +115,6 @@ public class Suggestion {
     @Override
     public String toString() {
         return "Suggestion{" +
-                "Id_ticket='" + Id_ticket + '\'' +
                 ", Titre='" + Titre + '\'' +
                 ", Description='" + Description + '\'' +
                 ", Date='" + Date + '\'' +
