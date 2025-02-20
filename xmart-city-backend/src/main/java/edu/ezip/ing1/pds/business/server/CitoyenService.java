@@ -17,7 +17,8 @@ import java.util.Random;
 
 public class CitoyenService {
 
-    private final Logger logger = LoggerFactory.getLogger("Business-Server");
+    private final static String LoggingLabel = "B u s i n e s s - S e r v e r";
+    private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
 
     private enum Queries {
         INSERT_CITOYEN("INSERT INTO Citoyen (tel_num, Nom, Prénom, email, Identifiant) VALUES (?, ?, ?, ?, ?)"),
