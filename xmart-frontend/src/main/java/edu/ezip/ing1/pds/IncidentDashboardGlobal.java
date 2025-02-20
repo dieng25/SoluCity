@@ -5,15 +5,19 @@ import java.net.*;
 import javax.swing.*;
 
 public class IncidentDashboardGlobal extends JFrame {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        Socket socket;
         try {
             // Connecter au serveur
-            Socket socket = new Socket("localhost", 45065);
+            socket = new Socket("localhost", 45065);
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
             // Lire les données envoyées par le serveur
             String DataRecu = br.readLine();
-            socket.close();
+            String line;
+            while ((line = br.readLine()) != null) {
+               System.out.println("Received: " + line);
+            }
 
             // Séparation des données sur les incidents et les urgences
             String[] parts = DataRecu.split("/");
@@ -64,11 +68,14 @@ public class IncidentDashboardGlobal extends JFrame {
             frame.add(TextArea7);
             frame.add(TextArea8);
 
-            //frame.pack();
+            frame.pack();
             frame.setVisible(true);
+            socket.close(); 
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
     }
+    
 }
