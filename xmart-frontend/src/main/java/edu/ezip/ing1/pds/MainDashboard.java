@@ -62,8 +62,8 @@ public class MainDashboard extends JFrame {
 
     // fonction pour ouvrir la fenêtre qui va afficher les infos globales
     private void openIncidentDashboard() {
-        IncidentDashboardGlobal dashboardsGlobal = new IncidentDashboardGlobal();
-        dashboardsGlobal.setVisible(true);
+        IncidentDashboardGlobal dashboard = new IncidentDashboardGlobal();
+        dashboard.setVisible(true);
     }
 
     public static void main(String[] args) {
