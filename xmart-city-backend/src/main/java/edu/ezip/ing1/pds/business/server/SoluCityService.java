@@ -23,7 +23,7 @@ public class SoluCityService {
     }
 
     private SoluCityService() {
-        CitoyenService citoyenService = new CitoyenService();
+
     }
 
 
