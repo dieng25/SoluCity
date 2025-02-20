@@ -57,7 +57,7 @@ public class CoreBackendServer implements Runnable
 
     public CoreBackendServer() throws IOException, SQLException {
         coreServerSocket = new ServerSocket(config.getListenPort());
-        coreServerSocket.setSoTimeout(5000);
+        //coreServerSocket.setSoTimeout(5000);
         logger.debug("Configuration loaded : {}", coreServerSocket.toString());
         coreThread = new Thread(this, threadName);
         // Starts mysefl.

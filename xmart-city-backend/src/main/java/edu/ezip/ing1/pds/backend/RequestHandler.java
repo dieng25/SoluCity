@@ -81,10 +81,6 @@ public class RequestHandler implements Runnable {
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (SQLException e) {

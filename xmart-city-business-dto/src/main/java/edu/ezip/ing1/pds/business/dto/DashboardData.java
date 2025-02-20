@@ -1,14 +1,31 @@
 package edu.ezip.ing1.pds.business.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class DashboardData {
     
+    @JsonProperty("total_incident")
     private int totalIncident;
+    
+    @JsonProperty("incident_en_cours")
     private int incidentEnCours;
+    
+    @JsonProperty("incident_resolu")
     private int incidentResolu;
+    
+    @JsonProperty("incident_non_ouvert")
     private int incidentNonOuvert;
+    
+    @JsonProperty("non_defini")
     private int nonDefini;
+    
+    @JsonProperty("faible")
     private int faible;
+    
+    @JsonProperty("moyen")
     private int moyen;
+    
+    @JsonProperty("haut")
     private int haut;
 
     public DashboardData() {

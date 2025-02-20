@@ -14,6 +14,7 @@ public class DashboardRepository {
         TOTAL_INCIDENTS("SELECT COUNT(*) FROM incidents"),
         INCIDENTS_EN_COURS("SELECT COUNT(*) FROM incidents WHERE status = 0"),
         INCIDENTS_RESOLU("SELECT COUNT(*) FROM incidents WHERE status = 1"),
+        INCIDENTS_NO("SELECT COUNT(*) FROM incidens WHERE statut NOT IN (0, 1)"),
         NON_DEFINI("SELECT COUNT(*) FROM incidents WHERE niveau_urgence = 0"),
         FAIBLE("SELECT COUNT(*) FROM incidents WHERE niveau_urgence = 1"),
         MOYEN("SELECT COUNT(*) FROM incidents WHERE niveau_urgence = 2"),
@@ -36,8 +37,7 @@ public class DashboardRepository {
         int totalIncident = countIncidents(stmt, Queries.TOTAL_INCIDENTS.getQuery());
         int incidentEnCours = countIncidents(stmt, Queries.INCIDENTS_EN_COURS.getQuery());
         int incidentResolu = countIncidents(stmt, Queries.INCIDENTS_RESOLU.getQuery());
-        int incidentNonOuvert = totalIncident - incidentEnCours - incidentResolu;
-
+        int incidentNonOuvert = countIncidents(stmt, Queries.INCIDENTS_NO.getQuery());
         int nonDefini = countIncidents(stmt, Queries.NON_DEFINI.getQuery());
         int faible = countIncidents(stmt, Queries.FAIBLE.getQuery());
         int moyen = countIncidents(stmt, Queries.MOYEN.getQuery());
