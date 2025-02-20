@@ -27,9 +27,13 @@ public class SoluCityService {
     }
 
     private SoluCityService() {
+<<<<<<< HEAD
         //CitoyenService citoyenService = new CitoyenService();
         this.dashboardRepository = new DashboardRepository();
         
+=======
+
+>>>>>>> d31509d4c56a968e94dbcb8062cdc860f93d5663
     }
 
 public final Response dispatch(final Request request, final Connection connection)
