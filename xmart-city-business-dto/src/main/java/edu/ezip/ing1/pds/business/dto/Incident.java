@@ -10,6 +10,7 @@ import java.sql.SQLException;
 
 @JsonRootName(value = "incident")
 public class Incident {
+    private int IdTicket;
     private String Titre;
     private String Description;
     private String Date;
@@ -31,6 +32,17 @@ public class Incident {
         this.CP_Ticket = CP_Ticket;
         this.Priorite = Priorite;
     }
+
+    public int getIdTicket() {
+        return IdTicket;
+    }
+
+    @JsonProperty("incident_IdTicket")
+    public void setIdTicket(int IdTicket) {
+        this.IdTicket = IdTicket;
+    }
+
+
 
     public String getTitre() {
         return Titre;
