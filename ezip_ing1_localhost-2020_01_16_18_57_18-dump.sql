@@ -2,7 +2,7 @@ CREATE TABLE Citoyen(
    tel_num VARCHAR(50),
    Nom VARCHAR(50) NOT NULL,
    Prénom VARCHAR(50) NOT NULL,
-   email VARCHAR(50),
+   email VARCHAR(50) NOT NULL ,
    Identifiant VARCHAR(50) NOT NULL,
    PRIMARY KEY(tel_num),
    UNIQUE(email),
