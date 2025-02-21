@@ -103,7 +103,7 @@ public class CoreBackendServer implements Runnable
     }
 
     // More than once Request Handler may call this method. That's why it is sync.
-    public synchronized void completeRequestHandler(final /*RequestHandler*/ RequestHandlerCitoyen requestHandler) {
+    public synchronized void completeRequestHandler(final RequestHandler requestHandler) {
         try {
             connectionPool.release(requestHandler.getConnection());
         } catch (InterruptedException e) {

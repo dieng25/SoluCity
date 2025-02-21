@@ -1,6 +1,7 @@
 package edu.ezip.ing1.pds.business.server;
 
 import edu.ezip.ing1.pds.business.dto.DashboardData;
+import edu.ezip.ing1.pds.business.dto.DashboardDatas;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -31,7 +32,7 @@ public class DashboardRepository {
         }
     }
 
-    public DashboardData fetchDashboardStats(final Connection connection) throws SQLException {
+    /*public DashboardDatas fetchDashboardStats(final Connection connection) throws SQLException {
         final Statement stmt = connection.createStatement();
 
         int totalIncident = countIncidents(stmt, Queries.TOTAL_INCIDENTS.getQuery());
@@ -43,8 +44,38 @@ public class DashboardRepository {
         int moyen = countIncidents(stmt, Queries.MOYEN.getQuery());
         int haut = countIncidents(stmt, Queries.HAUT.getQuery());
 
-        return new DashboardData ();
+        return new DashboardDatas();
+    }*/
+    
+    public DashboardDatas fetchDashboardStats(final Connection connection) throws SQLException {
+        final Statement stmt = connection.createStatement();
+    
+        int totalIncident = countIncidents(stmt, Queries.TOTAL_INCIDENTS.getQuery());
+        int incidentEnCours = countIncidents(stmt, Queries.INCIDENTS_EN_COURS.getQuery());
+        int incidentResolu = countIncidents(stmt, Queries.INCIDENTS_RESOLU.getQuery());
+        int incidentNonOuvert = countIncidents(stmt, Queries.INCIDENTS_NO.getQuery());
+        int nonDefini = countIncidents(stmt, Queries.NON_DEFINI.getQuery());
+        int faible = countIncidents(stmt, Queries.FAIBLE.getQuery());
+        int moyen = countIncidents(stmt, Queries.MOYEN.getQuery());
+        int haut = countIncidents(stmt, Queries.HAUT.getQuery());
+    
+        // Création d'un objet DashboardData avec les valeurs récupérées
+        DashboardData dashboardData = new DashboardData();
+        dashboardData.setTotalIncident(totalIncident);
+        dashboardData.setIncidentEnCours(incidentEnCours);
+        dashboardData.setIncidentResolu(incidentResolu);
+        dashboardData.setIncidentNonOuvert(incidentNonOuvert);
+        dashboardData.setNonDefini(nonDefini);
+        dashboardData.setFaible(faible);
+        dashboardData.setMoyen(moyen);
+        dashboardData.setHaut(haut);
+    
+        // Ajout du DashboardData dans DashboardDatas
+        DashboardDatas dashboardDatas = new DashboardDatas();
+        dashboardDatas.add(dashboardData);
+        return dashboardDatas;
     }
+    
 
     private int countIncidents(Statement stmt, String query) throws SQLException {
         ResultSet res = stmt.executeQuery(query);

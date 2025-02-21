@@ -1,6 +1,7 @@
 package edu.ezip.ing1.pds.business.server;
 
 import edu.ezip.ing1.pds.business.dto.DashboardData;
+import edu.ezip.ing1.pds.business.dto.DashboardDatas;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.commons.Response;
 import org.slf4j.Logger;
@@ -27,13 +28,9 @@ public class SoluCityService {
     }
 
     private SoluCityService() {
-<<<<<<< HEAD
         //CitoyenService citoyenService = new CitoyenService();
         this.dashboardRepository = new DashboardRepository();
         
-=======
-
->>>>>>> d31509d4c56a968e94dbcb8062cdc860f93d5663
     }
 
 public final Response dispatch(final Request request, final Connection connection)
@@ -53,8 +50,8 @@ public final Response dispatch(final Request request, final Connection connectio
         final ObjectMapper objectMapper = new ObjectMapper();
 
         // récupérer les statistiques grace à repository
-        DashboardData dashboardData = dashboardRepository.fetchDashboardStats(connection);
+        DashboardDatas dashboardDatas = dashboardRepository.fetchDashboardStats(connection);
 
-        return new Response(request.getRequestId(), objectMapper.writeValueAsString(dashboardData));
+        return new Response(request.getRequestId(), objectMapper.writeValueAsString(dashboardDatas));
     }
 }
