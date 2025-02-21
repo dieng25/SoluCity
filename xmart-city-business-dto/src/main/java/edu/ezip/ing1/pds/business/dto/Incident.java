@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import java.lang.reflect.Field;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,20 +14,20 @@ public class Incident {
     private int IdTicket;
     private String Titre;
     private String Description;
-    private String Date;
+    private Date date;
     private String Categorie;
     private int Statut;
-    private int CP_Ticket;
+    private String CP_Ticket;
     private int Priorite;
 
     public Incident() {
             this.Statut = 0;
     }
 
-    public Incident(String Titre, String Description, String Date, String Categorie, int Statut, int CP_Ticket, int Priorite) {
+    public Incident(String Titre, String Description, Date date, String Categorie, int Statut, String CP_Ticket, int Priorite) {
         this.Titre = Titre;
         this.Description = Description;
-        this.Date = Date;
+        this.date = date;
         this.Categorie = Categorie;
         this.Statut = Statut;
         this.CP_Ticket = CP_Ticket;
@@ -62,13 +63,13 @@ public class Incident {
         this.Description = Description;
     }
 
-    public String getDate() {
-        return Date;
+    public Date getDate() {
+        return date;
     }
 
     @JsonProperty("incident_Date")
-    public void setDate(String Date) {
-        this.Date = Date;
+    public void setdate(Date date) {
+        this.date = date;
     }
 
     public String getCategorie() {
@@ -89,12 +90,12 @@ public class Incident {
         this.Statut = Statut;
     }
 
-    public int getCP_Ticket() {
+    public String getCP_Ticket() {
         return CP_Ticket;
     }
 
     @JsonProperty("incident_CPTicket")
-    public void setCP_Ticket(int CP_Ticket) {
+    public void setCP_Ticket(String CP_Ticket) {
         this.CP_Ticket = CP_Ticket;
     }
 
@@ -109,13 +110,13 @@ public class Incident {
 
     public final Incident build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        setFieldsFromResultSet(resultSet,  "Titre", "Description", "date_emis", "Catégorie", "statut", "CodePostal_ticket", "Priorité");
+        setFieldsFromResultSet(resultSet,  "Titre", "Description", "date_emis", "Catégorie", "Statut", "CodePostal_ticket", "Priorité");
         return this;
     }
 
     public final PreparedStatement build(PreparedStatement preparedStatement)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        return buildPreparedStatement(preparedStatement, Titre, Description, Date, Categorie, Statut, CP_Ticket, Priorite);
+        return buildPreparedStatement(preparedStatement, Titre, Description, date, Categorie, Statut, CP_Ticket, Priorite);
     }
 
     private void setFieldsFromResultSet(final ResultSet resultSet, final String... fieldNames)
@@ -140,7 +141,7 @@ public class Incident {
         return "Incident{" +
                 "Titre='" + Titre + '\'' +
                 ", Description='" + Description + '\'' +
-                ", Date='" + Date + '\'' +
+                ", Date='" + date + '\'' +
                 ", Categorie='" + Categorie + '\'' +
                 ", Statut=" + Statut +
                 ", CP_Ticket=" + CP_Ticket +

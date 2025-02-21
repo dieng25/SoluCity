@@ -10,24 +10,17 @@ public class Incidents {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @JsonProperty("incidents")
-    private Set<Incident> incidents = new LinkedHashSet<>();
+    private Set<Incident> incidents = new LinkedHashSet<Incident>();
 
-    // Constructeur par défaut
-    public Incidents() {
-    }
-
-    // Getter
     public Set<Incident> getIncidents() {
         return incidents;
     }
 
-    // Setter
     public void setIncidents(Set<Incident> incidents) {
         this.incidents = incidents;
     }
 
-    // Ajouter un incident à la liste
-    public final Incidents add(final Incident incident) {
+    public final Incidents add (final Incident incident) {
         incidents.add(incident);
         return this;
     }

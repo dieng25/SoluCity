@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import edu.ezip.commons.LoggingUtils;
-import edu.ezip.ing1.pds.business.server.XMartCityService;
+import edu.ezip.ing1.pds.business.server.SoluCityService;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.commons.Response;
 import org.slf4j.Logger;
@@ -35,7 +35,7 @@ public class RequestHandler implements Runnable {
     private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
     private int requestCount = 0;
 
-    private final XMartCityService xmartCityService = XMartCityService.getInstance();
+    private final SoluCityService CityService  = SoluCityService.getInstance();
     private final CoreBackendServer father;
 
     private static final int maxTimeLapToGetAClientPayloadInMs = 5000;
@@ -73,17 +73,13 @@ public class RequestHandler implements Runnable {
             final byte [] inputData = new byte[instream.available()];
             instream.read(inputData);
             final Request request = getRequest(inputData);
-            final Response response = xmartCityService.dispatch(request, connection);
+            final Response response = CityService.dispatch(request, connection);
 
             final byte [] outoutData = getResponse(response);
             LoggingUtils.logDataMultiLine(logger, Level.DEBUG, outoutData);
             outstream.write(outoutData);
 
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -93,7 +89,6 @@ public class RequestHandler implements Runnable {
             father.completeRequestHandler(this);
         }
     }
-
     private final Request getRequest(byte [] data) throws IOException {
         logger.debug("data received {} bytes", data.length);
         LoggingUtils.logDataMultiLine(logger, Level.DEBUG, data);
