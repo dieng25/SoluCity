@@ -57,6 +57,9 @@ public class Suggestion {
     public int getCP_Ticket() {
         return CP_Ticket;
     }
+    public void setCP_Ticket(int CP_Ticket) {
+        this.CP_Ticket = CP_Ticket;
+    }
 
 
     @JsonProperty("suggestion_Titre")
