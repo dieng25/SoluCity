@@ -15,7 +15,7 @@ public class CreationTicketIncident extends JFrame {
     private Date date_sql;
 
     public CreationTicketIncident() {
-        setTitle("Sélection de Catégorie");
+        setTitle("Sélection Catégorie");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
