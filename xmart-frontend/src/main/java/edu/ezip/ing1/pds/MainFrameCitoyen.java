@@ -15,7 +15,7 @@ public class MainFrameCitoyen {
 
             JFrame mainFrame = new JFrame("Accueil");
             mainFrame.setSize(300, 200);
-            mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            mainFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             mainFrame.setLocationRelativeTo(null);
             mainFrame.setLayout(new BorderLayout());
 
