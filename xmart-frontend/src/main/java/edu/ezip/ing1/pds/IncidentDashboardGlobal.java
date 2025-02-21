@@ -8,28 +8,28 @@ public class IncidentDashboardGlobal extends JFrame {
     public static void main(String[] args) throws IOException {
         Socket socket;
         try {
-            // Connecter au serveur
+
             socket = new Socket("localhost", 45065);
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
-            // Lire les données envoyées par le serveur
+
             String DataRecu = br.readLine();
             String line;
             while ((line = br.readLine()) != null) {
                System.out.println("Received: " + line);
             }
 
-            // Séparation des données sur les incidents et les urgences
+
             String[] parts = DataRecu.split("/");
 
-            // Incidents par le statut
+
             String[] ValeurIncident = parts[0].split(";");
             int totalIncident = Integer.parseInt(ValeurIncident[0]);
             int IncidentNonOuvert = Integer.parseInt(ValeurIncident[1]);
             int IncidentEnCours = Integer.parseInt(ValeurIncident[2]);
             int IncidentResolu = Integer.parseInt(ValeurIncident[3]);
 
-            // Pour la priorité 
+
             String[] ValeurPriorite = parts[1].split(";");
             int NonDefini = Integer.parseInt(ValeurPriorite[0]);
             int Faible = Integer.parseInt(ValeurPriorite[1]);
@@ -58,7 +58,7 @@ public class IncidentDashboardGlobal extends JFrame {
             JTextArea TextArea7 = new JTextArea(String.format("Urgence Moyenne : %.2f%%", PourcentageMoyen));
             JTextArea TextArea8 = new JTextArea(String.format("Urgence Élevée : %.2f%%", PourcentageHaut));
 
-            // Ajout des JTextArea à la fenêtre
+
             frame.add(TextArea1);
             frame.add(TextArea2);
             frame.add(TextArea3);
