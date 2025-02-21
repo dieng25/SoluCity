@@ -21,7 +21,7 @@ public class InsertIncidentClientRequest extends ClientRequest<Incident, String>
     public String readResult(String body) throws IOException {
         final ObjectMapper mapper = new ObjectMapper();
         final Map<String, Integer> ticketIdMap = mapper.readValue(body, Map.class);
-        final String result = ticketIdMap.get("ticket_id").toString();
+        final String result = ticketIdMap.get("incident_IdTicket").toString();
         return result;
     }
 }
