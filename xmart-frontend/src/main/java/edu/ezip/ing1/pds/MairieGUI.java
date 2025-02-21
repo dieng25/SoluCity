@@ -14,7 +14,7 @@ public class MairieGUI {
     public MairieGUI() {
         // Création et configuration de la fenêtre principale
         frame = new JFrame("Dashboard Mairie");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(700, 500);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout(10, 10));

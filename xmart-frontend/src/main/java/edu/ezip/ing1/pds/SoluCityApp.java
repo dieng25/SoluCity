@@ -7,42 +7,43 @@ import java.awt.event.ActionListener;
 
 public class SoluCityApp extends JFrame {
     public SoluCityApp() {
-        // Configuration de la fenêtre principale
+
         setTitle("SoluCityApp");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Couleur d'arrière-plan générale
+
         getContentPane().setBackground(Color.WHITE);
 
-        // Création du label de bienvenue
+
         JLabel welcomeLabel = new JLabel("Bienvenue sur SoluCityApp!", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
         welcomeLabel.setForeground(new Color(0, 123, 255));
         welcomeLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
 
-        // Création des boutons
+
         JButton citoyenButton = new JButton("Citoyen");
         JButton mairieButton = new JButton("Mairie");
         JButton dashboardButton = new JButton("Statistiques");
         
 
-        // Personnalisation des boutons
+
         JButton[] buttons = {dashboardButton, citoyenButton, mairieButton};
         for (JButton btn : buttons) {
             btn.setBackground(new Color(0, 123, 255));
             btn.setForeground(Color.WHITE);
             btn.setFont(new Font("Arial", Font.BOLD, 16));
-            btn.setFocusPainted(false);  // Retire le contour de focus
+            btn.setFocusPainted(false);
             btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         }
 
-        // Ajout des actions aux boutons
+
         dashboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new MainDashboard().setVisible(true);
+
             }
         });
 
@@ -50,6 +51,7 @@ public class SoluCityApp extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new MainFrameCitoyen();
+
             }
         });
 
@@ -57,16 +59,17 @@ public class SoluCityApp extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new MairieGUI();
+
             }
         });
 
-        // Mise en page des composants
+
         setLayout(new BorderLayout());
 
-        // Ajout du label en haut
+
         add(welcomeLabel, BorderLayout.NORTH);
 
-        // Panel central pour les boutons
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(3, 1, 10, 10));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));

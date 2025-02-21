@@ -5,23 +5,23 @@ import java.awt.*;
 public class MainDashboard extends JFrame {
 
     public MainDashboard() {
-        // La fenêtre principale
+
         setTitle("SoluCityBoard");
         setSize(600, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Le Panneau de background de couleur bleue claire
+
         JPanel backgroundPanel = new JPanel();
         backgroundPanel.setBackground(Color.CYAN);
         backgroundPanel.setLayout(new BorderLayout());
 
-        // Label
+
         JLabel welcomeLabel = new JLabel("Welcome to SoluCityBoard! Admin", JLabel.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
         backgroundPanel.add(welcomeLabel, BorderLayout.NORTH);
 
-        // Panneau avec les boutons
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout());
         buttonPanel.setBackground(Color.lightGray);
