@@ -83,3 +83,5 @@ public class SoluCityApp extends JFrame {
         SwingUtilities.invokeLater(() -> new SoluCityApp().setVisible(true));
     }
 }
+
+
