@@ -17,14 +17,14 @@ public class Incident {
     private Date date;
     private String Categorie;
     private int Statut;
-    private int CP_Ticket;
+    private String CP_Ticket;
     private int Priorite;
 
     public Incident() {
             this.Statut = 0;
     }
 
-    public Incident(String Titre, String Description, Date date, String Categorie, int Statut, int CP_Ticket, int Priorite) {
+    public Incident(String Titre, String Description, Date date, String Categorie, int Statut, String CP_Ticket, int Priorite) {
         this.Titre = Titre;
         this.Description = Description;
         this.date = date;
@@ -90,12 +90,12 @@ public class Incident {
         this.Statut = Statut;
     }
 
-    public int getCP_Ticket() {
+    public String getCP_Ticket() {
         return CP_Ticket;
     }
 
     @JsonProperty("incident_CPTicket")
-    public void setCP_Ticket(int CP_Ticket) {
+    public void setCP_Ticket(String CP_Ticket) {
         this.CP_Ticket = CP_Ticket;
     }
 
@@ -110,7 +110,7 @@ public class Incident {
 
     public final Incident build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        setFieldsFromResultSet(resultSet,  "Titre", "Description", "date_emis", "Catégorie", "statut", "CodePostal_ticket", "Priorité");
+        setFieldsFromResultSet(resultSet,  "Titre", "Description", "date_emis", "Catégorie", "Statut", "CodePostal_ticket", "Priorité");
         return this;
     }
 

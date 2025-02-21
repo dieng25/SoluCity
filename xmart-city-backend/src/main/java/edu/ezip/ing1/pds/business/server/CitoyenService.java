@@ -23,7 +23,7 @@ public class CitoyenService {
     private enum Queries {
         INSERT_CITOYEN("INSERT INTO Citoyen (tel_num, Nom, Prénom, email, Identifiant) VALUES (?, ?, ?, ?, ?)"),
         INSERT_INCIDENT("INSERT INTO Incident (Titre, Description, date_emis, Catégorie, Statut, CodePostal_ticket, Priorité) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        //SELECT_INCIDENT("SELECT * FROM Incident WHERE Id_ticket = ? AND tel_num = ?"),
+        //SELECT_INCIDENT("SELECT * FROM Incident WHERE Id_ticket = ? AND Identifiant = ?"),
         //UPDATE_INCIDENT("UPDATE Incident SET Titre = ?, Description = ? WHERE Id_ticket = ? AND Statut = 0");
         private final String query;
 
@@ -113,10 +113,10 @@ public class CitoyenService {
         Incident incident = objectMapper.readValue(request.getRequestBody(), Incident.class);
         stmt.setString(1, incident.getTitre());
         stmt.setString(2, incident.getDescription());
-        stmt.setString(3, incident.getDate());
+        stmt.setDate(3, incident.getDate());
         stmt.setString(4, incident.getCategorie());
         stmt.setInt(5, incident.getStatut());
-        stmt.setInt(6, incident.getCP_Ticket());
+        stmt.setString(6, incident.getCP_Ticket());
         stmt.setInt(7, incident.getPriorite());
         int rowsInserted = stmt.executeUpdate();
 
