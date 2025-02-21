@@ -12,13 +12,10 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.LinkedBlockingDeque;
 
 
 // cat insert-request.json | socat tcp:localhost:45065 -
@@ -37,7 +34,7 @@ public class CoreBackendServer implements Runnable
 
     private final ServerSocket coreServerSocket;
     private final Thread coreThread;
-    private final Set<RequestHandler> requestHandlers = Collections.synchronizedSet(new LinkedHashSet<RequestHandler>());
+    private final Set<RequestHandler> requestHandlers = Collections.synchronizedSet(new LinkedHashSet</*RequestHandler*/>());
     private volatile boolean topToStop = false;
     private int requestHandlerCreatedSoFar = 0;
 
@@ -80,7 +77,7 @@ public class CoreBackendServer implements Runnable
                     // Oh (wo-)man, Note you might have a client socket in your hand with a null connection
                     // so no matter to construct a  Request Handler
                     // which will deliver a special reply to the client : No more connection available.
-                    final RequestHandler requestHandler = new RequestHandler(
+                    final  RequestHandler requestHandler = new RequestHandler(
                                     accept,
                                     connectionPool.get(), // Might be null
                                     requestHandlerCreatedSoFar++,

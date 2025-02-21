@@ -1,7 +1,6 @@
 package edu.ezip.ing1.pds.business.server;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ezip.ing1.pds.business.dto.Citoyen;
 import edu.ezip.ing1.pds.business.dto.Incident;
@@ -15,7 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.Random;
 
-public class CitoyenService {
+public class InterfaceCitoyenService {
 
     private final static String LoggingLabel = "B u s i n e s s - S e r v e r";
     private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
@@ -33,23 +32,23 @@ public class CitoyenService {
 
     }
 
-    public static CitoyenService inst = null;
+    public static InterfaceCitoyenService inst = null;
 
-    public static final CitoyenService getInstance() {
+    public static final InterfaceCitoyenService getInstance() {
         if (inst == null) {
-            inst = new CitoyenService();
+            inst = new InterfaceCitoyenService();
         }
         return inst;
     }
 
-    private CitoyenService() {
+    private InterfaceCitoyenService() {
     }
 
     public final Response dispatch(final Request request, final Connection connection)
             throws InvocationTargetException, IllegalAccessException, SQLException, IOException {
         Response response = null;
 
-        final Queries queryEnum = Enum.valueOf(CitoyenService.Queries.class, request.getRequestOrder());
+        final Queries queryEnum = Enum.valueOf(InterfaceCitoyenService.Queries.class, request.getRequestOrder());
         switch(queryEnum) {
             case INSERT_CITOYEN:
                 response = InsertCitoyen(request, connection);
@@ -78,7 +77,7 @@ public class CitoyenService {
         String identifiant = generateIdentifiant(citoyen.getPrenom(), citoyen.getNom());
         citoyen.setIdentifiant(identifiant);
 
-        PreparedStatement stmt = connection.prepareStatement(CitoyenService.Queries.INSERT_CITOYEN.query);
+        PreparedStatement stmt = connection.prepareStatement(InterfaceCitoyenService.Queries.INSERT_CITOYEN.query);
         stmt.setString(1, citoyen.getTelNum());
         stmt.setString(2, citoyen.getNom());
         stmt.setString(3, citoyen.getPrenom());
