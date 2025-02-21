@@ -136,11 +136,7 @@ public class User {
         mainFrame.repaint();
     }
 
-    /**
-     * Montre le formulaire d'inscription
-     * - Ne demande plus nom et prénom
-     * - Demande plutôt le code postal
-     */
+    
     public static void showRegisterForm() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -288,7 +284,7 @@ public class User {
 
     /**
      * Authentifie un utilisateur à partir du fichier
-     * Désormais, le fichier est stocké sous forme : codePostal, email, password
+     * le fichier est stocké sous forme : codePostal, email, password
      * On compare seulement email et password pour la connexion.
      */
     public static boolean authenticateUser(String email, String password) {
