@@ -16,7 +16,7 @@ public class Citoyen {
     private String email;
     private String identifiant;
 
-    public Citoyen () {
+    public Citoyen() {
     }
 
     public Citoyen(String telNum, String nom, String prenom, String email, String identifiant){
@@ -77,7 +77,7 @@ public class Citoyen {
 
     public final Citoyen build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        setFieldsFromResulset(resultSet, "tel_Num", "Nom","Prénom","email","Identifiant");
+        setFieldsFromResulset(resultSet, "tel_Num", "Nom","Prenom","email","Identifiant");
         return this;
     }
     public final PreparedStatement build(PreparedStatement preparedStatement)

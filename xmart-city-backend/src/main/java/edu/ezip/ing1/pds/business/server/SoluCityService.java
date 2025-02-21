@@ -28,7 +28,7 @@ public class SoluCityService {
     }
 
     private SoluCityService() {
-        //CitoyenService citoyenService = new CitoyenService();
+        InterfaceCitoyenService citoyenService = new InterfaceCitoyenService();
         this.dashboardRepository = new DashboardRepository();
         
     }

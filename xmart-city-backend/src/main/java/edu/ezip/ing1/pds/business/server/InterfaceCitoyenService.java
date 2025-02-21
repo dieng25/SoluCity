@@ -20,10 +20,9 @@ public class InterfaceCitoyenService {
     private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
 
     private enum Queries {
-        INSERT_CITOYEN("INSERT INTO Citoyen (tel_num, Nom, Prénom, email, Identifiant) VALUES (?, ?, ?, ?, ?)"),
-        INSERT_INCIDENT("INSERT INTO Incident (Titre, Description, date_emis, Catégorie, Statut, CodePostal_ticket, Priorité) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        //SELECT_INCIDENT("SELECT * FROM Incident WHERE Id_ticket = ? AND Identifiant = ?"),
-        //UPDATE_INCIDENT("UPDATE Incident SET Titre = ?, Description = ? WHERE Id_ticket = ? AND Statut = 0");
+        INSERT_CITOYEN("INSERT INTO Citoyen (tel_num, Nom, Prenom, email, Identifiant) VALUES (?, ?, ?, ?, ?)"),
+        INSERT_INCIDENT("INSERT INTO Incident (Titre, Description, date_emis, Categorie, Statut, CodePostal_ticket, Priorite) VALUES (?, ?, ?, ?, ?, ?, ?)");
+
         private final String query;
 
         private Queries(final String query) {
@@ -48,7 +47,7 @@ public class InterfaceCitoyenService {
             throws InvocationTargetException, IllegalAccessException, SQLException, IOException {
         Response response = null;
 
-        final Queries queryEnum = Enum.valueOf(InterfaceCitoyenService.Queries.class, request.getRequestOrder());
+        final Queries queryEnum = Enum.valueOf(Queries.class, request.getRequestOrder());
         switch(queryEnum) {
             case INSERT_CITOYEN:
                 response = InsertCitoyen(request, connection);
@@ -56,17 +55,11 @@ public class InterfaceCitoyenService {
             case INSERT_INCIDENT:
                 response = InsertIncident(request, connection);
                 break;
-            //case SELECT_INCIDENT:
-               // response = selectIncident(request, connection);
-               // break;
-            //case UPDATE_INCIDENT:
-              //  response = updateIncident(request, connection);
-              //  break;
-           // default:
-             //   break;
-       }
+            default:
+                break;
+        }
 
-       return response;
+        return response;
     }
 
     private Response InsertCitoyen(final Request request, final Connection connection) throws SQLException, IOException {
@@ -77,7 +70,7 @@ public class InterfaceCitoyenService {
         String identifiant = generateIdentifiant(citoyen.getPrenom(), citoyen.getNom());
         citoyen.setIdentifiant(identifiant);
 
-        PreparedStatement stmt = connection.prepareStatement(InterfaceCitoyenService.Queries.INSERT_CITOYEN.query);
+        PreparedStatement stmt = connection.prepareStatement(Queries.INSERT_CITOYEN.query);
         stmt.setString(1, citoyen.getTelNum());
         stmt.setString(2, citoyen.getNom());
         stmt.setString(3, citoyen.getPrenom());

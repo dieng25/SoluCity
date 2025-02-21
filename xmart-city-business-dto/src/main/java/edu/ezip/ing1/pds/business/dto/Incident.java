@@ -21,7 +21,7 @@ public class Incident {
     private int Priorite;
 
     public Incident() {
-            this.Statut = 0;
+        this.Statut = 0;
     }
 
     public Incident(String Titre, String Description, Date date, String Categorie, int Statut, String CP_Ticket, int Priorite) {
@@ -110,7 +110,7 @@ public class Incident {
 
     public final Incident build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        setFieldsFromResultSet(resultSet,  "Titre", "Description", "date_emis", "Catégorie", "Statut", "CodePostal_ticket", "Priorité");
+        setFieldsFromResultSet(resultSet,  "Titre", "Description", "date_emis", "Categorie", "Statut", "CodePostal_ticket", "Priorite");
         return this;
     }
 

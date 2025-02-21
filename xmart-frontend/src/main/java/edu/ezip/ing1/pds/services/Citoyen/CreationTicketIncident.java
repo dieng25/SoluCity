@@ -1,12 +1,20 @@
 package edu.ezip.ing1.pds.services.Citoyen;
 
+import edu.ezip.ing1.pds.business.dto.Citoyen;
+import edu.ezip.ing1.pds.business.dto.Incident;
+import edu.ezip.ing1.pds.client.commons.ConfigLoader;
+import edu.ezip.ing1.pds.client.commons.NetworkConfig;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.sql.Date;
 
 public class CreationTicketIncident extends JFrame {
+
+    private final static String networkConfigFile = "network.yaml";
 
     private JTextField nomField, prenomField, telField, emailField, cpField, titreField;
     private JTextArea descriptionArea;
@@ -44,7 +52,8 @@ public class CreationTicketIncident extends JFrame {
         add(new JLabel("Catégorie: "));
         add(new JLabel(categorie));
 
-        date_sql = new Date(System.currentTimeMillis());
+        java.util.Date currentDate = new java.util.Date();
+        date_sql = new Date(currentDate.getTime());
 
         add(new JLabel("Date: "));
         add(new JLabel(date_sql.toString()));
@@ -114,6 +123,21 @@ public class CreationTicketIncident extends JFrame {
             String titre = titreField.getText();
             String description = descriptionArea.getText();
             int priorite = getPrioriteIndex(prioriteBox.getSelectedItem().toString());
+
+            Incident incident = new Incident(titre, description, date_sql, categorie, 0, cp, priorite );
+
+
+            Citoyen citoyen = new Citoyen(tel, nom, prenom, email, null);
+
+            final NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
+            CitoyenService citoyenService = new CitoyenService(networkConfig);
+
+            try {
+                citoyenService.insertCitoyen(citoyen);
+            } catch (InterruptedException | IOException ex) {
+                ex.printStackTrace();
+            }
+
 
         }
     }

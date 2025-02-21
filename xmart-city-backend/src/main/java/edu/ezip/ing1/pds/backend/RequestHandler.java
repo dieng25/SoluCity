@@ -3,6 +3,7 @@ package edu.ezip.ing1.pds.backend;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import edu.ezip.commons.LoggingUtils;
 import edu.ezip.ing1.pds.business.server.InterfaceCitoyenService;
 import edu.ezip.ing1.pds.commons.Request;
@@ -34,7 +35,7 @@ public class RequestHandler implements Runnable {
     private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
     private int requestCount = 0;
 
-    private final InterfaceCitoyenService citoyenService = InterfaceCitoyenService.getInstance();
+    private final InterfaceCitoyenService interfaceCitoyenService = InterfaceCitoyenService.getInstance();
     private final CoreBackendServer father;
 
     private static final int maxTimeLapToGetAClientPayloadInMs = 5000;
@@ -72,7 +73,7 @@ public class RequestHandler implements Runnable {
             final byte [] inputData = new byte[instream.available()];
             instream.read(inputData);
             final Request request = getRequest(inputData);
-            final Response response = citoyenService.dispatch(request, connection);
+            final Response response = interfaceCitoyenService.dispatch(request, connection);
 
             final byte [] outoutData = getResponse(response);
             LoggingUtils.logDataMultiLine(logger, Level.DEBUG, outoutData);
