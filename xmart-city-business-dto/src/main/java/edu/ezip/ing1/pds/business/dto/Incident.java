@@ -122,13 +122,13 @@ public class Incident {
 
     public final Incident build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        setFieldsFromResultSet(resultSet,  "Titre", "Description", "date_creation", "Categorie", "Statut", "CodePostal_ticket", "Priorite", "date_cloture");
+        setFieldsFromResultSet(resultSet,  "Id_ticket", "Titre", "Description", "date_creation", "Categorie", "Statut", "CodePostal_ticket", "Priorite", "date_cloture");
         return this;
     }
 
     public final PreparedStatement build(PreparedStatement preparedStatement)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        return buildPreparedStatement(preparedStatement, Titre, Description, date_creation, Categorie, Statut, CP_Ticket, Priorite, date_cloture);
+        return buildPreparedStatement(preparedStatement, IdTicket, Titre, Description, date_creation, Categorie, Statut, CP_Ticket, Priorite, date_cloture);
     }
 
     private void setFieldsFromResultSet(final ResultSet resultSet, final String... fieldNames)
@@ -151,9 +151,10 @@ public class Incident {
     @Override
     public String toString() {
         return "Incident{" +
+                "IdTicket=" + IdTicket +
                 "Titre='" + Titre + '\'' +
                 ", Description='" + Description + '\'' +
-                ", Date='" + date_creation + '\'' +
+                ", date_creation='" + date_creation + '\'' +
                 ", Categorie='" + Categorie + '\'' +
                 ", Statut=" + Statut + '\'' +
                 ", CP_Ticket=" + CP_Ticket + '\'' +
