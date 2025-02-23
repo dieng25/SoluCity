@@ -14,24 +14,27 @@ public class Incident {
     private int IdTicket;
     private String Titre;
     private String Description;
-    private Date date;
+    private Date date_creation;
     private String Categorie;
     private int Statut;
     private String CP_Ticket;
     private int Priorite;
+    private Date date_cloture;
+
 
     public Incident() {
         this.Statut = 0;
     }
 
-    public Incident(String Titre, String Description, Date date, String Categorie, int Statut, String CP_Ticket, int Priorite) {
+    public Incident(String Titre, String Description, Date date_creation, String Categorie, int Statut, String CP_Ticket, int Priorite, Date date_cloture) {
         this.Titre = Titre;
         this.Description = Description;
-        this.date = date;
+        this.date_creation = date_creation;
         this.Categorie = Categorie;
         this.Statut = Statut;
         this.CP_Ticket = CP_Ticket;
         this.Priorite = Priorite;
+        this.date_cloture = date_cloture;
     }
 
     public int getIdTicket() {
@@ -63,13 +66,13 @@ public class Incident {
         this.Description = Description;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getDate_creation() {
+        return date_creation;
     }
 
-    @JsonProperty("incident_Date")
-    public void setdate(Date date) {
-        this.date = date;
+    @JsonProperty("incident_DateCreation")
+    public void setdate(Date date_creation) {
+        this.date_creation = date_creation;
     }
 
     public String getCategorie() {
@@ -108,15 +111,24 @@ public class Incident {
         this.Priorite = Priorite;
     }
 
+    public Date getDate_cloture() {
+        return date_cloture;
+    }
+
+    @JsonProperty("incident_DateCloture")
+    public void setDate_cloture(Date date_cloture) {
+        this.date_cloture = date_cloture;
+    }
+
     public final Incident build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        setFieldsFromResultSet(resultSet,  "Titre", "Description", "date_emis", "Categorie", "Statut", "CodePostal_ticket", "Priorite");
+        setFieldsFromResultSet(resultSet,  "Titre", "Description", "date_creation", "Categorie", "Statut", "CodePostal_ticket", "Priorite", "date_cloture");
         return this;
     }
 
     public final PreparedStatement build(PreparedStatement preparedStatement)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        return buildPreparedStatement(preparedStatement, Titre, Description, date, Categorie, Statut, CP_Ticket, Priorite);
+        return buildPreparedStatement(preparedStatement, Titre, Description, date_creation, Categorie, Statut, CP_Ticket, Priorite, date_cloture);
     }
 
     private void setFieldsFromResultSet(final ResultSet resultSet, final String... fieldNames)
@@ -141,11 +153,12 @@ public class Incident {
         return "Incident{" +
                 "Titre='" + Titre + '\'' +
                 ", Description='" + Description + '\'' +
-                ", Date='" + date + '\'' +
+                ", Date='" + date_creation + '\'' +
                 ", Categorie='" + Categorie + '\'' +
-                ", Statut=" + Statut +
-                ", CP_Ticket=" + CP_Ticket +
-                ", Priorite=" + Priorite +
+                ", Statut=" + Statut + '\'' +
+                ", CP_Ticket=" + CP_Ticket + '\'' +
+                ", Priorite=" + Priorite + '\'' +
+                ", date_cloture=" + date_cloture +
                 '}';
     }
 }

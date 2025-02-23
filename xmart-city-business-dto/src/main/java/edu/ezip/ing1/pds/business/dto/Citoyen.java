@@ -109,7 +109,7 @@ public class Citoyen {
                 ", nom='" + nom + '\'' +
                 ", prenom='" + prenom + '\'' +
                 ", email='" + email + '\'' +
-                ", identifiant='" + identifiant + '\'' +
+                ", identifiant='" + identifiant +
                 '}';
     }
 }
