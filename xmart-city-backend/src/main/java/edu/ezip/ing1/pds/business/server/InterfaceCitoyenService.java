@@ -21,7 +21,7 @@ public class InterfaceCitoyenService {
 
     private enum Queries {
         INSERT_CITOYEN("INSERT INTO Citoyen (tel_num, Nom, Prenom, email, Identifiant) VALUES (?, ?, ?, ?, ?)"),
-        INSERT_INCIDENT("INSERT INTO Incident (Titre, Description, date_emis, Categorie, Statut, CodePostal_ticket, Priorite) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        INSERT_INCIDENT("INSERT INTO Incident (Titre, Description, date_creation, Categorie, Statut, CodePostal_ticket, Priorite, date_cloture, tel_num, Code_Postal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
         private final String query;
 
@@ -101,22 +101,20 @@ public class InterfaceCitoyenService {
 
     private Response InsertIncident(final Request request, final Connection connection) throws SQLException, IOException {
         final ObjectMapper objectMapper = new ObjectMapper();
-        PreparedStatement stmt = connection.prepareStatement(Queries.INSERT_INCIDENT.query, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement stmt = connection.prepareStatement(Queries.INSERT_INCIDENT.query);
         Incident incident = objectMapper.readValue(request.getRequestBody(), Incident.class);
+
         stmt.setString(1, incident.getTitre());
         stmt.setString(2, incident.getDescription());
-        stmt.setDate(3, incident.getDate());
+        stmt.setDate(3, incident.getDate_creation());
         stmt.setString(4, incident.getCategorie());
         stmt.setInt(5, incident.getStatut());
         stmt.setString(6, incident.getCP_Ticket());
         stmt.setInt(7, incident.getPriorite());
+        stmt.setDate(8, incident.getDate_cloture());
+        stmt.setString(9, incident.getTelNum());
+        stmt.setString(10, incident.getCP());
         int rowsInserted = stmt.executeUpdate();
-
-
-        ResultSet generatedKeys = stmt.getGeneratedKeys();
-        if (generatedKeys.next()) {
-            incident.setIdTicket(generatedKeys.getInt(1));
-        }
 
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(incident));
     }
