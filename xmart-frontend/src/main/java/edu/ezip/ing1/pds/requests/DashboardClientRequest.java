@@ -11,10 +11,9 @@ import java.io.IOException;
 
 public class DashboardClientRequest extends ClientRequest<Object, DashboardDatas> {
 
-    public DashboardClientRequest(NetworkConfig networkConfig, int myBirthDate, Request request, byte[] bytes)
+    public DashboardClientRequest(NetworkConfig networkConfig, int myBirthDate, Request request, Object info, byte[] bytes)
             throws IOException {
-        // Pour DashboardRequest, aucune donnée va etre envoyée (info = null)
-        super(networkConfig, myBirthDate, request, null, bytes);
+        super(networkConfig, myBirthDate, request, info, bytes);
     }
 
     @Override
