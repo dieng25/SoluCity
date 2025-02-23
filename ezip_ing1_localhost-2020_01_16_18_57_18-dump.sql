@@ -17,7 +17,7 @@ CREATE TABLE Mairie(
 );
 
 CREATE TABLE Suggestion(
-           Id_ticket INT,
+           Id_ticket VARCHAR(50),
            Titre VARCHAR(50) NOT NULL,
            Description TEXT NOT NULL,
            date_creation DATE NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE Suggestion(
 );
 
 CREATE TABLE Incident(
-             Id_ticket INT,
+             Id_ticket VARCHAR (50),
              Titre VARCHAR(50) NOT NULL,
              Description TEXT NOT NULL,
              date_creation DATE NOT NULL,

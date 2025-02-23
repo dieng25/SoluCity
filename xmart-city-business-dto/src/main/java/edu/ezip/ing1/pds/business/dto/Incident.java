@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 @JsonRootName(value = "incident")
 public class Incident {
-    private int IdTicket;
+    private String IdTicket;
     private String Titre;
     private String Description;
     private Date date_creation;
@@ -26,7 +26,8 @@ public class Incident {
         this.Statut = 0;
     }
 
-    public Incident(String Titre, String Description, Date date_creation, String Categorie, int Statut, String CP_Ticket, int Priorite, Date date_cloture) {
+    public Incident(String IdTicket, String Titre, String Description, Date date_creation, String Categorie, int Statut, String CP_Ticket, int Priorite, Date date_cloture) {
+        this.IdTicket = IdTicket;
         this.Titre = Titre;
         this.Description = Description;
         this.date_creation = date_creation;
@@ -37,15 +38,14 @@ public class Incident {
         this.date_cloture = date_cloture;
     }
 
-    public int getIdTicket() {
+    public String getIdTicket() {
         return IdTicket;
     }
 
     @JsonProperty("incident_IdTicket")
-    public void setIdTicket(int IdTicket) {
+    public void setIdTicket(String IdTicket) {
         this.IdTicket = IdTicket;
     }
-
 
 
     public String getTitre() {
