@@ -4,11 +4,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import edu.ezip.commons.LoggingUtils;
 import edu.ezip.ing1.pds.business.dto.DashboardData;
+import edu.ezip.ing1.pds.business.dto.DashboardDatas;
+import edu.ezip.ing1.pds.business.dto.Students;
 import edu.ezip.ing1.pds.client.commons.ClientRequest;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.requests.DashboardClientRequest;
+//import edu.ezip.ing1.pds.requests.SelectAllStudentsClientRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
@@ -33,13 +37,14 @@ public class DashboardServiceClient {
 
     //Envoie une requête DashboardRequest pour récupérer les statistiques des incidents.
      
-    public DashboardData dashboard() throws InterruptedException, IOException {
+    public DashboardDatas dashboard() throws InterruptedException, IOException {
         int birthdate = 0;
         final Deque<ClientRequest> clientRequests = new ArrayDeque<>();
         final ObjectMapper objectMapper = new ObjectMapper();
 
         final String requestId = UUID.randomUUID().toString();
         final Request request = new Request();
+        Object info = null;
         request.setRequestId(requestId);
         request.setRequestOrder(dashboardRequestOrder);
         request.setRequestContent("");
@@ -50,14 +55,14 @@ public class DashboardServiceClient {
 
         final DashboardClientRequest clientRequest = new DashboardClientRequest(
                 networkConfig,
-                birthdate++, request, requestBytes);
+                birthdate++, request, info, requestBytes);
         clientRequests.push(clientRequest);
 
         if (!clientRequests.isEmpty()) {
             final ClientRequest joinedClientRequest = clientRequests.pop();
             joinedClientRequest.join();
             logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
-            return (DashboardData) joinedClientRequest.getResult();
+            return (DashboardDatas) joinedClientRequest.getResult();
         } else {
             logger.error("Aucun résultat de dashboard n'a été obtenu");
             return null;

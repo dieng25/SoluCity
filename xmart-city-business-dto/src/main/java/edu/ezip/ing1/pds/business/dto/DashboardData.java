@@ -3,33 +3,20 @@ package edu.ezip.ing1.pds.business.dto;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import java.lang.reflect.Field;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonRootName(value = "dashboardData")
 public class DashboardData {
     
-    @JsonProperty("total_incident")
     private int totalIncident;
-    
-    @JsonProperty("incident_en_cours")
     private int incidentEnCours;
-    
-    @JsonProperty("incident_resolu")
     private int incidentResolu;
-    
-    @JsonProperty("incident_non_ouvert")
     private int incidentNonOuvert;
-    
-    @JsonProperty("non_defini")
     private int nonDefini;
-    
-    @JsonProperty("faible")
     private int faible;
-    
-    @JsonProperty("moyen")
     private int moyen;
-    
-    @JsonProperty("haut")
     private int haut;
 
     public DashboardData() {
@@ -40,7 +27,7 @@ public class DashboardData {
     public int getTotalIncident() {
         return totalIncident;
     }
-
+    @JsonProperty("total_incident")
     public void setTotalIncident(int totalIncident) {
         this.totalIncident = totalIncident;
     }
@@ -48,7 +35,7 @@ public class DashboardData {
     public int getIncidentEnCours() {
         return incidentEnCours;
     }
-
+    @JsonProperty("incident_en_cours")
     public void setIncidentEnCours(int incidentEnCours) {
         this.incidentEnCours = incidentEnCours;
     }
@@ -56,7 +43,7 @@ public class DashboardData {
     public int getIncidentResolu() {
         return incidentResolu;
     }
-
+    @JsonProperty("incident_resolu")
     public void setIncidentResolu(int incidentResolu) {
         this.incidentResolu = incidentResolu;
     }
@@ -64,7 +51,7 @@ public class DashboardData {
     public int getIncidentNonOuvert() {
         return incidentNonOuvert;
     }
-
+    @JsonProperty("incident_non_ouvert")
     public void setIncidentNonOuvert(int incidentNonOuvert) {
         this.incidentNonOuvert = incidentNonOuvert;
     }
@@ -73,6 +60,7 @@ public class DashboardData {
         return nonDefini;
     }
 
+    @JsonProperty("non_defini")
     public void setNonDefini(int nonDefini) {
         this.nonDefini = nonDefini;
     }
@@ -80,7 +68,7 @@ public class DashboardData {
     public int getFaible() {
         return faible;
     }
-
+    @JsonProperty("faible")
     public void setFaible(int faible) {
         this.faible = faible;
     }
@@ -88,7 +76,7 @@ public class DashboardData {
     public int getMoyen() {
         return moyen;
     }
-
+    @JsonProperty("moyen")
     public void setMoyen(int moyen) {
         this.moyen = moyen;
     }
@@ -96,7 +84,7 @@ public class DashboardData {
     public int getHaut() {
         return haut;
     }
-
+    @JsonProperty("haut")
     public void setHaut(int haut) {
         this.haut = haut;
     }

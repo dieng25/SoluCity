@@ -18,7 +18,7 @@ public class DashboardClientRequest extends ClientRequest<Object, DashboardDatas
 
     @Override
     public DashboardDatas readResult(String body) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
+         final ObjectMapper mapper = new ObjectMapper();
         // On désérialise maintenant
         return mapper.readValue(body, DashboardDatas.class);
     }
