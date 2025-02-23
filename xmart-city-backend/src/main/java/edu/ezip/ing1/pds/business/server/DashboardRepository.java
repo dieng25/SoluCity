@@ -2,7 +2,11 @@ package edu.ezip.ing1.pds.business.server;
 
 import edu.ezip.ing1.pds.business.dto.DashboardData;
 import edu.ezip.ing1.pds.business.dto.DashboardDatas;
+import edu.ezip.ing1.pds.commons.Request;
+import edu.ezip.ing1.pds.commons.Response;
 
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,6 +35,17 @@ public class DashboardRepository {
             return query;
         }
     }
+
+    public static DashboardRepository inst = null;
+
+    public static final DashboardRepository getInstance() {
+        if (inst == null) {
+            inst = new DashboardRepository();
+        }
+        return inst;
+    }
+
+
 
     /*public DashboardDatas fetchDashboardStats(final Connection connection) throws SQLException {
         final Statement stmt = connection.createStatement();
