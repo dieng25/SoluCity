@@ -32,16 +32,17 @@ public class DashboardRepository {
             this.query = query;
         }
     }
-
+    
     public static DashboardRepository inst = null;
-    public static DashboardRepository getInstance() {
-        if (inst == null) {
+    public static final DashboardRepository getInstance()  {
+        if(inst == null) {
             inst = new DashboardRepository();
         }
         return inst;
     }
 
     private DashboardRepository() {
+
     }
 
     private Response fetchDashboardStats (final Request request, final Connection connection) throws SQLException, JsonProcessingException {
@@ -61,9 +62,8 @@ public class DashboardRepository {
             dashboardData.setHaut(res.getInt(8));
         }
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(dashboardDatas));
-
     }
-
+    
 public final Response dispatch(final Request request, final Connection connection)
             throws InvocationTargetException, IllegalAccessException, SQLException, IOException {
         //Response response = null;

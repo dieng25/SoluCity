@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 @JsonRootName(value = "incident")
 public class Incident {
-    private String IdTicket;
+    private int IdTicket;
     private String Titre;
     private String Description;
     private Date date_creation;
@@ -20,13 +20,15 @@ public class Incident {
     private String CP_Ticket;
     private int Priorite;
     private Date date_cloture;
+    private String telNum;
+    private String CP;
 
 
     public Incident() {
         this.Statut = 0;
     }
 
-    public Incident(String IdTicket, String Titre, String Description, Date date_creation, String Categorie, int Statut, String CP_Ticket, int Priorite, Date date_cloture) {
+    public Incident(int IdTicket, String Titre, String Description, Date date_creation, String Categorie, int Statut, String CP_Ticket, int Priorite, Date date_cloture, String telNum, String CP) {
         this.IdTicket = IdTicket;
         this.Titre = Titre;
         this.Description = Description;
@@ -36,14 +38,17 @@ public class Incident {
         this.CP_Ticket = CP_Ticket;
         this.Priorite = Priorite;
         this.date_cloture = date_cloture;
+        this.telNum = telNum;
+        this.CP = CP;
+
     }
 
-    public String getIdTicket() {
+    public int getIdTicket() {
         return IdTicket;
     }
 
     @JsonProperty("incident_IdTicket")
-    public void setIdTicket(String IdTicket) {
+    public void setIdTicket(int IdTicket) {
         this.IdTicket = IdTicket;
     }
 
@@ -120,15 +125,33 @@ public class Incident {
         this.date_cloture = date_cloture;
     }
 
+    public String getTelNum() {
+        return telNum;
+    }
+
+    @JsonProperty("incident_TelNum")
+    public void setTelNum(String telNum) {
+        this.telNum = telNum;
+    }
+
+    public String getCP() {
+        return CP;
+    }
+
+    @JsonProperty("incident_CP")
+    public void setCP(String CP) {
+        this.CP = CP;
+    }
+
     public final Incident build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        setFieldsFromResultSet(resultSet,  "Id_ticket", "Titre", "Description", "date_creation", "Categorie", "Statut", "CodePostal_ticket", "Priorite", "date_cloture");
+        setFieldsFromResultSet(resultSet,  "Id_ticket", "Titre", "Description", "date_creation", "Categorie", "Statut", "CodePostal_ticket", "Priorite", "date_cloture", "tel_num", "Code_Postal");
         return this;
     }
 
     public final PreparedStatement build(PreparedStatement preparedStatement)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        return buildPreparedStatement(preparedStatement, IdTicket, Titre, Description, date_creation, Categorie, Statut, CP_Ticket, Priorite, date_cloture);
+        return buildPreparedStatement(preparedStatement, IdTicket, Titre, Description, date_creation, Categorie, Statut, CP_Ticket, Priorite, date_cloture, telNum, CP);
     }
 
     private void setFieldsFromResultSet(final ResultSet resultSet, final String... fieldNames)
