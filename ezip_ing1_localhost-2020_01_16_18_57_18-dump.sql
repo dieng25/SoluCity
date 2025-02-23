@@ -1,7 +1,7 @@
 CREATE TABLE Citoyen(
         tel_num VARCHAR(50),
         Nom VARCHAR(50) NOT NULL,
-        Prénom VARCHAR(50) NOT NULL,
+        Prenom VARCHAR(50) NOT NULL,
         email VARCHAR(50) NOT NULL,
         Identifiant VARCHAR(50) NOT NULL,
         PRIMARY KEY(tel_num),
@@ -17,29 +17,31 @@ CREATE TABLE Mairie(
 );
 
 CREATE TABLE Suggestion(
-           Id_ticket INT AUTO_INCREMENT,
+           Id_ticket INT,
            Titre VARCHAR(50) NOT NULL,
            Description TEXT NOT NULL,
-           date_emis DATE NOT NULL,
-           Catégorie VARCHAR(50) NOT NULL,
+           date_creation DATE NOT NULL,
+           Categorie VARCHAR(50) NOT NULL,
            Statut INT,
            CodePostal_ticket INT NOT NULL,
            tel_num VARCHAR(50) NOT NULL,
+           date_cloture DATE,
            PRIMARY KEY(Id_ticket),
            FOREIGN KEY(tel_num) REFERENCES Citoyen(tel_num)
 );
 
 CREATE TABLE Incident(
-             Id_ticket INT AUTO_INCREMENT,
+             Id_ticket INT,
              Titre VARCHAR(50) NOT NULL,
              Description TEXT NOT NULL,
-             date_emis DATE NOT NULL,
-             Catégorie VARCHAR(50) NOT NULL,
+             date_creation DATE NOT NULL,
+             Categorie VARCHAR(50) NOT NULL,
              Statut INT,
              CodePostal_ticket VARCHAR(50) NOT NULL,
-             Priorité INT,
+             Priorite INT,
              tel_num VARCHAR(50) NOT NULL,
              Code_Postal VARCHAR(50) NOT NULL,
+             date_cloture DATE,
              PRIMARY KEY(Id_ticket),
              FOREIGN KEY(tel_num) REFERENCES Citoyen(tel_num),
              FOREIGN KEY(Code_Postal) REFERENCES Mairie(Code_Postal)
