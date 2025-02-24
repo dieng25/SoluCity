@@ -2,39 +2,70 @@ package edu.ezip.ing1.pds;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 import javax.swing.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import edu.ezip.ing1.pds.client.commons.ClientRequest;
+import de.vandermeer.asciitable.AsciiTable;
+import edu.ezip.ing1.pds.business.dto.DashboardData;
+import edu.ezip.ing1.pds.business.dto.DashboardDatas;
+import edu.ezip.ing1.pds.business.dto.Students;
+import edu.ezip.ing1.pds.client.commons.ClientRequest;
+import edu.ezip.ing1.pds.client.commons.ConfigLoader;
+import edu.ezip.ing1.pds.client.commons.NetworkConfig;
+import edu.ezip.ing1.pds.services.DashboardServiceClient;
+import edu.ezip.ing1.pds.services.StudentService;
+
+import java.io.IOException;
+
+
+
 public class IncidentDashboardGlobal extends JFrame {
-    public static void main(String[] args) throws IOException {
-        Socket socket;
-        try {
 
-            socket = new Socket("localhost", 45065);
-            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    private final static String LoggingLabel = "FrontEnd";
+    private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
+    private final static String networkConfigFile = "network.yaml";
+    private static final Deque<ClientRequest> clientRequests = new ArrayDeque<ClientRequest>();
 
+    public static void main(String[] args) throws IOException, InterruptedException {
+        final NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
+        logger.debug("Load Network config file : {}", networkConfig.toString());
 
-            String DataRecu = br.readLine();
-            String line;
-            while ((line = br.readLine()) != null) {
-               System.out.println("Received: " + line);
-            }
+        final DashboardServiceClient dashboardServiceClient = new DashboardServiceClient(networkConfig);
+         DashboardDatas dashboardDatas = dashboardServiceClient.dashboard();
+         
+         // Initialisation des compteurs globaux
+int totalIncident = 0;
+int IncidentNonOuvert = 0;
+int IncidentEnCours = 0;
+int IncidentResolu = 0;
+int NonDefini = 0;
+int Faible = 0;
+int Moyen = 0;
+int Haut = 0;
 
+// Parcours de chaque DashboardData dans la collection
+for (DashboardData data : dashboardDatas.getDashboardDataSet()) {
+    if (dashboardDatas == null || dashboardDatas.getDashboardDataSet() == null) {
+        logger.error("Les données du dashboard sont nulles.");
+        return;
+    }
+    totalIncident    += data.getTotalIncident();
+    IncidentNonOuvert += data.getIncidentNonOuvert();
+    IncidentEnCours  += data.getIncidentEnCours();
+    IncidentResolu   += data.getIncidentResolu();
+    
+    NonDefini += data.getNonDefini();
+    Faible    += data.getFaible();
+    Moyen     += data.getMoyen();
+    Haut      += data.getHaut();
+}
 
-            String[] parts = DataRecu.split("/");
-
-
-            String[] ValeurIncident = parts[0].split(";");
-            int totalIncident = Integer.parseInt(ValeurIncident[0]);
-            int IncidentNonOuvert = Integer.parseInt(ValeurIncident[1]);
-            int IncidentEnCours = Integer.parseInt(ValeurIncident[2]);
-            int IncidentResolu = Integer.parseInt(ValeurIncident[3]);
-
-
-            String[] ValeurPriorite = parts[1].split(";");
-            int NonDefini = Integer.parseInt(ValeurPriorite[0]);
-            int Faible = Integer.parseInt(ValeurPriorite[1]);
-            int Moyen = Integer.parseInt(ValeurPriorite[2]);
-            int Haut = Integer.parseInt(ValeurPriorite[3]);
 
             // Calcul des pourcentages pour les niveaux d'urgence
             double PourcentageNonDefini = (totalIncident > 0) ? (double) NonDefini / totalIncident * 100 : 0;
@@ -69,13 +100,7 @@ public class IncidentDashboardGlobal extends JFrame {
             frame.add(TextArea8);
 
             frame.pack();
-            frame.setVisible(true);
-            socket.close(); 
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            frame.setVisible(true);   
         
     }
-    
 }

@@ -47,8 +47,7 @@ public class DashboardServiceClient {
         Object info = null;
         request.setRequestId(requestId);
         request.setRequestOrder(dashboardRequestOrder);
-        request.setRequestContent("");
-
+        //request.setRequestBody("");
         objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
         final byte[] requestBytes = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request);
         LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestBytes);
