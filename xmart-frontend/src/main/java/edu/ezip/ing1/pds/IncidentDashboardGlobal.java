@@ -34,7 +34,8 @@ public class IncidentDashboardGlobal extends JFrame {
     public IncidentDashboardGlobal() throws InterruptedException {
         setTitle("Dashboard Global des Incidents");
         setSize(600, 400);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
         try {
@@ -84,7 +85,7 @@ public class IncidentDashboardGlobal extends JFrame {
                 add(textArea);
             }
 
-            pack();
+            //pack();
             setVisible(true);
 
         } catch (IOException e) {

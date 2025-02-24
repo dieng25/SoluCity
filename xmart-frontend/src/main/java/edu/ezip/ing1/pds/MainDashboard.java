@@ -9,6 +9,7 @@ public class MainDashboard extends JFrame {
         setTitle("SoluCityBoard");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
 
@@ -66,7 +67,6 @@ public class MainDashboard extends JFrame {
             try {
                 new IncidentDashboardGlobal();
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         });
