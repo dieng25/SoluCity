@@ -25,6 +25,7 @@ public class DashboardRepository {
 
     private enum Queries {
        // DASHBOARD_REQUEST("SELECT COUNT(*) FROM incidents, SELECT COUNT(*) FROM incidents WHERE statut = 1, SELECT COUNT(*) FROM incidents WHERE statut = 2, SELECT COUNT(*) FROM incidens WHERE statut = 0, SELECT COUNT(*) FROM incidents WHERE Priorité = 0, SELECT COUNT(*) FROM incidents WHERE Priorité = 1, SELECT COUNT(*) FROM incidents WHERE Priorité = 2, SELECT COUNT(*) FROM incidents WHERE Priorité = 3");
+       
        DASHBOARD_REQUEST("SELECT " +
                 "(SELECT COUNT(*) FROM incident) AS total_incidents, " +
                 "(SELECT COUNT(*) FROM incident WHERE statut = 1) AS incidents_en_cours, " +
@@ -59,6 +60,7 @@ public class DashboardRepository {
         final Statement stmt = connection.createStatement();
         final ResultSet res = stmt.executeQuery(Queries.DASHBOARD_REQUEST.query);
         DashboardDatas dashboardDatas = new DashboardDatas();
+
         /*while (res.next()) {
             DashboardData dashboardData = new DashboardData();
             dashboardData.setTotalIncident(res.getInt(1));
@@ -70,7 +72,8 @@ public class DashboardRepository {
             dashboardData.setMoyen(res.getInt(7));
             dashboardData.setHaut(res.getInt(8));
         }*/
-        if (res.next()) {  // Comme il n'y a qu'une seule ligne, on utilise if au lieu de while
+
+        if (res.next()) {  
         DashboardData dashboardData = new DashboardData();
         dashboardData.setTotalIncident(res.getInt("total_incidents"));
         dashboardData.setIncidentEnCours(res.getInt("incidents_en_cours"));
@@ -80,7 +83,10 @@ public class DashboardRepository {
         dashboardData.setFaible(res.getInt("priorite_faible"));
         dashboardData.setMoyen(res.getInt("priorite_moyenne"));
         dashboardData.setHaut(res.getInt("priorite_haute"));
+
+        dashboardDatas.getDashboardDataSet().add(dashboardData);
     }
+    logger.debug(" Données Dashboard récupérées: {}", dashboardDatas);
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(dashboardDatas));
     }
     
