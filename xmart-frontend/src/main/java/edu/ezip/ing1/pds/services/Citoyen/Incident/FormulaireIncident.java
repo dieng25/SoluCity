@@ -3,6 +3,8 @@ package edu.ezip.ing1.pds.services.Citoyen.Incident;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.Date;
 
 public class FormulaireIncident extends JFrame {
@@ -33,10 +35,12 @@ public class FormulaireIncident extends JFrame {
         add(new JLabel("Nom: "));
         nomField = new JTextField();
         add(nomField);
+        setUppercaseKeyListener(nomField);
 
         add(new JLabel("Prénom: "));
         prenomField = new JTextField();
         add(prenomField);
+        setUppercaseKeyListener(prenomField);
 
         add(new JLabel("Numéro de téléphone: "));
         telField = new JTextField();
@@ -53,6 +57,7 @@ public class FormulaireIncident extends JFrame {
         add(new JLabel("Titre: "));
         titreField = new JTextField();
         add(titreField);
+        setUppercaseKeyListener(titreField);
 
         add(new JLabel("Description: "));
         descriptionArea = new JTextArea();
@@ -79,6 +84,16 @@ public class FormulaireIncident extends JFrame {
         add(buttonPanel);
 
         setVisible(true);
+    }
+
+    private void setUppercaseKeyListener(JTextField textField) {
+        textField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                JTextField source = (JTextField) e.getSource();
+                source.setText(source.getText().toUpperCase());
+            }
+        });
     }
 
     public String getCategorie() { return categorie; }
