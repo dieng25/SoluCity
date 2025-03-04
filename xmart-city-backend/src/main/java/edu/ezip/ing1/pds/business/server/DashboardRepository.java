@@ -12,92 +12,88 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 public class DashboardRepository {
+    private final static String LoggingLabel = "B u s i n e s s - S e r v e r";
+    private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
 
     private enum Queries {
-        TOTAL_INCIDENTS("SELECT COUNT(*) FROM incidents"),
-        INCIDENTS_EN_COURS("SELECT COUNT(*) FROM incidents WHERE status = 0"),
-        INCIDENTS_RESOLU("SELECT COUNT(*) FROM incidents WHERE status = 1"),
-        INCIDENTS_NO("SELECT COUNT(*) FROM incidens WHERE statut NOT IN (0, 1)"),
-        NON_DEFINI("SELECT COUNT(*) FROM incidents WHERE niveau_urgence = 0"),
-        FAIBLE("SELECT COUNT(*) FROM incidents WHERE niveau_urgence = 1"),
-        MOYEN("SELECT COUNT(*) FROM incidents WHERE niveau_urgence = 2"),
-        HAUT("SELECT COUNT(*) FROM incidents WHERE niveau_urgence = 3");
+       // DASHBOARD_REQUEST("SELECT COUNT(*) FROM incidents, SELECT COUNT(*) FROM incidents WHERE statut = 1, SELECT COUNT(*) FROM incidents WHERE statut = 2, SELECT COUNT(*) FROM incidens WHERE statut = 0, SELECT COUNT(*) FROM incidents WHERE Priorité = 0, SELECT COUNT(*) FROM incidents WHERE Priorité = 1, SELECT COUNT(*) FROM incidents WHERE Priorité = 2, SELECT COUNT(*) FROM incidents WHERE Priorité = 3");
+       
+       DASHBOARD_REQUEST("SELECT " +
+                "(SELECT COUNT(*) FROM incident) AS total_incidents, " +
+                "(SELECT COUNT(*) FROM incident WHERE statut = 1) AS incidents_en_cours, " +
+                "(SELECT COUNT(*) FROM incident WHERE statut = 2) AS incidents_resolus, " +
+                "(SELECT COUNT(*) FROM incident WHERE statut = 0) AS incidents_non_ouverts, " +
+                "(SELECT COUNT(*) FROM incident WHERE Priorité = 0) AS priorite_non_defini, " +
+                "(SELECT COUNT(*) FROM incident WHERE Priorité = 1) AS priorite_faible, " +
+                "(SELECT COUNT(*) FROM incident WHERE Priorité = 2) AS priorite_moyenne, " +
+                "(SELECT COUNT(*) FROM incident WHERE Priorité = 3) AS priorite_haute");
 
         private final String query;
 
-        Queries(final String query) {
+        private Queries(final String query) {
             this.query = query;
         }
-
-        public String getQuery() {
-            return query;
-        }
     }
-
+    
     public static DashboardRepository inst = null;
-
-    public static final DashboardRepository getInstance() {
-        if (inst == null) {
+    public static final DashboardRepository getInstance()  {
+        if(inst == null) {
             inst = new DashboardRepository();
         }
         return inst;
     }
 
+    private DashboardRepository() {
 
+    }
 
-    /*public DashboardDatas fetchDashboardStats(final Connection connection) throws SQLException {
+    private Response fetchDashboardStats (final Request request, final Connection connection) throws SQLException, JsonProcessingException {
+        final ObjectMapper objectMapper = new ObjectMapper();
         final Statement stmt = connection.createStatement();
-
-        int totalIncident = countIncidents(stmt, Queries.TOTAL_INCIDENTS.getQuery());
-        int incidentEnCours = countIncidents(stmt, Queries.INCIDENTS_EN_COURS.getQuery());
-        int incidentResolu = countIncidents(stmt, Queries.INCIDENTS_RESOLU.getQuery());
-        int incidentNonOuvert = countIncidents(stmt, Queries.INCIDENTS_NO.getQuery());
-        int nonDefini = countIncidents(stmt, Queries.NON_DEFINI.getQuery());
-        int faible = countIncidents(stmt, Queries.FAIBLE.getQuery());
-        int moyen = countIncidents(stmt, Queries.MOYEN.getQuery());
-        int haut = countIncidents(stmt, Queries.HAUT.getQuery());
-
-        return new DashboardDatas();
-    }*/
-    
-    public DashboardDatas fetchDashboardStats(final Connection connection) throws SQLException {
-        final Statement stmt = connection.createStatement();
-    
-        int totalIncident = countIncidents(stmt, Queries.TOTAL_INCIDENTS.getQuery());
-        int incidentEnCours = countIncidents(stmt, Queries.INCIDENTS_EN_COURS.getQuery());
-        int incidentResolu = countIncidents(stmt, Queries.INCIDENTS_RESOLU.getQuery());
-        int incidentNonOuvert = countIncidents(stmt, Queries.INCIDENTS_NO.getQuery());
-        int nonDefini = countIncidents(stmt, Queries.NON_DEFINI.getQuery());
-        int faible = countIncidents(stmt, Queries.FAIBLE.getQuery());
-        int moyen = countIncidents(stmt, Queries.MOYEN.getQuery());
-        int haut = countIncidents(stmt, Queries.HAUT.getQuery());
-    
-        // Création d'un objet DashboardData avec les valeurs récupérées
-        DashboardData dashboardData = new DashboardData();
-        dashboardData.setTotalIncident(totalIncident);
-        dashboardData.setIncidentEnCours(incidentEnCours);
-        dashboardData.setIncidentResolu(incidentResolu);
-        dashboardData.setIncidentNonOuvert(incidentNonOuvert);
-        dashboardData.setNonDefini(nonDefini);
-        dashboardData.setFaible(faible);
-        dashboardData.setMoyen(moyen);
-        dashboardData.setHaut(haut);
-    
-        // Ajout du DashboardData dans DashboardDatas
+        final ResultSet res = stmt.executeQuery(Queries.DASHBOARD_REQUEST.query);
         DashboardDatas dashboardDatas = new DashboardDatas();
-        dashboardDatas.add(dashboardData);
-        return dashboardDatas;
+
+        /*while (res.next()) {
+            DashboardData dashboardData = new DashboardData();
+            dashboardData.setTotalIncident(res.getInt(1));
+            dashboardData.setIncidentEnCours(res.getInt(2));
+            dashboardData.setIncidentResolu(res.getInt(3));
+            dashboardData.setIncidentNonOuvert(res.getInt(4));
+            dashboardData.setNonDefini(res.getInt(5));
+            dashboardData.setFaible(res.getInt(6));
+            dashboardData.setMoyen(res.getInt(7));
+            dashboardData.setHaut(res.getInt(8));
+        }*/
+
+        if (res.next()) {  
+        DashboardData dashboardData = new DashboardData();
+        dashboardData.setTotalIncident(res.getInt("total_incidents"));
+        dashboardData.setIncidentEnCours(res.getInt("incidents_en_cours"));
+        dashboardData.setIncidentResolu(res.getInt("incidents_resolus"));
+        dashboardData.setIncidentNonOuvert(res.getInt("incidents_non_ouverts"));
+        dashboardData.setNonDefini(res.getInt("priorite_non_defini"));
+        dashboardData.setFaible(res.getInt("priorite_faible"));
+        dashboardData.setMoyen(res.getInt("priorite_moyenne"));
+        dashboardData.setHaut(res.getInt("priorite_haute"));
+
+        dashboardDatas.getDashboardDataSet().add(dashboardData);
+    }
+    logger.debug(" Données Dashboard récupérées: {}", dashboardDatas);
+        return new Response(request.getRequestId(), objectMapper.writeValueAsString(dashboardDatas));
     }
     
-
-    private int countIncidents(Statement stmt, String query) throws SQLException {
-        ResultSet res = stmt.executeQuery(query);
-        if (res.next()) {
-            return res.getInt(1);
-        }
-        return 0;
+public final Response dispatch(final Request request, final Connection connection)
+            throws InvocationTargetException, IllegalAccessException, SQLException, IOException {
+        //Response response = null;
+        Response response = fetchDashboardStats(request, connection);
+        return response;
     }
 }
-

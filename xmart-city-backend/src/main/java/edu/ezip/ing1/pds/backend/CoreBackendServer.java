@@ -34,7 +34,7 @@ public class CoreBackendServer implements Runnable
 
     private final ServerSocket coreServerSocket;
     private final Thread coreThread;
-    private final Set<RequestHandler> requestHandlers = Collections.synchronizedSet(new LinkedHashSet</*RequestHandler*/>());
+    private final Set<RequestHandler> requestHandlers = Collections.synchronizedSet(new LinkedHashSet<RequestHandler>());
     private volatile boolean topToStop = false;
     private int requestHandlerCreatedSoFar = 0;
 
