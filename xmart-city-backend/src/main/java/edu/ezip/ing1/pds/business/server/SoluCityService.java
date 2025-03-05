@@ -30,8 +30,7 @@ public class SoluCityService {
     private SoluCityService() {
         //CitoyenService citoyenService = new CitoyenService();
         this.dashboardRepository = new DashboardRepository();
-        MairieServices mairieServices =  MairieServices.getInstance();
-        
+        // MairieServices mairieServices =  MairieServices.getInstance();  
     }
 
 public final Response dispatch(final Request request, final Connection connection)

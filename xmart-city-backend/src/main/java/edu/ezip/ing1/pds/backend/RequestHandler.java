@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ezip.commons.LoggingUtils;
 import edu.ezip.ing1.pds.business.server.InterfaceCitoyenService;
+import edu.ezip.ing1.pds.business.server.IncidentService;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.commons.Response;
 import org.slf4j.Logger;
@@ -34,7 +35,7 @@ public class RequestHandler implements Runnable {
     private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
     private int requestCount = 0;
 
-    private final InterfaceCitoyenService citoyenService = InterfaceCitoyenService.getInstance();
+    private final IncidentService incidentServices = IncidentService.getInstance();
     private final CoreBackendServer father;
 
     private static final int maxTimeLapToGetAClientPayloadInMs = 5000;
@@ -72,12 +73,12 @@ public class RequestHandler implements Runnable {
             final byte [] inputData = new byte[instream.available()];
             instream.read(inputData);
             final Request request = getRequest(inputData);
-            final Response response = citoyenService.dispatch(request, connection);
+            final Response response = incidentServices.dispatch(request, connection);
 
             final byte [] outoutData = getResponse(response);
             LoggingUtils.logDataMultiLine(logger, Level.DEBUG, outoutData);
             outstream.write(outoutData);
-
+            
         } catch (IOException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

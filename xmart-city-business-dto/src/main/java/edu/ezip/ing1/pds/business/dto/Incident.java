@@ -14,24 +14,33 @@ public class Incident {
     private int IdTicket;
     private String Titre;
     private String Description;
-    private Date date;
+    private Date date_creation;
     private String Categorie;
     private int Statut;
     private String CP_Ticket;
     private int Priorite;
+    private Date date_cloture;
+    private String telNum;
+    private String CP;
+
 
     public Incident() {
-            this.Statut = 0;
+        this.Statut = 0;
     }
 
-    public Incident(String Titre, String Description, Date date, String Categorie, int Statut, String CP_Ticket, int Priorite) {
+    public Incident(int IdTicket, String Titre, String Description, Date date_creation, String Categorie, int Statut, String CP_Ticket, int Priorite, Date date_cloture, String telNum, String CP) {
+        this.IdTicket = IdTicket;
         this.Titre = Titre;
         this.Description = Description;
-        this.date = date;
+        this.date_creation = date_creation;
         this.Categorie = Categorie;
         this.Statut = Statut;
         this.CP_Ticket = CP_Ticket;
         this.Priorite = Priorite;
+        this.date_cloture = date_cloture;
+        this.telNum = telNum;
+        this.CP = CP;
+
     }
 
     public int getIdTicket() {
@@ -42,7 +51,6 @@ public class Incident {
     public void setIdTicket(int IdTicket) {
         this.IdTicket = IdTicket;
     }
-
 
 
     public String getTitre() {
@@ -63,13 +71,13 @@ public class Incident {
         this.Description = Description;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getDate_creation() {
+        return date_creation;
     }
 
-    @JsonProperty("incident_Date")
-    public void setdate(Date date) {
-        this.date = date;
+    @JsonProperty("incident_DateCreation")
+    public void setdate(Date date_creation) {
+        this.date_creation = date_creation;
     }
 
     public String getCategorie() {
@@ -108,15 +116,42 @@ public class Incident {
         this.Priorite = Priorite;
     }
 
+    public Date getDate_cloture() {
+        return date_cloture;
+    }
+
+    @JsonProperty("incident_DateCloture")
+    public void setDate_cloture(Date date_cloture) {
+        this.date_cloture = date_cloture;
+    }
+
+    public String getTelNum() {
+        return telNum;
+    }
+
+    @JsonProperty("incident_TelNum")
+    public void setTelNum(String telNum) {
+        this.telNum = telNum;
+    }
+
+    public String getCP() {
+        return CP;
+    }
+
+    @JsonProperty("incident_CP")
+    public void setCP(String CP) {
+        this.CP = CP;
+    }
+
     public final Incident build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        setFieldsFromResultSet(resultSet,  "Titre", "Description", "date_emis", "Catégorie", "Statut", "CodePostal_ticket", "Priorité");
+        setFieldsFromResultSet(resultSet,  "Id_ticket", "Titre", "Description", "date_creation", "Categorie", "Statut", "CodePostal_ticket", "Priorite", "date_cloture", "tel_num", "Code_Postal");
         return this;
     }
 
     public final PreparedStatement build(PreparedStatement preparedStatement)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        return buildPreparedStatement(preparedStatement, Titre, Description, date, Categorie, Statut, CP_Ticket, Priorite);
+        return buildPreparedStatement(preparedStatement, IdTicket, Titre, Description, date_creation, Categorie, Statut, CP_Ticket, Priorite, date_cloture, telNum, CP);
     }
 
     private void setFieldsFromResultSet(final ResultSet resultSet, final String... fieldNames)
@@ -139,13 +174,15 @@ public class Incident {
     @Override
     public String toString() {
         return "Incident{" +
+                "IdTicket=" + IdTicket +
                 "Titre='" + Titre + '\'' +
                 ", Description='" + Description + '\'' +
-                ", Date='" + date + '\'' +
+                ", date_creation='" + date_creation + '\'' +
                 ", Categorie='" + Categorie + '\'' +
-                ", Statut=" + Statut +
-                ", CP_Ticket=" + CP_Ticket +
-                ", Priorite=" + Priorite +
+                ", Statut=" + Statut + '\'' +
+                ", CP_Ticket=" + CP_Ticket + '\'' +
+                ", Priorite=" + Priorite + '\'' +
+                ", date_cloture=" + date_cloture +
                 '}';
     }
 }
