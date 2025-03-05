@@ -10,70 +10,46 @@ import java.sql.SQLException;
 
 @JsonRootName(value = "mairie")
 public class Mairie {
-    private String codePostal;
-    private String email;
-    private String mdp;
+    private String CodePostal;
 
-    public Mairie() {
-    }
+    public Mairie(){}
 
-    public Mairie(String codePostal, String email, String mdp) {
-        this.codePostal = codePostal;
-        this.email = email;
-        this.mdp = mdp;
+    public Mairie(String CodePostal) {
+        this.CodePostal = CodePostal;
     }
 
     public String getCodePostal() {
-        return codePostal;
+        return CodePostal;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public String getMdp() {
-        return mdp;
-    }
-
-    @JsonProperty("mairie_code_postal")
-    public void setCodePostal(String codePostal) {
-        this.codePostal = codePostal;
-    }
-
-    @JsonProperty("mairie_email")
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @JsonProperty("mairie_mdp")
-    public void setMdp(String mdp) {
-        this.mdp = mdp;
+    @JsonProperty("marie_CodePostal")
+    public void setCodePostal(String CodePostal) {
+        this.CodePostal = CodePostal;
     }
 
     public final Mairie build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        setFieldsFromResultSet(resultSet, "codePostal", "email", "mdp");
+        setFieldsFromResulset(resultSet, "Code_Postal");
         return this;
     }
-
     public final PreparedStatement build(PreparedStatement preparedStatement)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        return buildPreparedStatement(preparedStatement, codePostal, email, mdp);
+        return buildPreparedStatement(preparedStatement, CodePostal);
     }
 
-    private void setFieldsFromResultSet(final ResultSet resultSet, final String... fieldNames)
+    private void setFieldsFromResulset(final ResultSet resultSet, final String ... fieldNames )
             throws NoSuchFieldException, SQLException, IllegalAccessException {
-        for (final String fieldName : fieldNames) {
+        for(final String fieldName : fieldNames ) {
             final Field field = this.getClass().getDeclaredField(fieldName);
             field.set(this, resultSet.getObject(fieldName));
         }
     }
 
-    private final PreparedStatement buildPreparedStatement(PreparedStatement preparedStatement, final String... fieldValues)
-            throws SQLException {
-        int index = 0;
-        for (final String fieldValue : fieldValues) {
-            preparedStatement.setString(++index, fieldValue);
+    private final PreparedStatement buildPreparedStatement(PreparedStatement preparedStatement, final String ... fieldNames )
+            throws NoSuchFieldException, SQLException, IllegalAccessException {
+        int ix = 0;
+        for(final String fieldName : fieldNames ) {
+            preparedStatement.setString(++ix, fieldName);
         }
         return preparedStatement;
     }
@@ -81,9 +57,7 @@ public class Mairie {
     @Override
     public String toString() {
         return "Mairie{" +
-                "codePostal='" + codePostal + '\'' +
-                ", email='" + email + '\'' +
-                ", mdp='" + mdp + '\'' +
+                "CodePostal='" + CodePostal + '\'' +
                 '}';
     }
 }

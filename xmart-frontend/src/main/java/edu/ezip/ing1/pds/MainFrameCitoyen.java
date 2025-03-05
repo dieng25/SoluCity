@@ -1,6 +1,6 @@
 package edu.ezip.ing1.pds;
 
-import edu.ezip.ing1.pds.services.Citoyen.CreationTicketIncident;
+import edu.ezip.ing1.pds.services.Citoyen.Incident.CategorieIncident;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +21,7 @@ public class MainFrameCitoyen {
 
             JButton incidentButton = new JButton("Incident");
             incidentButton.addActionListener(e -> {
-                        new CreationTicketIncident();
+                        new CategorieIncident();
                         mainFrame.dispose();
             });
 

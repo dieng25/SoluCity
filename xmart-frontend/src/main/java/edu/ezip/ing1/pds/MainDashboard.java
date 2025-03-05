@@ -9,6 +9,7 @@ public class MainDashboard extends JFrame {
         setTitle("SoluCityBoard");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
 
@@ -62,9 +63,15 @@ public class MainDashboard extends JFrame {
 
     // fonction pour ouvrir la fenêtre qui va afficher les infos globales
     private void openIncidentDashboard() {
-        IncidentDashboardGlobal dashboard = new IncidentDashboardGlobal();
-        dashboard.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                new IncidentDashboardGlobal();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
+    
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

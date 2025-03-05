@@ -1,9 +1,12 @@
 package edu.ezip.ing1.pds.business.server;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ezip.ing1.pds.business.dto.Citoyen;
 import edu.ezip.ing1.pds.business.dto.Incident;
+import edu.ezip.ing1.pds.business.dto.Mairie;
+import edu.ezip.ing1.pds.business.dto.Mairies;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.commons.Response;
 import org.slf4j.Logger;
@@ -20,10 +23,10 @@ public class InterfaceCitoyenService {
     private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
 
     private enum Queries {
-        INSERT_CITOYEN("INSERT INTO Citoyen (tel_num, Nom, Prénom, email, Identifiant) VALUES (?, ?, ?, ?, ?)"),
-        INSERT_INCIDENT("INSERT INTO Incident (Titre, Description, date_emis, Catégorie, Statut, CodePostal_ticket, Priorité) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        //SELECT_INCIDENT("SELECT * FROM Incident WHERE Id_ticket = ? AND Identifiant = ?"),
-        //UPDATE_INCIDENT("UPDATE Incident SET Titre = ?, Description = ? WHERE Id_ticket = ? AND Statut = 0");
+        INSERT_CITOYEN("INSERT INTO Citoyen (tel_num, Nom, Prenom, email, Identifiant) VALUES (?, ?, ?, ?, ?)"),
+        INSERT_INCIDENT("INSERT INTO Incident (Titre, Description, date_creation, Categorie, Statut, CodePostal_ticket, Priorite, date_cloture, tel_num, Code_Postal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"),
+        SELECT_ALL_MAIRIES("SELECT t.Code_Postal FROM mairie t");
+
         private final String query;
 
         private Queries(final String query) {
@@ -48,7 +51,7 @@ public class InterfaceCitoyenService {
             throws InvocationTargetException, IllegalAccessException, SQLException, IOException {
         Response response = null;
 
-        final Queries queryEnum = Enum.valueOf(InterfaceCitoyenService.Queries.class, request.getRequestOrder());
+        final Queries queryEnum = Enum.valueOf(Queries.class, request.getRequestOrder());
         switch(queryEnum) {
             case INSERT_CITOYEN:
                 response = InsertCitoyen(request, connection);
@@ -56,17 +59,14 @@ public class InterfaceCitoyenService {
             case INSERT_INCIDENT:
                 response = InsertIncident(request, connection);
                 break;
-            //case SELECT_INCIDENT:
-               // response = selectIncident(request, connection);
-               // break;
-            //case UPDATE_INCIDENT:
-              //  response = updateIncident(request, connection);
-              //  break;
-           // default:
-             //   break;
-       }
+            case SELECT_ALL_MAIRIES:
+                response = SelectAllMairies(request, connection);
+                break;
+            default:
+                break;
+        }
 
-       return response;
+        return response;
     }
 
     private Response InsertCitoyen(final Request request, final Connection connection) throws SQLException, IOException {
@@ -77,7 +77,7 @@ public class InterfaceCitoyenService {
         String identifiant = generateIdentifiant(citoyen.getPrenom(), citoyen.getNom());
         citoyen.setIdentifiant(identifiant);
 
-        PreparedStatement stmt = connection.prepareStatement(InterfaceCitoyenService.Queries.INSERT_CITOYEN.query);
+        PreparedStatement stmt = connection.prepareStatement(Queries.INSERT_CITOYEN.query);
         stmt.setString(1, citoyen.getTelNum());
         stmt.setString(2, citoyen.getNom());
         stmt.setString(3, citoyen.getPrenom());
@@ -108,27 +108,36 @@ public class InterfaceCitoyenService {
 
     private Response InsertIncident(final Request request, final Connection connection) throws SQLException, IOException {
         final ObjectMapper objectMapper = new ObjectMapper();
-        PreparedStatement stmt = connection.prepareStatement(Queries.INSERT_INCIDENT.query, Statement.RETURN_GENERATED_KEYS);
+        PreparedStatement stmt = connection.prepareStatement(Queries.INSERT_INCIDENT.query);
         Incident incident = objectMapper.readValue(request.getRequestBody(), Incident.class);
+
         stmt.setString(1, incident.getTitre());
         stmt.setString(2, incident.getDescription());
-        stmt.setDate(3, incident.getDate());
+        stmt.setDate(3, incident.getDate_creation());
         stmt.setString(4, incident.getCategorie());
         stmt.setInt(5, incident.getStatut());
         stmt.setString(6, incident.getCP_Ticket());
         stmt.setInt(7, incident.getPriorite());
+        stmt.setDate(8, incident.getDate_cloture());
+        stmt.setString(9, incident.getTelNum());
+        stmt.setString(10, incident.getCP());
         int rowsInserted = stmt.executeUpdate();
-
-
-        ResultSet generatedKeys = stmt.getGeneratedKeys();
-        if (generatedKeys.next()) {
-            incident.setIdTicket(generatedKeys.getInt(1));
-        }
 
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(incident));
     }
 
-
+    private Response SelectAllMairies(final Request request, final Connection connection) throws SQLException, JsonProcessingException {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final Statement stmt = connection.createStatement();
+        final ResultSet res = stmt.executeQuery(Queries.SELECT_ALL_MAIRIES.query);
+        Mairies mairies = new Mairies();
+        while (res.next()) {
+            Mairie mairie = new Mairie();
+            mairie.setCodePostal(res.getString(1 ));
+            mairies.add(mairie);
+        }
+        return new Response(request.getRequestId(), objectMapper.writeValueAsString(mairies));
+    }
 
 
 }
