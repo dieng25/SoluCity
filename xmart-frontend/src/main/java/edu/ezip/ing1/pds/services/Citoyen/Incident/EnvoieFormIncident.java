@@ -8,6 +8,8 @@ import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.services.Citoyen.CitoyenService;
 import edu.ezip.ing1.pds.services.Citoyen.IncidentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -17,6 +19,8 @@ import java.sql.Date;
 
 public class EnvoieFormIncident implements ActionListener {
 
+    private final static String LoggingLabel = "FrontEnd";
+    private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
     private final static String networkConfigFile = "network.yaml";
 
     private FormulaireIncident form;
@@ -50,7 +54,9 @@ public class EnvoieFormIncident implements ActionListener {
         try {
             citoyenService.insertCitoyen(citoyen);
         } catch (InterruptedException | IOException ex) {
-            ex.printStackTrace();
+            logger.error("Erreur lors de l'envoie des données du citoyen", e);
+            JOptionPane.showMessageDialog(form, "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
         }
 
         Incident incident = new Incident(titre, description, date, categorie, 0, cp, priorite, null, tel, cp);
@@ -58,7 +64,9 @@ public class EnvoieFormIncident implements ActionListener {
         try {
             incidentService.insertIncident(incident);
         } catch (InterruptedException | IOException ex) {
-        ex.printStackTrace();
+            logger.error("Erreur lors de l'envoie des données ticket incident", e);
+            JOptionPane.showMessageDialog(form, "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
         }
 
     }
