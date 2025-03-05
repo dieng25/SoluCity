@@ -1,9 +1,12 @@
 package edu.ezip.ing1.pds.business.server;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ezip.ing1.pds.business.dto.Citoyen;
 import edu.ezip.ing1.pds.business.dto.Incident;
+import edu.ezip.ing1.pds.business.dto.Mairie;
+import edu.ezip.ing1.pds.business.dto.Mairies;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.commons.Response;
 import org.slf4j.Logger;
@@ -21,7 +24,8 @@ public class InterfaceCitoyenService {
 
     private enum Queries {
         INSERT_CITOYEN("INSERT INTO Citoyen (tel_num, Nom, Prenom, email, Identifiant) VALUES (?, ?, ?, ?, ?)"),
-        INSERT_INCIDENT("INSERT INTO Incident (Titre, Description, date_creation, Categorie, Statut, CodePostal_ticket, Priorite, date_cloture, tel_num, Code_Postal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        INSERT_INCIDENT("INSERT INTO Incident (Titre, Description, date_creation, Categorie, Statut, CodePostal_ticket, Priorite, date_cloture, tel_num, Code_Postal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"),
+        SELECT_ALL_MAIRIES("SELECT t.Code_Postal FROM mairie t");
 
         private final String query;
 
@@ -54,6 +58,9 @@ public class InterfaceCitoyenService {
                 break;
             case INSERT_INCIDENT:
                 response = InsertIncident(request, connection);
+                break;
+            case SELECT_ALL_MAIRIES:
+                response = SelectAllMairies(request, connection);
                 break;
             default:
                 break;
@@ -119,7 +126,18 @@ public class InterfaceCitoyenService {
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(incident));
     }
 
-
+    private Response SelectAllMairies(final Request request, final Connection connection) throws SQLException, JsonProcessingException {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final Statement stmt = connection.createStatement();
+        final ResultSet res = stmt.executeQuery(Queries.SELECT_ALL_MAIRIES.query);
+        Mairies mairies = new Mairies();
+        while (res.next()) {
+            Mairie mairie = new Mairie();
+            mairie.setCodePostal(res.getString(1 ));
+            mairies.add(mairie);
+        }
+        return new Response(request.getRequestId(), objectMapper.writeValueAsString(mairies));
+    }
 
 
 }
