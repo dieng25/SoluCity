@@ -28,7 +28,8 @@ public class Incident {
         this.Statut = 0;
     }
 
-    public Incident(String Titre, String Description, Date date_creation, String Categorie, int Statut, String CP_Ticket, int Priorite, Date date_cloture, String telNum, String CP) {
+    public Incident(int IdTicket, String Titre, String Description, Date date_creation, String Categorie, int Statut, String CP_Ticket, int Priorite, Date date_cloture, String telNum, String CP) {
+        this.IdTicket = IdTicket;
         this.Titre = Titre;
         this.Description = Description;
         this.date_creation = date_creation;

@@ -3,10 +3,9 @@ package edu.ezip.ing1.pds.backend;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import edu.ezip.commons.LoggingUtils;
-import edu.ezip.ing1.pds.business.server.DashboardRepository;
 import edu.ezip.ing1.pds.business.server.InterfaceCitoyenService;
+import edu.ezip.ing1.pds.business.server.IncidentService;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.commons.Response;
 import org.slf4j.Logger;
@@ -31,13 +30,12 @@ public class RequestHandler implements Runnable {
     private static final String threadNamePrfx = "core-request-handler";
     private final InputStream instream;
     private final OutputStream outstream;
-    //private final Connection connection;
+    // private final Connection connection;
     private final static String LoggingLabel = "C o re - B a c k e n d - S e r v e r";
     private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
     private int requestCount = 0;
 
-    private final InterfaceCitoyenService interfaceCitoyenService = InterfaceCitoyenService.getInstance();
-    //private final DashboardRepository dashboardRepository = DashboardRepository.getInstance();
+    private final IncidentService incidentServices = IncidentService.getInstance();
     private final CoreBackendServer father;
 
     private static final int maxTimeLapToGetAClientPayloadInMs = 5000;
@@ -75,15 +73,12 @@ public class RequestHandler implements Runnable {
             final byte [] inputData = new byte[instream.available()];
             instream.read(inputData);
             final Request request = getRequest(inputData);
-            final Response response = interfaceCitoyenService.dispatch(request, connection);
-            //final Response response2 = dashboardRepository.dispatch(request, connection);
-            final byte [] outoutData = getResponse(response);
-            //final byte [] outoutData2 = getResponse(response2);
-            LoggingUtils.logDataMultiLine(logger, Level.DEBUG, outoutData);
-           // LoggingUtils.logDataMultiLine(logger, Level.DEBUG, outoutData2);
-            outstream.write(outoutData);
-            //outstream.write(outoutData2);
+            final Response response = incidentServices.dispatch(request, connection);
 
+            final byte [] outoutData = getResponse(response);
+            LoggingUtils.logDataMultiLine(logger, Level.DEBUG, outoutData);
+            outstream.write(outoutData);
+            
         } catch (IOException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -122,5 +117,6 @@ public class RequestHandler implements Runnable {
     public final Socket getSocket() {
         return socket;
     }
+
 
 }

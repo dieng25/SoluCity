@@ -1,6 +1,6 @@
-databaseName: "SoluDB2"
+databaseName: "solycity_data_base"
 host: "127.0.0.1"
 port: 3306
 username : "root"
 password: ""
-poolSize: 1
+poolSize: 1s

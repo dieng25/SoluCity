@@ -1,11 +1,16 @@
 package edu.ezip.ing1.pds;
-import javax.swing.*;
-/*import edu.ezip.ing1.pds.business.server.MairieServices;*/
+
+import edu.ezip.ing1.pds.business.dto.Incident;
+import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.commons.Request;
-
+import edu.ezip.ing1.pds.requests.SelectIncidentClientRequest;
+import edu.ezip.ing1.pds.services.Mairie.IncidentTableFrame;
+import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
+import java.util.List;
 
-public class MairieGUI {
+public class Exemple {
     private JFrame frame;
     private JButton incidentsButton;
     private JButton suggestionsButton;
@@ -13,7 +18,13 @@ public class MairieGUI {
     private JButton trierButton;
     private JTextArea resultArea;
 
-    public MairieGUI() {
+    private NetworkConfig networkConfig; // 🔹 Ajout
+    private int clientId; // 🔹 Ajout
+
+    public Exemple(NetworkConfig networkConfig, int clientId) { // 🔹 Ajout des paramètres
+        this.networkConfig = networkConfig;
+        this.clientId = clientId;
+
         // Création et configuration de la fenêtre principale
         frame = new JFrame("Dashboard Mairie");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -87,38 +98,25 @@ public class MairieGUI {
         frame.add(centerPanel, BorderLayout.CENTER);
         frame.add(scrollPane, BorderLayout.SOUTH);
 
-        //Actions des boutons
-        incidentsButton.addActionListener(e -> showData("incidents"));
-        suggestionsButton.addActionListener(e -> showData("suggestions"));
-        statistiqueButton.addActionListener(e -> showData("Statistiques et prédictions"));
-        trierButton.addActionListener(e -> showData("trier par statut"));
+        // Actions des boutons
+        incidentsButton.addActionListener(e -> afficherIncidents()); // 🔹 Mise à jour
 
         frame.setVisible(true);
     }
 
-    private void showData(String type) {
-
-        // MairieServices mairieServices = MairieServices.getInstance();
-        // Ici vous devez préparer une Request et une Connection (par exemple via JDBC)
-        Request request = new Request();
-        // Par exemple, on définit le type de requête en fonction du bouton cliqué
-        switch (type) {
-            case "incidents":
-                request.setRequestOrder("SELECT_ALL_INCIDENTS");
-                break;
-            case "suggestions":
-                request.setRequestOrder("SELECT_ALL_SUGGESTIONS");
-                break;
-            // Autres cas...
-            default:
-                break;
-        }
-        //affichage dans la zone de résultats
-        // result
-        // resultArea.setText(result.toString());
+    // Nouvelle méthode pour afficher IncidentTableFrame
+    private void afficherIncidents() {
+        SwingUtilities.invokeLater(() -> {
+            new IncidentTableFrame(networkConfig, clientId).setVisible(true);
+        });
     }
-
     public static void main(String[] args) {
-        User.initMainFrame();
+        NetworkConfig networkConfig = new NetworkConfig();
+        networkConfig.setIpaddress("127.0.0.1");
+        networkConfig.setTcpport(45065);
+    
+        int clientId = 1;
+        SwingUtilities.invokeLater(() -> new Exemple(networkConfig, clientId));
     }
+    
 }
