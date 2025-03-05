@@ -63,10 +63,18 @@ public class FormulaireIncident extends JFrame {
         emailField = new JTextField();
         add(emailField);
 
+        NetworkConfig networkConfig = null;
         try {
-            final NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
+            networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
             logger.debug("Load Network config file : {}", networkConfig.toString());
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
 
+
+        try{
             final MairieService mairieService = new MairieService(networkConfig);
             Mairies mairies = mairieService.selectMairies();
 
@@ -75,13 +83,10 @@ public class FormulaireIncident extends JFrame {
             for (Mairie mairie : mairies.getMairies()) {
                 cpField.addItem(mairie.getCodePostal());
             }
-            cpField.setSelectedIndex(0);
-            cpField.setEditable(true);
             add(cpField);
 
         } catch (IOException | InterruptedException e) {
             logger.error("Erreur lors du chargement des codes postaux", e);
-            JOptionPane.showMessageDialog(this, "Erreur de connexion au serveur. Veuillez réessayer plus tard.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
 
         add(new JLabel("Titre: "));
