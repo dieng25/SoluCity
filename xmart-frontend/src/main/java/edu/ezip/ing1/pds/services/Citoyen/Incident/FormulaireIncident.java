@@ -1,17 +1,30 @@
 package edu.ezip.ing1.pds.services.Citoyen.Incident;
 
 
+import edu.ezip.ing1.pds.business.dto.Mairie;
+import edu.ezip.ing1.pds.business.dto.Mairies;
+import edu.ezip.ing1.pds.client.commons.ConfigLoader;
+import edu.ezip.ing1.pds.client.commons.NetworkConfig;
+import edu.ezip.ing1.pds.services.Citoyen.MairieService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.sql.Date;
 
 public class FormulaireIncident extends JFrame {
 
-    private JTextField nomField, prenomField, telField, emailField, cpField, titreField;
+    private final static String LoggingLabel = "FrontEnd";
+    private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
+    private final static String networkConfigFile = "network.yaml";
+
+    private JTextField nomField, prenomField, telField, emailField, titreField;
     private JTextArea descriptionArea;
-    private JComboBox<String> prioriteBox;
+    private JComboBox<String> cpField, prioriteBox;
     private String categorie;
     private Date date_sql;
 
@@ -50,9 +63,26 @@ public class FormulaireIncident extends JFrame {
         emailField = new JTextField();
         add(emailField);
 
-        add(new JLabel("Code Postal: "));
-        cpField = new JTextField();
-        add(cpField);
+        try {
+            final NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
+            logger.debug("Load Network config file : {}", networkConfig.toString());
+
+            final MairieService mairieService = new MairieService(networkConfig);
+            Mairies mairies = mairieService.selectMairies();
+
+            add(new JLabel("Code Postal: "));
+            cpField = new JComboBox<>();
+            for (Mairie mairie : mairies.getMairies()) {
+                cpField.addItem(mairie.getCodePostal());
+            }
+            cpField.setSelectedIndex(0);
+            cpField.setEditable(true);
+            add(cpField);
+
+        } catch (IOException | InterruptedException e) {
+            logger.error("Erreur lors du chargement des codes postaux", e);
+            JOptionPane.showMessageDialog(this, "Erreur de connexion au serveur. Veuillez réessayer plus tard.", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
 
         add(new JLabel("Titre: "));
         titreField = new JTextField();
@@ -101,7 +131,7 @@ public class FormulaireIncident extends JFrame {
     public String getPrenom() { return prenomField.getText(); }
     public String getTel() { return telField.getText(); }
     public String getEmail() { return emailField.getText(); }
-    public String getCodePostal() { return cpField.getText(); }
+    public String getCodePostal() { return (String) cpField.getSelectedItem(); }
     public String getTitre() { return titreField.getText(); }
     public String getDescription() { return descriptionArea.getText(); }
     public Date getDate() { return date_sql; }
