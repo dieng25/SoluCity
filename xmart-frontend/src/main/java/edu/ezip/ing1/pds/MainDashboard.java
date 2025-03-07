@@ -43,19 +43,24 @@ public class MainDashboard extends JFrame {
 
         JMenu dashboardsMenu = new JMenu("Dashboards");
 
-        JMenu generalMenu = new JMenu("General");
-        JMenuItem afficherItem = new JMenuItem("Afficher");
-        afficherItem.addActionListener(e -> openIncidentDashboard());
-        generalMenu.add(afficherItem);
+        JMenuItem General = new JMenuItem("Vue d'ensemble");
+        General.addActionListener(e -> openIncidentDashboard());
+        dashboardsMenu.add(General);
 
-        JMenu trierParMenu = new JMenu("Trier Par");
-        JMenuItem villeItem = new JMenuItem("Ville");
-        JMenuItem departementItem = new JMenuItem("Département");
-        trierParMenu.add(villeItem);
-        trierParMenu.add(departementItem);
-
-        dashboardsMenu.add(generalMenu);
-        dashboardsMenu.add(trierParMenu);
+        JMenuItem IncidentItem = new JMenuItem("Statistiques sur les incidents");
+        JMenuItem SuggestionItem = new JMenuItem("Statistiques sur les suggestions");
+        JMenuItem MairieItem = new JMenuItem("Statistiques par Mairie");
+        JMenuItem TableauItem = new JMenuItem("Tableau de bord spécifique");
+        
+        dashboardsMenu.add(General);
+        dashboardsMenu.addSeparator();
+        dashboardsMenu.add(IncidentItem);
+        dashboardsMenu.addSeparator();
+        dashboardsMenu.add(SuggestionItem);
+        dashboardsMenu.addSeparator();
+        dashboardsMenu.add(MairieItem);
+        dashboardsMenu.addSeparator();
+        dashboardsMenu.add(TableauItem);
         menuBar.add(dashboardsMenu);
 
         setJMenuBar(menuBar);
