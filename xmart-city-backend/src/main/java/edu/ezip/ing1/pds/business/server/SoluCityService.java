@@ -43,6 +43,7 @@ public class SoluCityService {
                 case "INSERT_CITOYEN":
                 case "INSERT_INCIDENT":
                 case "SELECT_ALL_MAIRIES":
+                case "SELECT_CITOYEN":
                     response = interfaceCitoyenService.dispatch(request, connection);
                     break;
                 case "DASHBOARD_REQUEST":

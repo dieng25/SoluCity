@@ -3,10 +3,7 @@ package edu.ezip.ing1.pds.business.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.ezip.ing1.pds.business.dto.Citoyen;
-import edu.ezip.ing1.pds.business.dto.Incident;
-import edu.ezip.ing1.pds.business.dto.Mairie;
-import edu.ezip.ing1.pds.business.dto.Mairies;
+import edu.ezip.ing1.pds.business.dto.*;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.commons.Response;
 import org.slf4j.Logger;
@@ -25,7 +22,8 @@ public class InterfaceCitoyenService {
     private enum Queries {
         INSERT_CITOYEN("INSERT INTO Citoyen (tel_num, Nom, Prenom, email, Identifiant) VALUES (?, ?, ?, ?, ?)"),
         INSERT_INCIDENT("INSERT INTO Incident (Titre, Description, date_creation, Categorie, Statut, CodePostal_ticket, Priorite, date_cloture, tel_num, Code_Postal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"),
-        SELECT_ALL_MAIRIES("SELECT t.Code_Postal FROM Mairie t");
+        SELECT_ALL_MAIRIES("SELECT t.Code_Postal FROM Mairie t"),
+        SELECT_CITOYEN("SELECT t.tel_num, t.Nom, t.Prenom, t.email, t.Identifiant FROM Citoyen t" );
 
         private final String query;
 
@@ -61,6 +59,9 @@ public class InterfaceCitoyenService {
                 break;
             case SELECT_ALL_MAIRIES:
                 response = SelectAllMairies(request, connection);
+                break;
+            case SELECT_CITOYEN:
+                response = SelectCitoyen(request, connection);
                 break;
             default:
                 break;
@@ -137,6 +138,23 @@ public class InterfaceCitoyenService {
             mairies.add(mairie);
         }
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(mairies));
+    }
+
+    private Response SelectCitoyen(final Request request, final Connection connection) throws SQLException, JsonProcessingException {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final Statement stmt = connection.createStatement();
+        final ResultSet res = stmt.executeQuery(Queries.SELECT_CITOYEN.query);
+        Citoyens citoyens = new Citoyens();
+        while (res.next()) {
+            Citoyen citoyen = new Citoyen();
+            citoyen.setTelNum(res.getString(1));
+            citoyen.setNom(res.getString(2));
+            citoyen.setPrenom(res.getString(3));
+            citoyen.setEmail(res.getString(4));
+            citoyen.setIdentifiant(res.getString(5));
+            citoyens.add(citoyen);
+        }
+        return new Response(request.getRequestId(), objectMapper.writeValueAsString(citoyens));
     }
 
 
