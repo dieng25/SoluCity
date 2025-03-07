@@ -25,7 +25,7 @@ public class InterfaceCitoyenService {
     private enum Queries {
         INSERT_CITOYEN("INSERT INTO Citoyen (tel_num, Nom, Prenom, email, Identifiant) VALUES (?, ?, ?, ?, ?)"),
         INSERT_INCIDENT("INSERT INTO Incident (Titre, Description, date_creation, Categorie, Statut, CodePostal_ticket, Priorite, date_cloture, tel_num, Code_Postal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"),
-        SELECT_ALL_MAIRIES("SELECT t.Code_Postal FROM mairie t");
+        SELECT_ALL_MAIRIES("SELECT t.Code_Postal FROM Mairie t");
 
         private final String query;
 
