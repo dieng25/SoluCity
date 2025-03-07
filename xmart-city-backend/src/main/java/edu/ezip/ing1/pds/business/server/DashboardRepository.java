@@ -27,14 +27,14 @@ public class DashboardRepository {
        // DASHBOARD_REQUEST("SELECT COUNT(*) FROM incidents, SELECT COUNT(*) FROM incidents WHERE statut = 1, SELECT COUNT(*) FROM incidents WHERE statut = 2, SELECT COUNT(*) FROM incidens WHERE statut = 0, SELECT COUNT(*) FROM incidents WHERE Priorité = 0, SELECT COUNT(*) FROM incidents WHERE Priorité = 1, SELECT COUNT(*) FROM incidents WHERE Priorité = 2, SELECT COUNT(*) FROM incidents WHERE Priorité = 3");
        
        DASHBOARD_REQUEST("SELECT " +
-                "(SELECT COUNT(*) FROM incident) AS total_incidents, " +
-                "(SELECT COUNT(*) FROM incident WHERE statut = 1) AS incidents_en_cours, " +
-                "(SELECT COUNT(*) FROM incident WHERE statut = 2) AS incidents_resolus, " +
-                "(SELECT COUNT(*) FROM incident WHERE statut = 0) AS incidents_non_ouverts, " +
-                "(SELECT COUNT(*) FROM incident WHERE Priorité = 0) AS priorite_non_defini, " +
-                "(SELECT COUNT(*) FROM incident WHERE Priorité = 1) AS priorite_faible, " +
-                "(SELECT COUNT(*) FROM incident WHERE Priorité = 2) AS priorite_moyenne, " +
-                "(SELECT COUNT(*) FROM incident WHERE Priorité = 3) AS priorite_haute");
+                "(SELECT COUNT(*) FROM Incident) AS total_incidents, " +
+                "(SELECT COUNT(*) FROM Incident WHERE statut = 1) AS incidents_en_cours, " +
+                "(SELECT COUNT(*) FROM Incident WHERE statut = 2) AS incidents_resolus, " +
+                "(SELECT COUNT(*) FROM Incident WHERE statut = 0) AS incidents_non_ouverts, " +
+                "(SELECT COUNT(*) FROM Incident WHERE Priorité = 0) AS priorite_non_defini, " +
+                "(SELECT COUNT(*) FROM Incident WHERE Priorité = 1) AS priorite_faible, " +
+                "(SELECT COUNT(*) FROM Incident WHERE Priorité = 2) AS priorite_moyenne, " +
+                "(SELECT COUNT(*) FROM Incident WHERE Priorité = 3) AS priorite_haute");
 
         private final String query;
 
