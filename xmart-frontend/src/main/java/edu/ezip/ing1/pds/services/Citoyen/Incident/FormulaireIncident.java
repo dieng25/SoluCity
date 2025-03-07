@@ -33,7 +33,7 @@ public class FormulaireIncident extends JFrame {
         this.categorie = categorie;
         setTitle("Déclaration d'Incident");
         setSize(500, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new GridLayout(11, 2));
 
         add(new JLabel("Catégorie: "));
