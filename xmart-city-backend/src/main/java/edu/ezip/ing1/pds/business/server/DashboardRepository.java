@@ -31,10 +31,10 @@ public class DashboardRepository {
                 "(SELECT COUNT(*) FROM Incident WHERE statut = 1) AS incidents_en_cours, " +
                 "(SELECT COUNT(*) FROM Incident WHERE statut = 2) AS incidents_resolus, " +
                 "(SELECT COUNT(*) FROM Incident WHERE statut = 0) AS incidents_non_ouverts, " +
-                "(SELECT COUNT(*) FROM Incident WHERE Priorité = 0) AS priorite_non_defini, " +
-                "(SELECT COUNT(*) FROM Incident WHERE Priorité = 1) AS priorite_faible, " +
-                "(SELECT COUNT(*) FROM Incident WHERE Priorité = 2) AS priorite_moyenne, " +
-                "(SELECT COUNT(*) FROM Incident WHERE Priorité = 3) AS priorite_haute");
+                "(SELECT COUNT(*) FROM Incident WHERE Priorite = 0) AS priorite_non_defini, " +
+                "(SELECT COUNT(*) FROM Incident WHERE Priorite = 1) AS priorite_faible, " +
+                "(SELECT COUNT(*) FROM Incident WHERE Priorite = 2) AS priorite_moyenne, " +
+                "(SELECT COUNT(*) FROM Incident WHERE Priorite = 3) AS priorite_haute");
 
         private final String query;
 
