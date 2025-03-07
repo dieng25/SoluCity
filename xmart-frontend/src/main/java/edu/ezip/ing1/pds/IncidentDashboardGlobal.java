@@ -18,7 +18,7 @@ import edu.ezip.ing1.pds.business.dto.DashboardDatas;
 //import edu.ezip.ing1.pds.client.commons.ClientRequest;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
-import edu.ezip.ing1.pds.services.DashboardServiceClient;
+import edu.ezip.ing1.pds.services.Dashboard.DashboardServiceClient;
 
 
 import java.io.IOException;
