@@ -2,14 +2,17 @@ package edu.ezip.ing1.pds.services.Citoyen;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import edu.ezip.commons.LoggingUtils;
 import edu.ezip.ing1.pds.business.dto.Citoyen;
 import edu.ezip.ing1.pds.business.dto.Citoyens;
 import edu.ezip.ing1.pds.client.commons.ClientRequest;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.requests.InsertCitoyenClientRequest;
+import edu.ezip.ing1.pds.requests.SelectAllCitoyensClientRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 
 import java.io.IOException;
 import java.util.ArrayDeque;
@@ -20,11 +23,12 @@ public class CitoyenService {
 
     private final static String LoggingLabel = "FrontEnd - CitoyenService";
     private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
-    //private final static String studentsToBeInserted = "students-to-be-inserted.yaml";
+
 
 
 
     final String insertRequestOrder = "INSERT_CITOYEN";
+    final String selectRequestOrder = "SELECT_CITOYEN";
 
 
     private final NetworkConfig networkConfig;
@@ -35,7 +39,6 @@ public class CitoyenService {
 
     public void insertCitoyen(Citoyen citoyen) throws InterruptedException, IOException {
         final Deque<ClientRequest> clientRequests = new ArrayDeque<ClientRequest>();
-        //final Students guys = ConfigLoader.loadConfig(Students.class, studentsToBeInserted);
         final Citoyens guys = new Citoyens();
         guys.getCitoyens().add(citoyen);
 
@@ -70,7 +73,7 @@ public class CitoyenService {
         }
     }
 
-    /*public Students selectStudents() throws InterruptedException, IOException {
+    public Citoyens selectCitoyens() throws InterruptedException, IOException {
         int birthdate = 0;
         final Deque<ClientRequest> clientRequests = new ArrayDeque<ClientRequest>();
         final ObjectMapper objectMapper = new ObjectMapper();
@@ -81,7 +84,7 @@ public class CitoyenService {
         objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
         final byte []  requestBytes = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request);
         LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestBytes);
-        final SelectAllStudentsClientRequest clientRequest = new SelectAllStudentsClientRequest(
+        final SelectAllCitoyensClientRequest clientRequest = new SelectAllCitoyensClientRequest(
                 networkConfig,
                 birthdate++, request, null, requestBytes);
         clientRequests.push(clientRequest);
@@ -90,11 +93,13 @@ public class CitoyenService {
             final ClientRequest joinedClientRequest = clientRequests.pop();
             joinedClientRequest.join();
             logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
-            return (Students) joinedClientRequest.getResult();
+            return (Citoyens) joinedClientRequest.getResult();
         }
         else {
             logger.error("No students found");
             return null;
         }
-    }*/
+    }
+
+
 }
