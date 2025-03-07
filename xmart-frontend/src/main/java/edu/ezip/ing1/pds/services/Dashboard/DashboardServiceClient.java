@@ -1,17 +1,12 @@
-package edu.ezip.ing1.pds.services;
-
+package edu.ezip.ing1.pds.services.Dashboard;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import edu.ezip.commons.LoggingUtils;
-import edu.ezip.ing1.pds.business.dto.DashboardData;
 import edu.ezip.ing1.pds.business.dto.DashboardDatas;
-import edu.ezip.ing1.pds.business.dto.Students;
 import edu.ezip.ing1.pds.client.commons.ClientRequest;
-import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.requests.DashboardClientRequest;
-//import edu.ezip.ing1.pds.requests.SelectAllStudentsClientRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
