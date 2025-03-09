@@ -28,7 +28,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>edu.ezip.ing1.pds.MainFrontEnd</mainClass>
+                            <mainClass>edu.ezip.ing1.pds.SoluCityApp</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
