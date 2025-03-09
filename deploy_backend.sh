@@ -2,8 +2,8 @@
 
 #Variable
 backend="xmart-zity-backend-1.0-SNAPSHOT-jar-with-dependencies.jar"
-host_name="solucityback"
-ip_adresse="172.31.249.224"
+user_name="solucityback"
+host_name="172.31.249.224" #ip vm solucity backend
 
 
 mvn package
@@ -18,7 +18,7 @@ if [[ $? -ne 0 ]]; then
     exit 1
 fi
 
-scp $backend $host_name@$ip_adresse:backend.jar
+scp $backend $user_name@$host_name:backend.jar
 if [[ $? -ne 0 ]]; then
     echo "Erreur : échec du transfert $backend vers vm"
     exit 1
