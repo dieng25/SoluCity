@@ -23,7 +23,6 @@ public class StatSuggestionData {
     private String SuggestionTop1;
     private String SuggestionTop2;
 
-    // Getters
     public int getSuggestionNonVue() {
         return SuggestionNonVue;
     }
@@ -68,7 +67,6 @@ public class StatSuggestionData {
         return SuggestionTop2;
     }
 
-    // Setters avec annotations @JsonProperty
     @JsonProperty("suggestion_non_vue")
     public void setSuggestionNonVue(int SuggestionNonVue) {
         this.SuggestionNonVue = SuggestionNonVue;
