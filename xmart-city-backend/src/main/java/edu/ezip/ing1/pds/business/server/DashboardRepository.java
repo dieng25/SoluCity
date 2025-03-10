@@ -61,18 +61,6 @@ public class DashboardRepository {
         final ResultSet res = stmt.executeQuery(Queries.DASHBOARD_REQUEST.query);
         DashboardDatas dashboardDatas = new DashboardDatas();
 
-        /*while (res.next()) {
-            DashboardData dashboardData = new DashboardData();
-            dashboardData.setTotalIncident(res.getInt(1));
-            dashboardData.setIncidentEnCours(res.getInt(2));
-            dashboardData.setIncidentResolu(res.getInt(3));
-            dashboardData.setIncidentNonOuvert(res.getInt(4));
-            dashboardData.setNonDefini(res.getInt(5));
-            dashboardData.setFaible(res.getInt(6));
-            dashboardData.setMoyen(res.getInt(7));
-            dashboardData.setHaut(res.getInt(8));
-        }*/
-
         if (res.next()) {  
         DashboardData dashboardData = new DashboardData();
         dashboardData.setTotalIncident(res.getInt("total_incidents"));
