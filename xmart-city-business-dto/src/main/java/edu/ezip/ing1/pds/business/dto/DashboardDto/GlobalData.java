@@ -27,12 +27,11 @@ public class GlobalData {
     private int incidentLevelBas;
     private int incidentLevelMoyen;
     private int incidentLevelHaut;
+    private int incidentNonDefini;
 
     public GlobalData() {
     }
 
-    // Getters et Setters
-    
   public int getTotalIncidents() {
     return totalIncidents;
 }
@@ -145,6 +144,14 @@ public void setIncidentCatAutres(int incidentCatAutres) {
     this.incidentCatAutres = incidentCatAutres;
 }
 
+public int getIncidentNonDefini() {
+    return incidentNonDefini;
+}
+@JsonProperty("incident_non_defini")
+public void setIncidentNonDefini(int incidentNonDefini) {
+    this.incidentNonDefini = incidentNonDefini;
+}
+
 public int getIncidentLevelBas() {
     return incidentLevelBas;
 }
@@ -175,7 +182,7 @@ public void setIncidentLevelHaut(int incidentLevelHaut) {
                 "suggestion_cat_voirie", "suggestion_cat_eclairage_public", "suggestion_cat_espace_verts", 
                 "suggestion_cat_proprete", "suggestion_cat_animaux_errants", "suggestion_cat_autres", 
                 "incident_cat_voirie", "incident_cat_eclairage_public", "incident_cat_espace_verts", 
-                "incident_cat_proprete", "incident_cat_animaux_errants", "incident_cat_autres", 
+                "incident_cat_proprete", "incident_cat_animaux_errants", "incident_cat_autres", "incident_non_defini",
                 "incident_level_bas", "incident_level_moyen", "incident_level_haut");
         return this;
     }
@@ -186,7 +193,7 @@ public void setIncidentLevelHaut(int incidentLevelHaut) {
                 suggestionCatVoirie, suggestionCatEclairagePublic, suggestionCatEspaceVerts, 
                 suggestionCatProprete, suggestionCatAnimauxErrants, suggestionCatAutres, 
                 incidentCatVoirie, incidentCatEclairagePublic, incidentCatEspaceVerts, 
-                incidentCatProprete, incidentCatAnimauxErrants, incidentCatAutres, 
+                incidentCatProprete, incidentCatAnimauxErrants, incidentCatAutres, incidentNonDefini,
                 incidentLevelBas, incidentLevelMoyen, incidentLevelHaut);
     }
 
@@ -225,6 +232,7 @@ public void setIncidentLevelHaut(int incidentLevelHaut) {
                 ", incidentCatProprete=" + incidentCatProprete +
                 ", incidentCatAnimauxErrants=" + incidentCatAnimauxErrants +
                 ", incidentCatAutres=" + incidentCatAutres +
+                ", incidentNonDefini=" + incidentNonDefini +
                 ", incidentLevelBas=" + incidentLevelBas +
                 ", incidentLevelMoyen=" + incidentLevelMoyen +
                 ", incidentLevelHaut=" + incidentLevelHaut +
