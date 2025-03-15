@@ -2,6 +2,7 @@ package edu.ezip.ing1.pds.business.server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ezip.ing1.pds.business.dto.Incident;
+import edu.ezip.ing1.pds.business.dto.Incidents;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.commons.Response;
 import org.slf4j.Logger;
@@ -9,8 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class IncidentService {
 
@@ -51,21 +50,26 @@ public class IncidentService {
 
     private Response getAllIncidents(final Request request, final Connection connection) throws SQLException, IOException {
         final ObjectMapper objectMapper = new ObjectMapper();
-        PreparedStatement stmt = connection.prepareStatement(Queries.SELECT_ALL_INCIDENTS.query);
-        ResultSet rs = stmt.executeQuery();
-
-        List<Incident> incidents = new ArrayList<>();
-        while (rs.next()) {
+        final Statement stmt = connection.createStatement();
+        final ResultSet res = stmt.executeQuery(Queries.SELECT_ALL_INCIDENTS.query);
+    
+        Incidents incidents = new Incidents();
+        while (res.next()) {
             Incident incident = new Incident();
-            incident.setIdTicket(rs.getInt("Id_ticket"));
-            incident.setTitre(rs.getString("Titre"));
-            incident.setDescription(rs.getString("Description"));
-            incident.setdate(rs.getDate("date_emis"));
-            incident.setCategorie(rs.getString("Catégorie"));
-            incident.setStatut(rs.getInt("Statut"));
-            incident.setCP_Ticket(rs.getString("CodePostal_ticket"));
-            incident.setPriorite(rs.getInt("Priorité"));
+            incident.setIdTicket(res.getInt("Id_ticket"));
+            incident.setTitre(res.getString("Titre"));
+            incident.setDescription(res.getString("Description"));
+            incident.setdate(res.getDate("date_creation"));
+            incident.setCategorie(res.getString("Categorie"));
+            incident.setStatut(res.getInt("Statut"));
+            incident.setCP_Ticket(res.getString("CodePostal_ticket"));
+            incident.setPriorite(res.getInt("Priorite"));
+            incident.setDate_cloture(res.getDate("date_cloture"));
+            incident.setTelNum(res.getString("tel_num"));
+            incident.setCP(res.getString("Code_Postal"));
+
             incidents.add(incident);
+             
         }
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(incidents));
     }
