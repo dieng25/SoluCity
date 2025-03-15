@@ -24,8 +24,7 @@ public class DashboardRepository {
     private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
 
     private enum Queries {
-       // DASHBOARD_REQUEST("SELECT COUNT(*) FROM incidents, SELECT COUNT(*) FROM incidents WHERE statut = 1, SELECT COUNT(*) FROM incidents WHERE statut = 2, SELECT COUNT(*) FROM incidens WHERE statut = 0, SELECT COUNT(*) FROM incidents WHERE Priorité = 0, SELECT COUNT(*) FROM incidents WHERE Priorité = 1, SELECT COUNT(*) FROM incidents WHERE Priorité = 2, SELECT COUNT(*) FROM incidents WHERE Priorité = 3");
-       
+   
        DASHBOARD_REQUEST("SELECT " +
                 "(SELECT COUNT(*) FROM Incident) AS total_incidents, " +
                 "(SELECT COUNT(*) FROM Incident WHERE statut = 1) AS incidents_en_cours, " +
@@ -34,7 +33,51 @@ public class DashboardRepository {
                 "(SELECT COUNT(*) FROM Incident WHERE Priorite = 0) AS priorite_non_defini, " +
                 "(SELECT COUNT(*) FROM Incident WHERE Priorite = 1) AS priorite_faible, " +
                 "(SELECT COUNT(*) FROM Incident WHERE Priorite = 2) AS priorite_moyenne, " +
-                "(SELECT COUNT(*) FROM Incident WHERE Priorite = 3) AS priorite_haute");
+                "(SELECT COUNT(*) FROM Incident WHERE Priorite = 3) AS priorite_haute"),
+
+        GLOBAL_REQUEST("SELECT\r\n" + //
+                        "    -- Nombre total d'incidents signalés\r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS totalIncidents,\r\n" + //
+                        "    \r\n" + //
+                        "    -- Nombre total de suggestions envoyées\r\n" + //
+                        "    (SELECT COUNT(*) FROM Suggestion WHERE (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS totalSuggestion,\r\n" + //
+                        "\r\n" + //
+                        "    -- Répartition des incidents par catégorie\r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE Categorie = 'Voirie' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentCatVoirie,\r\n" + //
+                        "    \r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE Categorie = 'Eclairage Public' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentCatEclairagePublic,\r\n" + //
+                        "    \r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE incident_categorie = 'Espaces Verts' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentCatEspaceVerts,\r\n" + //
+                        "    \r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE incident_categorie = 'Propreté' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentCatProprete,\r\n" + //
+                        "    \r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE incident_categorie = 'Animaux errants ou retro' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentCatAnimauxErrants,\r\n" + //
+                        "    \r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE incident_categorie = 'Autres' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentCatAutres,\r\n" + //
+                        "\r\n" + //
+                        "    -- Répartition des suggestions par catégorie\r\n" + //
+                        "    (SELECT COUNT(*) FROM Suggestion WHERE suggestion_categorie = 'Voirie' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS suggestionCatVoirie,\r\n" + //
+                        "    \r\n" + //
+                        "    (SELECT COUNT(*) FROM Suggestion WHERE suggestion_categorie = 'Eclairage Public' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS suggestionCatEclairagePublic,\r\n" + //
+                        "    \r\n" + //
+                        "    (SELECT COUNT(*) FROM Suggestion WHERE suggestion_categorie = 'Espaces Verts' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS suggestionCatEspaceVerts,\r\n" + //
+                        "    \r\n" + //
+                        "    (SELECT COUNT(*) FROM Suggestion WHERE suggestion_categorie = 'Propreté' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS suggestionCatProprete,\r\n" + //
+                        "    \r\n" + //
+                        "    (SELECT COUNT(*) FROM Suggestion WHERE suggestion_categorie = 'Animaux errants ou retro' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS suggestionCatAnimauxErrants,\r\n" + //
+                        "    \r\n" + //
+                        "    (SELECT COUNT(*) FROM Suggestion WHERE suggestion_categorie = 'Autres' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS suggestionCatAutres,\r\n" + //
+                        "\r\n" + //
+                        "    -- Répartition des incidents par priorité\r\n" + //
+                        "\r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE incident_priorite = 0 AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentNonDefini,\r\n" + //
+                        "    \r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE incident_priorite = 1 AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentLevelBas,\r\n" + //
+                        "    \r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE incident_priorite = 2 AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentLevelMoyen,\r\n" + //
+                        "    \r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE incident_priorite = 3 AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentLevelHaut\r\n" + //
+                        "");
 
         private final String query;
 
@@ -60,18 +103,6 @@ public class DashboardRepository {
         final Statement stmt = connection.createStatement();
         final ResultSet res = stmt.executeQuery(Queries.DASHBOARD_REQUEST.query);
         DashboardDatas dashboardDatas = new DashboardDatas();
-
-        /*while (res.next()) {
-            DashboardData dashboardData = new DashboardData();
-            dashboardData.setTotalIncident(res.getInt(1));
-            dashboardData.setIncidentEnCours(res.getInt(2));
-            dashboardData.setIncidentResolu(res.getInt(3));
-            dashboardData.setIncidentNonOuvert(res.getInt(4));
-            dashboardData.setNonDefini(res.getInt(5));
-            dashboardData.setFaible(res.getInt(6));
-            dashboardData.setMoyen(res.getInt(7));
-            dashboardData.setHaut(res.getInt(8));
-        }*/
 
         if (res.next()) {  
         DashboardData dashboardData = new DashboardData();
