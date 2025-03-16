@@ -7,7 +7,7 @@ import edu.ezip.ing1.pds.business.dto.Mairies;
 import edu.ezip.ing1.pds.client.commons.ClientRequest;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.commons.Request;
-import edu.ezip.ing1.pds.requests.SelectAllMairiesClientRequest;
+import edu.ezip.ing1.pds.requests.InterfaceCitoyenRequests.SelectAllMairiesClientRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;

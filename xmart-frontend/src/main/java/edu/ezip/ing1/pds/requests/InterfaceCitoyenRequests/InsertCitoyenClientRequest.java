@@ -1,4 +1,4 @@
-package edu.ezip.ing1.pds.requests;
+package edu.ezip.ing1.pds.requests.InterfaceCitoyenRequests;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ezip.ing1.pds.business.dto.Citoyen;

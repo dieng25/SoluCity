@@ -1,25 +1,26 @@
-package edu.ezip.ing1.pds.requests;
+package edu.ezip.ing1.pds.requests.InterfaceCitoyenRequests;
+
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import edu.ezip.ing1.pds.business.dto.Mairies;
+import edu.ezip.ing1.pds.business.dto.Incidents;
 import edu.ezip.ing1.pds.client.commons.ClientRequest;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.commons.Request;
 
 import java.io.IOException;
 
-public class SelectAllMairiesClientRequest extends ClientRequest<Object, Mairies> {
+public class SelectAllIncidentsClientRequest extends ClientRequest<Object, Incidents> {
 
-    public SelectAllMairiesClientRequest(
+    public SelectAllIncidentsClientRequest(
             NetworkConfig networkConfig, int myBirthDate, Request request, Object info, byte[] bytes)
-            throws IOException {
+    throws Exception {
         super(networkConfig, myBirthDate, request, info, bytes);
     }
 
     @Override
-    public Mairies readResult(String body) throws IOException {
+    public Incidents readResult(String body) throws IOException {
         final ObjectMapper mapper = new ObjectMapper();
-        final Mairies mairies = mapper.readValue(body, Mairies.class);
-        return mairies;
+        final Incidents incidents = mapper.readValue(body, Incidents.class);
+        return incidents;
     }
 }

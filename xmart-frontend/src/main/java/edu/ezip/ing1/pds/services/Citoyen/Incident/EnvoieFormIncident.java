@@ -3,10 +3,12 @@ package edu.ezip.ing1.pds.services.Citoyen.Incident;
 
 
 import edu.ezip.ing1.pds.business.dto.Citoyen;
+import edu.ezip.ing1.pds.business.dto.Citoyens;
 import edu.ezip.ing1.pds.business.dto.Incident;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.services.Citoyen.CitoyenService;
+import edu.ezip.ing1.pds.services.Citoyen.Connexion.ConfirmationInscription;
 import edu.ezip.ing1.pds.services.Citoyen.IncidentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +53,19 @@ public class EnvoieFormIncident implements ActionListener {
 
         Citoyen citoyen = new Citoyen(tel, nom, prenom, email, null);
         CitoyenService citoyenService = new CitoyenService(networkConfig);
+
+        try {
+            boolean exists = citoyenService.selectTelExist(tel);
+            if (exists) {
+                JOptionPane.showMessageDialog(form, "Vous avez déjà un compte. Veuillez vous connecter.", "Information", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+        }catch (InterruptedException | IOException ex) {
+            logger.error("ne peut pas vérifié le numéro de téléphone", e);
+            JOptionPane.showMessageDialog(form, "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+
         try {
             citoyenService.insertCitoyen(citoyen);
         } catch (InterruptedException | IOException ex) {
@@ -66,6 +81,25 @@ public class EnvoieFormIncident implements ActionListener {
         } catch (InterruptedException | IOException ex) {
             logger.error("Erreur lors de l'envoie des données ticket incident", e);
             JOptionPane.showMessageDialog(form, "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+
+        try {
+            Citoyens citoyens = citoyenService.selectCitoyens();
+            final String[] id = new String[1];
+            if (citoyens != null) {
+                for (Citoyen c : citoyens.getCitoyens()) {
+                    if (c.getTelNum().equals(tel)) {
+                        id[0] = c.getIdentifiant();
+                        break;
+                    }
+                }
+            }
+            form.dispose();
+            SwingUtilities.invokeLater(() -> new ConfirmationInscription(id[0]));
+        } catch (InterruptedException | IOException ex) {
+            logger.error("Erreur lors de la récupération de l'identifiant du citoyen", ex);
+            JOptionPane.showMessageDialog(form, "Erreur de connexion au serveur. Veuillez contacter l'administrateur pour récupérer vos identifiants de connexion.",
                     "Erreur", JOptionPane.ERROR_MESSAGE);
         }
 
