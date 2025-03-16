@@ -23,7 +23,8 @@ public class InterfaceCitoyenService {
         INSERT_CITOYEN("INSERT INTO Citoyen (tel_num, Nom, Prenom, email, Identifiant) VALUES (?, ?, ?, ?, ?)"),
         INSERT_INCIDENT("INSERT INTO Incident (Titre, Description, date_creation, Categorie, Statut, CodePostal_ticket, Priorite, date_cloture, tel_num, Code_Postal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"),
         SELECT_ALL_MAIRIES("SELECT t.Code_Postal FROM Mairie t"),
-        SELECT_CITOYEN("SELECT t.tel_num, t.Nom, t.Prenom, t.email, t.Identifiant FROM Citoyen t" );
+        SELECT_CITOYEN("SELECT t.tel_num, t.Nom, t.Prenom, t.email, t.Identifiant FROM Citoyen t" ),
+        SELECT_TEL_EXIST("SELECT COUNT(*) FROM Citoyen WHERE tel_num = ?");
 
         private final String query;
 
@@ -62,6 +63,9 @@ public class InterfaceCitoyenService {
                 break;
             case SELECT_CITOYEN:
                 response = SelectCitoyen(request, connection);
+                break;
+            case SELECT_TEL_EXIST:
+                response = SelectTelExist(request, connection);
                 break;
             default:
                 break;
@@ -155,6 +159,22 @@ public class InterfaceCitoyenService {
             citoyens.add(citoyen);
         }
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(citoyens));
+    }
+
+    private Response SelectTelExist(final Request request, final Connection connection) throws SQLException, IOException {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        PreparedStatement stmt = connection.prepareStatement(Queries.SELECT_TEL_EXIST.query);
+        Citoyen citoyen = objectMapper.readValue(request.getRequestBody(), Citoyen.class);
+
+        stmt.setString(1, citoyen.getTelNum());
+        ResultSet res = stmt.executeQuery();
+        boolean exists = false;
+
+        if (res.next()) {
+            exists = res.getInt(1) > 0;
+        }
+
+        return new Response(request.getRequestId(), objectMapper.writeValueAsString(exists));
     }
 
 
