@@ -75,7 +75,7 @@ public class Incident {
     }
 
     @JsonProperty("incident_DateCreation")
-    public void setdate(Date date_creation) {
+    public void setDate_creation(Date date_creation) {
         this.date_creation = date_creation;
     }
 
