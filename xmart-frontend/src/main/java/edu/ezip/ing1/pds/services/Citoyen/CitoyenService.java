@@ -2,6 +2,7 @@ package edu.ezip.ing1.pds.services.Citoyen;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import edu.ezip.commons.LoggingUtils;
 import edu.ezip.ing1.pds.business.dto.Citoyen;
 import edu.ezip.ing1.pds.business.dto.Citoyens;
@@ -10,6 +11,7 @@ import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.requests.InsertCitoyenClientRequest;
 import edu.ezip.ing1.pds.requests.SelectAllCitoyensClientRequest;
+import edu.ezip.ing1.pds.requests.SelectTelExistClientRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
@@ -29,7 +31,7 @@ public class CitoyenService {
 
     final String insertRequestOrder = "INSERT_CITOYEN";
     final String selectRequestOrder = "SELECT_CITOYEN";
-
+    final String selectTelExistRequestOrder = "SELECT_TEL_EXIST";
 
     private final NetworkConfig networkConfig;
 
@@ -98,6 +100,45 @@ public class CitoyenService {
         else {
             logger.error("No students found");
             return null;
+        }
+    }
+
+    public boolean selectTelExist(String tel) throws InterruptedException, IOException {
+        int birthdate = 0;
+        final Deque<ClientRequest> clientRequests = new ArrayDeque<>();
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final String requestId = UUID.randomUUID().toString();
+        final Request request = new Request();
+        request.setRequestId(requestId);
+        request.setRequestOrder(selectTelExistRequestOrder);
+
+        // Converti en Json tel, pour que le serveur puisse le lire
+        ObjectNode requestContent = objectMapper.createObjectNode();
+        requestContent.put("citoyen_telNum", tel);
+        request.setRequestContent(objectMapper.writeValueAsString(requestContent));
+
+        objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+        final byte[] requestBytes = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request);
+        LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestBytes);
+
+        final SelectTelExistClientRequest clientRequest = new SelectTelExistClientRequest(
+                networkConfig,
+                birthdate++, request, null, requestBytes);
+        clientRequests.push(clientRequest);
+
+        if (!clientRequests.isEmpty()) {
+            final ClientRequest joinedClientRequest = clientRequests.pop();
+            joinedClientRequest.join();
+            logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
+            Boolean result = (Boolean) joinedClientRequest.getResult();
+            if (result == null) {
+                logger.error("Le résultat est null");
+                throw new IllegalStateException("Résultat de selectTelExist ne doit pas être null.");
+            }
+            return result;
+        }
+        else {
+            return false;
         }
     }
 
