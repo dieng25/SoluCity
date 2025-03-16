@@ -18,10 +18,10 @@ INSERT INTO Fonctionnaire (email, mdp, Code_Postal) VALUES
 
 -- Insertion des incidents
 INSERT INTO Incident (Id_ticket, Titre, Description, date_creation, Categorie, Statut, CodePostal_ticket, Priorite, date_cloture, tel_num, Code_Postal) VALUES
-(1, 'Panne éclairage', 'Les lampadaires ne fonctionnent plus.', '2025-03-02', 'Éclairage public', 2, '94000', 3, NULL, '0601020304', '94000'),
+(1, 'Panne éclairage', 'Les lampadaires ne fonctionnent plus.', '2025-03-02', 'Éclairage public', 0, '94000', 3, NULL, '0601020304', '94000'),
 (2, 'Fuite d eau', 'Une fuite d eau importante rue de Rivoli.', '2025-03-04', 'Autre', 1, '75002', 2, NULL, '0605060708', '75002'),
-(3, 'Trou sur la chaussée', 'Gros trou sur la chaussée avenue de l Opéra.', '2025-03-06', 'Voirie', 3, '75003', 2, NULL, '0611121314', '75003'),
-(4, 'Déchets non ramassés', 'Poubelles pleines depuis 3 jours.', '2025-03-07', 'Propreté', 1, '95000', 3, NULL, '0622232425', '95000');
+(3, 'Trou sur la chaussée', 'Gros trou sur la chaussée avenue de l Opéra.', '2025-03-06', 'Voirie', 1, '75003', 2, NULL, '0611121314', '75003'),
+(4, 'Déchets non ramassés', 'Poubelles pleines depuis 3 jours.', '2025-03-07', 'Propreté', 2, '95000', 3, NULL, '0622232425', '95000');
 
 -- Insertion des suggestions
 INSERT INTO Suggestion (Id_ticket, Titre, Description, date_creation, Categorie, Statut, CodePostal_ticket, date_cloture, Code_Postal, tel_num) VALUES
