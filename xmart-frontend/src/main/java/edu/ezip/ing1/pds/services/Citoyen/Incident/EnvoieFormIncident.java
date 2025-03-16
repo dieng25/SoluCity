@@ -51,6 +51,19 @@ public class EnvoieFormIncident implements ActionListener {
 
         Citoyen citoyen = new Citoyen(tel, nom, prenom, email, null);
         CitoyenService citoyenService = new CitoyenService(networkConfig);
+
+        try {
+            boolean exists = citoyenService.selectTelExist(tel);
+            if (exists) {
+                JOptionPane.showMessageDialog(form, "Vous avez déjà un compte. Veuillez vous connecter.", "Information", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+        }catch (InterruptedException | IOException ex) {
+            logger.error("ne peut pas vérifié le numéro de téléphone", e);
+            JOptionPane.showMessageDialog(form, "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+
         try {
             citoyenService.insertCitoyen(citoyen);
         } catch (InterruptedException | IOException ex) {
