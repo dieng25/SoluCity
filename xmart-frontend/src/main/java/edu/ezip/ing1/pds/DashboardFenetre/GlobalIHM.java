@@ -48,30 +48,44 @@ public class GlobalIHM extends JFrame {
         setLocationRelativeTo(null);
         
         initializeComponents();
-        Date startDate = (Date) datePickerStart.getModel().getValue();
-        Date endDate = (Date) datePickerEnd.getModel().getValue();
-        
-        setVisible(true);
+        Date dateDebut = (Date) datePickerStart.getModel().getValue();
+        Date dateFin = (Date) datePickerEnd.getModel().getValue();
+        System.out.println("Date de début sélectionnée : " + datePickerStart.getModel().getValue());
+        System.out.println("Date de fin sélectionnée : " + datePickerEnd.getModel().getValue());
+
+        codePostal = (String) codePostalComboBox.getSelectedItem();
+        System.out.println("Code postal sélectionné : " + codePostal);
+
 
         NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
 
-        DashboardFilterDTO filterDTO = new DashboardFilterDTO(startDate, endDate, codePostal);
+        DashboardFilterDTO filterDTO = new DashboardFilterDTO(dateDebut, dateFin, codePostal);
         
         DashboardServiceGlobal dashboardService = new DashboardServiceGlobal(networkConfig);
         GlobalDatas globalDatas = dashboardService.global(filterDTO);
-        try {
+
+        /*try {
             globalDatas = dashboardService.global(filterDTO);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } 
+        } */
 
-        updateCharts(globalDatas);
+        if (globalDatas != null) {
+            updateCharts(globalDatas); 
+        } else {
+            System.out.println("Les données renvoyées par le backend sont nulles.");
+        }
+        setVisible(true);
     }
 
     private void initializeComponents() {
 
         UtilDateModel modelStart = new UtilDateModel();
         UtilDateModel modelEnd = new UtilDateModel();
+        modelStart.setSelected(true);
+        modelEnd.setSelected(true);
+        
+
 
         Properties p = new Properties();
         p.put("text.today", "Aujourd'hui");
@@ -94,7 +108,9 @@ public class GlobalIHM extends JFrame {
         datePanel.add(datePickerEnd);
 
         JLabel codePostalLabel = new JLabel("Code Postal:");
-        codePostalComboBox = new JComboBox<>(new String[] {"75000", "75001", "75002"});
+        codePostalComboBox = new JComboBox<>(new String[] {"Tout", "77200", "92300", "93300"});
+        
+
         datePanel.add(codePostalLabel);
         datePanel.add(codePostalComboBox);
 

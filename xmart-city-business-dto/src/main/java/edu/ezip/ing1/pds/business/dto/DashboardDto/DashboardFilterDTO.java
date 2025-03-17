@@ -2,6 +2,10 @@ package edu.ezip.ing1.pds.business.dto.DashboardDto;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
+
+@JsonRootName(value = "dashboardfilterdto")
 public class DashboardFilterDTO {
     
     private Date dateDebut;
@@ -20,7 +24,7 @@ public class DashboardFilterDTO {
     public Date getDateDebut() {
         return dateDebut;
     }
-
+    @JsonProperty("date_debut")
     public void setDateDebut(Date dateDebut) {
         this.dateDebut = dateDebut;
     }
@@ -29,14 +33,17 @@ public class DashboardFilterDTO {
         return dateFin;
     }
 
+    @JsonProperty("date_fin")
     public void setDateFin(Date dateFin) {
         this.dateFin = dateFin;
     }
 
+    
     public String getCodePostal() {
         return codePostal;
     }
 
+    @JsonProperty("code_postal")
     public void setCodePostal(String codePostal) {
         this.codePostal = codePostal;
     }
