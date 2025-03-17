@@ -101,31 +101,6 @@ public class DashboardRepository {
     private DashboardRepository() {
 
     }
-
-    /*private Response fetchDashboardStats (final Request request, final Connection connection) throws SQLException, JsonProcessingException {
-        final ObjectMapper objectMapper = new ObjectMapper();
-        final Statement stmt = connection.createStatement();
-        final ResultSet res = stmt.executeQuery(Queries.DASHBOARD_REQUEST.query);
-        DashboardDatas dashboardDatas = new DashboardDatas();
-
-        if (res.next()) {  
-        DashboardData dashboardData = new DashboardData();
-        dashboardData.setTotalIncident(res.getInt("total_incidents"));
-        dashboardData.setIncidentEnCours(res.getInt("incidents_en_cours"));
-        dashboardData.setIncidentResolu(res.getInt("incidents_resolus"));
-        dashboardData.setIncidentNonOuvert(res.getInt("incidents_non_ouverts"));
-        dashboardData.setNonDefini(res.getInt("priorite_non_defini"));
-        dashboardData.setFaible(res.getInt("priorite_faible"));
-        dashboardData.setMoyen(res.getInt("priorite_moyenne"));
-        dashboardData.setHaut(res.getInt("priorite_haute"));
-
-        dashboardDatas.getDashboardDataSet().add(dashboardData);
-    }
-    logger.debug(" Données Dashboard récupérées: {}", dashboardDatas);
-        return new Response(request.getRequestId(), objectMapper.writeValueAsString(dashboardDatas));
-    }
-   */
- 
  
    public Response fetchDashboardData(final Request request, final Connection connection)
             throws SQLException, JsonProcessingException {
@@ -155,7 +130,7 @@ public class DashboardRepository {
     
     public Response fetchGlobalData(final Request request, final Connection connection, Date dateDebut, Date dateFin, String codePostal)
     throws SQLException, JsonProcessingException {
-        
+
         final ObjectMapper objectMapper = new ObjectMapper();
         GlobalDatas globalDatas = new GlobalDatas();
         GlobalData globalData = new GlobalData();
@@ -199,12 +174,7 @@ public class DashboardRepository {
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(globalDatas));
 
     }
-/*public final Response dispatch(final Request request, final Connection connection)
-            throws InvocationTargetException, IllegalAccessException, SQLException, IOException {
-        //Response response = null;
-        Response response = fetchDashboardStats(request, connection);
-        return response;
-    }*/
+
 
 public final Response dispatch(final Request request, final Connection connection, Date dateDebut, Date dateFin, String codePostal)
     throws InvocationTargetException, IllegalAccessException, SQLException, IOException {

@@ -1,4 +1,4 @@
-package edu.ezip.ing1.pds.DashboardFenetre;
+package edu.ezip.ing1.pds;
 import javax.swing.*;
 import java.awt.*;
 
