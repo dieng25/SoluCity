@@ -1,9 +1,9 @@
 package edu.ezip.ing1.pds.backend;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ezip.commons.LoggingUtils;
+import edu.ezip.ing1.pds.business.server.DashboardRepository;
 import edu.ezip.ing1.pds.business.server.InterfaceCitoyenService;
 import edu.ezip.ing1.pds.business.server.IncidentService;
 import edu.ezip.ing1.pds.business.server.SoluCityService;
@@ -19,6 +19,7 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -74,7 +75,10 @@ public class RequestHandler implements Runnable {
             final byte [] inputData = new byte[instream.available()];
             instream.read(inputData);
             final Request request = getRequest(inputData);
-            final Response response = soluCityService.dispatch(request, connection);
+            final Date dateDebut = null;
+            final Date dateFin = null;
+            final String codePostal = null;
+            final Response response = soluCityService.dispatch(request, connection, dateDebut, dateFin, codePostal);
 
             final byte [] outoutData = getResponse(response);
             LoggingUtils.logDataMultiLine(logger, Level.DEBUG, outoutData);
