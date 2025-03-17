@@ -34,34 +34,38 @@ public class FormulaireIncident extends JFrame {
         setTitle("Déclaration d'Incident");
         setSize(500, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new GridLayout(11, 2));
+        setLayout(new BorderLayout());
 
-        add(new JLabel("Catégorie: "));
-        add(new JLabel(categorie));
+        JPanel formPanel = new JPanel();
+        formPanel.setLayout(new GridLayout(9, 2, 10, 10));
+        formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        formPanel.add(new JLabel("Catégorie: "));
+        formPanel.add(new JLabel(categorie));
 
         java.util.Date currentDate = new java.util.Date();
         date_sql = new Date(currentDate.getTime());
 
-        add(new JLabel("Date: "));
-        add(new JLabel(date_sql.toString()));
+        formPanel.add(new JLabel("Date: "));
+        formPanel.add(new JLabel(date_sql.toString()));
 
-        add(new JLabel("Nom: "));
+        formPanel.add(new JLabel("Nom: "));
         nomField = new JTextField();
-        add(nomField);
+        formPanel.add(nomField);
         setUppercaseKeyListener(nomField);
 
-        add(new JLabel("Prénom: "));
+        formPanel.add(new JLabel("Prénom: "));
         prenomField = new JTextField();
-        add(prenomField);
+        formPanel.add(prenomField);
         setUppercaseKeyListener(prenomField);
 
-        add(new JLabel("Numéro de téléphone: "));
+        formPanel.add(new JLabel("Numéro de téléphone: "));
         telField = new JTextField();
-        add(telField);
+        formPanel.add(telField);
 
-        add(new JLabel("Email: "));
+        formPanel.add(new JLabel("Email: "));
         emailField = new JTextField();
-        add(emailField);
+        formPanel.add(emailField);
 
         NetworkConfig networkConfig = null;
         try {
@@ -78,45 +82,55 @@ public class FormulaireIncident extends JFrame {
             final MairieService mairieService = new MairieService(networkConfig);
             Mairies mairies = mairieService.selectMairies();
 
-            add(new JLabel("Code Postal: "));
+            formPanel.add(new JLabel("Code Postal: "));
             cpField = new JComboBox<>();
             for (Mairie mairie : mairies.getMairies()) {
                 cpField.addItem(mairie.getCodePostal());
             }
-            add(cpField);
+            formPanel.add(cpField);
 
         } catch (IOException | InterruptedException e) {
             logger.error("Erreur lors du chargement des codes postaux", e);
         }
 
-        add(new JLabel("Titre: "));
+        formPanel.add(new JLabel("Titre: "));
         titreField = new JTextField();
-        add(titreField);
+        formPanel.add(titreField);
         setUppercaseKeyListener(titreField);
 
-        add(new JLabel("Description: "));
-        descriptionArea = new JTextArea();
-        add(descriptionArea);
-
-        add(new JLabel("Priorité: "));
+        formPanel.add(new JLabel("Priorité: "));
         prioriteBox = new JComboBox<>(new String[]{"", "Faible", "Moyen", "Élevée"});
-        add(prioriteBox);
+        formPanel.add(prioriteBox);
+
+        JPanel descriptionPanel = new JPanel(new BorderLayout());
+        descriptionPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        descriptionPanel.add(new JLabel("Description: "), BorderLayout.NORTH);
+        descriptionArea = new JTextArea();
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+        JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
+        descriptionPanel.add(descriptionScrollPane, BorderLayout.CENTER);
+
+        add(formPanel, BorderLayout.NORTH);
+        add(descriptionPanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(1, 2));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         JButton sendButton = new JButton("Envoyer");
+        sendButton.setPreferredSize(null);
         sendButton.addActionListener(new EnvoieFormIncident(this));
         buttonPanel.add(sendButton);
 
         JButton backButton = new JButton("Retour");
+        backButton.setPreferredSize(null);
         backButton.addActionListener(e -> {
             this.dispose();
             new CategorieIncident().setVisible(true);
         });
         buttonPanel.add(backButton);
 
-        add(buttonPanel);
+        add(buttonPanel, BorderLayout.SOUTH);
 
         setVisible(true);
     }
