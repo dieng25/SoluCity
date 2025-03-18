@@ -8,7 +8,7 @@ public class CategorieIncident extends JFrame {
     public CategorieIncident() {
         setTitle("Sélection Catégorie");
         setSize(650, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
