@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "MainDashboard",
+            "request": "launch",
+            "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.MainDashboard",
+            "projectName": "xmart-frontend"
+        },
+        {
+            "type": "java",
             "name": "GlobalIHM",
             "request": "launch",
             "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.GlobalIHM",
