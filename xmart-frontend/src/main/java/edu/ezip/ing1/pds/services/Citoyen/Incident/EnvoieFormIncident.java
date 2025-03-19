@@ -33,7 +33,6 @@ public class EnvoieFormIncident implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (!ValidFormIncident.isValid(form)) {
-            JOptionPane.showMessageDialog(form, "Veuillez remplir correctement tous les champs.", "Erreur", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
