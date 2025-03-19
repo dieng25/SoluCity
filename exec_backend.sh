@@ -5,7 +5,7 @@ user_name="solucityback"
 host_name="172.31.249.224" #ip vm solucity backend
 file="backend.jar"
 
-ssh $user_name@$host_name <<EOF
+ssh -t -t $user_name@$host_name <<EOF
     echo "Connexion réussie à la VM : $host_name"
 	
     if [[ ! -f "$file" ]]; then
