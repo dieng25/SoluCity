@@ -13,7 +13,7 @@ public class ValidFormIncident {
             return false;
         }
 
-        if (!form.getCodePostal().matches("\\d{5}")) {
+        if (!form.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
             return false;
         }
 
