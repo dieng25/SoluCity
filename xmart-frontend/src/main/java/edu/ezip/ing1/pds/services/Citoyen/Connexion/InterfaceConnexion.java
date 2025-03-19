@@ -35,6 +35,7 @@ public class InterfaceConnexion extends JFrame {
 
         JButton connexionButton = new JButton("Connexion");
         connexionButton.setPreferredSize(null);
+        connexionButton.addActionListener(new EnvoieConnexion(this));
         buttonPanel.add(connexionButton);
 
         JButton backButton = new JButton("Retour");
