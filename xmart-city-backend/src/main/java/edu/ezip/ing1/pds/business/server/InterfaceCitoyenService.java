@@ -25,7 +25,9 @@ public class InterfaceCitoyenService {
         SELECT_ALL_MAIRIES("SELECT t.Code_Postal FROM Mairie t"),
         SELECT_CITOYEN("SELECT t.tel_num, t.Nom, t.Prenom, t.email, t.Identifiant FROM Citoyen t" ),
         SELECT_TEL_EXIST("SELECT COUNT(*) FROM Citoyen WHERE tel_num = ?"),
-        SELECT_INCIDENT("SELECT t.Id_ticket, t.Titre, t.Description, t.date_creation, t.Categorie, t.Statut, t.CodePostal_ticket, t.Priorite, t.date_cloture, t.tel_num, FROM Incident t");
+        SELECT_INCIDENT("SELECT t.Id_ticket, t.Titre, t.Description, t.date_creation, t.Categorie, t.Statut, t.CodePostal_ticket, t.Priorite, t.date_cloture, t.tel_num, FROM Incident t"),
+        SELECT_CONNEXION("SELECT tel_num, Nom, Prenom, email, Identifiant FROM Citoyen WHERE tel_num = ? AND Identifiant = ?");
+
         private final String query;
 
         private Queries(final String query) {
@@ -69,6 +71,9 @@ public class InterfaceCitoyenService {
                 break;
             case SELECT_INCIDENT:
                 response = SelectIncident(request, connection);
+                break;
+            case SELECT_CONNEXION:
+                response = SelectConnexion(request, connection);
                 break;
             default:
                 break;
@@ -201,6 +206,32 @@ public class InterfaceCitoyenService {
         }
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(incidents));
     }
+
+    private Response SelectConnexion(final Request request, final Connection connection) throws SQLException, IOException {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        Citoyen citoyen = objectMapper.readValue(request.getRequestBody(), Citoyen.class);
+
+        PreparedStatement stmt = connection.prepareStatement(Queries.SELECT_CONNEXION.query);
+        stmt.setString(1, citoyen.getTelNum());
+        stmt.setString(2, citoyen.getIdentifiant());
+
+        ResultSet res = stmt.executeQuery();
+        Citoyen authenticatedCitoyen = null;
+
+        if (res.next()) {
+            authenticatedCitoyen = new Citoyen();
+            authenticatedCitoyen.setTelNum(res.getString("tel_num"));
+            authenticatedCitoyen.setNom(res.getString("Nom"));
+            authenticatedCitoyen.setPrenom(res.getString("Prenom"));
+            authenticatedCitoyen.setEmail(res.getString("email"));
+            authenticatedCitoyen.setIdentifiant(res.getString("Identifiant"));
+        }
+
+        return new Response(request.getRequestId(), objectMapper.writeValueAsString(authenticatedCitoyen));
+    }
+
+
+
 
 }
 
