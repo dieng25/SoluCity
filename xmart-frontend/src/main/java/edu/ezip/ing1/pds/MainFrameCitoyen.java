@@ -1,5 +1,6 @@
 package edu.ezip.ing1.pds;
 
+import edu.ezip.ing1.pds.services.Citoyen.Connexion.InterfaceConnexion;
 import edu.ezip.ing1.pds.services.Citoyen.Incident.CategorieIncident;
 
 import javax.swing.*;
@@ -59,7 +60,8 @@ public class MainFrameCitoyen {
             JButton connexionButton = new JButton("Connexion");
             connexionButton.setFont(new Font("Arial", Font.PLAIN, 14));
             connexionButton.addActionListener(e -> {
-                JOptionPane.showMessageDialog(mainFrame, "Fonctionnalité Connexion à implémenter.");
+                new InterfaceConnexion();
+                mainFrame.dispose();
             });
 
             buttonPanel.add(incidentButton);
