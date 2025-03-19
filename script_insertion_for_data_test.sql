@@ -1,6 +1,10 @@
 -- DONNÉES DE TEST
 -- Insertion des mairies
-INSERT INTO Mairie (Code_Postal) VALUES ('95000'), ('75002'), ('75003'), ('94000');
+INSERT INTO Mairie (Code_Postal) VALUES 
+('95000'), 
+('75002'), 
+('75003'), 
+('94000');
 
 -- Insertion des citoyens
 INSERT INTO Citoyen (tel_num, Nom, Prenom, email, Identifiant) VALUES
