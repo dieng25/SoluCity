@@ -1,5 +1,7 @@
 package edu.ezip.ing1.pds.services.Citoyen.Incident;
 
+import edu.ezip.ing1.pds.MainFrameCitoyen;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -36,6 +38,20 @@ public class CategorieIncident extends JFrame {
         }
 
         add(panel, BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        JButton backButton = new JButton("Retour");
+        backButton.setPreferredSize(null);
+        backButton.addActionListener(e -> {
+            this.dispose();
+            new MainFrameCitoyen();
+        });
+        buttonPanel.add(backButton);
+
+        add(buttonPanel, BorderLayout.SOUTH);
+
+
         setVisible(true);
     }
 
