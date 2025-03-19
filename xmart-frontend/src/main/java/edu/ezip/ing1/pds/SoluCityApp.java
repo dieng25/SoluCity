@@ -1,9 +1,9 @@
 package edu.ezip.ing1.pds;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import edu.ezip.ing1.pds.DashboardFenetre.*;
 
 public class SoluCityApp extends JFrame {
     public SoluCityApp() {

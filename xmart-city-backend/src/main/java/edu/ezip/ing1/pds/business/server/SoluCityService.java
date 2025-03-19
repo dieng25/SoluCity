@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 
 public class SoluCityService {
@@ -34,7 +35,7 @@ public class SoluCityService {
         return inst;
     }
 
-    public final Response dispatch(final Request request, final Connection connection)
+    public final Response dispatch(final Request request, final Connection connection, Date dateDebut, Date dateFin, String codePostal)
             throws InvocationTargetException, IllegalAccessException, SQLException, IOException {
         Response response = null;
 
@@ -49,7 +50,10 @@ public class SoluCityService {
                     response = interfaceCitoyenService.dispatch(request, connection);
                     break;
                 case "DASHBOARD_REQUEST":
-                    response = dashboardRepository.dispatch(request, connection);
+                    response = dashboardRepository.fetchDashboardData(request, connection);
+                    break;
+                case "GLOBAL_REQUEST":
+                    response = dashboardRepository.fetchGlobalData(request, connection, dateDebut, dateFin, codePostal);
                     break;
                 case "SELECT_ALL_INCIDENTS":
                     response = incidentService.dispatch(request, connection);
@@ -60,7 +64,6 @@ public class SoluCityService {
         }
         return response;
     }
-
 }
 
 

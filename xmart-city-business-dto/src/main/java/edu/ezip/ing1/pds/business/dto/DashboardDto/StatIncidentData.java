@@ -47,7 +47,7 @@ public class StatIncidentData {
         return DelaiEspaceVerts;
     }
 
-    public double getDelaiPropreté() {
+    public double getDelaiProprete() {
         return DelaiProprete;
     }
 
