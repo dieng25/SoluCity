@@ -58,8 +58,8 @@ public class SoluCityApp extends JFrame {
         mairieButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // new MairieGUI();
-                User.initMainFrame(); //pour s'authentifier d'abord avant d'avoir accés à l'app Mairie
+                new MairieGUI();
+                // User.initMainFrame(); //pour s'authentifier d'abord avant d'avoir accés à l'app Mairie
             }
         });
 

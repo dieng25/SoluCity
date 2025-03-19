@@ -34,107 +34,122 @@ public class GlobalIHM extends JFrame {
 
     private JDatePickerImpl datePickerStart;
     private JDatePickerImpl datePickerEnd;
+
     private JComboBox<String> codePostalComboBox;
+    
     private JPanel chartPanel;
+
     private String codePostal;
 
-public GlobalIHM() throws InterruptedException, IOException {
-    setTitle("Dashboard Global");
-    setSize(600, 400);
-    setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-    setLocationRelativeTo(null);
+    public GlobalIHM() throws InterruptedException, IOException {
+        setTitle("Dashboard Global");
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
+        
+        initializeComponents();
+        Date dateDebut = (Date) datePickerStart.getModel().getValue();
+        Date dateFin = (Date) datePickerEnd.getModel().getValue();
+        System.out.println("Date de début sélectionnée : " + datePickerStart.getModel().getValue());
+        System.out.println("Date de fin sélectionnée : " + datePickerEnd.getModel().getValue());
 
-    initializeComponents();
-    setVisible(true);
+        codePostal = (String) codePostalComboBox.getSelectedItem();
+        System.out.println("Code postal sélectionné : " + codePostal);
 
-    NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
-    DashboardFilterDTO filterDTO = createFilterDTO();
-    DashboardServiceGlobal dashboardService = new DashboardServiceGlobal(networkConfig);
 
-    GlobalDatas globalDatas = dashboardService.global(filterDTO);
-    updateCharts(globalDatas);
-}
+        NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
 
-private void initializeComponents() {
-    JPanel datePanel = new JPanel();
-    datePanel.setLayout(new FlowLayout());
-    initializeDatePickers(datePanel);
-    initializeCodePostalComboBox(datePanel);
-    initializeApplyButton(datePanel);
-    add(datePanel, BorderLayout.NORTH);
+        DashboardFilterDTO filterDTO = new DashboardFilterDTO(dateDebut, dateFin, codePostal);
+        
+        DashboardServiceGlobal dashboardService = new DashboardServiceGlobal(networkConfig);
+        GlobalDatas globalDatas = dashboardService.global(filterDTO);
 
-    JPanel statsPanel = new JPanel();
-    statsPanel.setLayout(new GridLayout(2, 1));
+        /*try {
+            globalDatas = dashboardService.global(filterDTO);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } */
 
-    chartPanel = new JPanel();
-    chartPanel.setLayout(new GridLayout(2, 2));
-    statsPanel.add(chartPanel);
-
-    add(statsPanel, BorderLayout.CENTER);
-}
-
-private void initializeDatePickers(JPanel datePanel) {
-    UtilDateModel modelStart = new UtilDateModel();
-    UtilDateModel modelEnd = new UtilDateModel();
-
-    Properties p = new Properties();
-    p.put("text.today", "Aujourd'hui");
-    p.put("text.month", "Mois");
-    p.put("text.year", "Année");
-
-    JDatePanelImpl datePanelStart = new JDatePanelImpl(modelStart, p);
-    JDatePanelImpl datePanelEnd = new JDatePanelImpl(modelEnd, p);
-
-    datePickerStart = new JDatePickerImpl(datePanelStart, null);
-    datePickerEnd = new JDatePickerImpl(datePanelEnd, null);
-
-    datePanel.add(new JLabel("Date de début:"));
-    datePanel.add(datePickerStart);
-    datePanel.add(new JLabel("Date de fin:"));
-    datePanel.add(datePickerEnd);
-}
-
-private void initializeCodePostalComboBox(JPanel datePanel) {
-    JLabel codePostalLabel = new JLabel("Code Postal:");
-    codePostalComboBox = new JComboBox<>(new String[] {"75000", "75001", "75002"});
-    datePanel.add(codePostalLabel);
-    datePanel.add(codePostalComboBox);
-}
-
-private void initializeApplyButton(JPanel datePanel) {
-    JButton applyButton = new JButton("Appliquer");
-    applyButton.addActionListener(e -> {
-        try {
-            applyFilters();
-        } catch (IOException | InterruptedException e1) {
-            logger.error("Error while applying filters: ", e1);
+        if (globalDatas != null) {
+            updateCharts(globalDatas); 
+        } else {
+            System.out.println("Les données renvoyées par le backend sont nulles.");
         }
-    });
-    datePanel.add(applyButton);
-}
-
-private DashboardFilterDTO createFilterDTO() {
-    Date startDate = (Date) datePickerStart.getModel().getValue();
-    Date endDate = (Date) datePickerEnd.getModel().getValue();
-    codePostal = (String) codePostalComboBox.getSelectedItem();
-    return new DashboardFilterDTO(startDate, endDate, codePostal);
-}
-
-private void applyFilters() throws IOException, InterruptedException {
-    DashboardFilterDTO filterDTO = createFilterDTO();
-    if (filterDTO.getDateDebut() == null || filterDTO.getDateFin() == null) {
-        JOptionPane.showMessageDialog(this, "Veuillez sélectionner des dates valides.");
-        return;
+        setVisible(true);
     }
 
-    NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
-    DashboardServiceGlobal dashboardService = new DashboardServiceGlobal(networkConfig);
-    GlobalDatas globalDatas = dashboardService.global(filterDTO);
-    updateCharts(globalDatas);
-}
+    private void initializeComponents() {
 
+        UtilDateModel modelStart = new UtilDateModel();
+        UtilDateModel modelEnd = new UtilDateModel();
+        modelStart.setSelected(true);
+        modelEnd.setSelected(true);
         
 
+
+        Properties p = new Properties();
+        p.put("text.today", "Aujourd'hui");
+        p.put("text.month", "Mois");
+        p.put("text.year", "Année");
+        
+        JDatePanelImpl datePanelStart = new JDatePanelImpl(modelStart, p);
+        JDatePanelImpl datePanelEnd = new JDatePanelImpl(modelEnd, p);
+
+        datePickerStart = new JDatePickerImpl(datePanelStart, null);
+        datePickerEnd = new JDatePickerImpl(datePanelEnd, null);
+
+        JPanel datePanel = new JPanel();
+        datePanel.setLayout(new FlowLayout());
+
+        datePanel.add(new JLabel("Date de début:"));
+        datePanel.add(datePickerStart);
+
+        datePanel.add(new JLabel("Date de fin:"));
+        datePanel.add(datePickerEnd);
+
+        JLabel codePostalLabel = new JLabel("Code Postal:");
+        codePostalComboBox = new JComboBox<>(new String[] {"Tout", "77200", "92300", "93300"});
+        
+
+        datePanel.add(codePostalLabel);
+        datePanel.add(codePostalComboBox);
+
+        JButton applyButton = new JButton("Appliquer");
+        applyButton.addActionListener(e -> {
+            try {
+                applyFilters();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
+        });
+        datePanel.add(applyButton);
+
+        add(datePanel, BorderLayout.NORTH);
+
+        JPanel statsPanel = new JPanel();
+        statsPanel.setLayout(new GridLayout(2, 1));
+
+        chartPanel = new JPanel();
+        chartPanel.setLayout(new GridLayout(2, 2));
+        statsPanel.add(chartPanel);
+
+        add(statsPanel, BorderLayout.CENTER);
+    }
+
+    private void applyFilters() throws IOException, InterruptedException {
+        Date startDate = (Date) datePickerStart.getModel().getValue();
+        Date endDate = (Date) datePickerEnd.getModel().getValue();
+        codePostal = (String) codePostalComboBox.getSelectedItem();
+
+        if (startDate == null || endDate == null) {
+            JOptionPane.showMessageDialog(this, "Veuillez sélectionner des dates valides.");
+            return;
+        }
+
+        
+    }
 
     @SuppressWarnings("unchecked")
     private void updateCharts(GlobalDatas globalDatas) {

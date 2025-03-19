@@ -1,7 +1,5 @@
 package edu.ezip.ing1.pds;
 import javax.swing.*;
-/*import edu.ezip.ing1.pds.business.server.MairieServices;*/
-import edu.ezip.ing1.pds.commons.Request;
 
 import java.awt.*;
 
@@ -11,10 +9,9 @@ public class MairieGUI {
     private JButton suggestionsButton;
     private JButton statistiqueButton;
     private JButton trierButton;
-    private JTextArea resultArea;
 
     public MairieGUI() {
-        // Création et configuration de la fenêtre principale
+        // fenêtre principale App Mairie
         frame = new JFrame("Dashboard Mairie");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(700, 500);
@@ -76,47 +73,18 @@ public class MairieGUI {
         gbc.gridx = 1;
         centerPanel.add(trierButton, gbc);
 
-        // Zone d'affichage des résultats
-        resultArea = new JTextArea();
-        resultArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(resultArea);
-        scrollPane.setBorder(BorderFactory.createTitledBorder("Résultats"));
-        scrollPane.setPreferredSize(new Dimension(680, 200));
-
-        // Ajouter les panels dans la fenêtre principale
+        // Ajouter le panel dans la fenêtre principale
         frame.add(centerPanel, BorderLayout.CENTER);
-        frame.add(scrollPane, BorderLayout.SOUTH);
 
         //Actions des boutons
-        incidentsButton.addActionListener(e -> showData("incidents"));
-        suggestionsButton.addActionListener(e -> showData("suggestions"));
-        statistiqueButton.addActionListener(e -> showData("Statistiques et prédictions"));
-        trierButton.addActionListener(e -> showData("trier par statut"));
+        incidentsButton.addActionListener(e -> new FenetreIncident());
+        // suggestionsButton.addActionListener(e -> new FenetreSuggestion());
+        // statistiqueButton.addActionListener(e -> new FenetreStatistiques());
+        // trierButton.addActionListener(e -> new FenetreTrier());
 
         frame.setVisible(true);
     }
 
-    private void showData(String type) {
-
-        // MairieServices mairieServices = MairieServices.getInstance();
-        // Ici vous devez préparer une Request et une Connection (par exemple via JDBC)
-        Request request = new Request();
-        // Par exemple, on définit le type de requête en fonction du bouton cliqué
-        switch (type) {
-            case "incidents":
-                request.setRequestOrder("SELECT_ALL_INCIDENTS");
-                break;
-            case "suggestions":
-                request.setRequestOrder("SELECT_ALL_SUGGESTIONS");
-                break;
-            // Autres cas...
-            default:
-                break;
-        }
-        //affichage dans la zone de résultats
-        // result
-        // resultArea.setText(result.toString());
-    }
 
     public static void main(String[] args) {
         User.initMainFrame();

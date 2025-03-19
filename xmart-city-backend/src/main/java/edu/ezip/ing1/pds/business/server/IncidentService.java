@@ -59,7 +59,7 @@ public class IncidentService {
             incident.setIdTicket(res.getInt("Id_ticket"));
             incident.setTitre(res.getString("Titre"));
             incident.setDescription(res.getString("Description"));
-            incident.setdate(res.getDate("date_creation"));
+            incident.setDate_creation(res.getDate("date_creation"));
             incident.setCategorie(res.getString("Categorie"));
             incident.setStatut(res.getInt("Statut"));
             incident.setCP_Ticket(res.getString("CodePostal_ticket"));
