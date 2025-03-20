@@ -20,3 +20,5 @@ web/.classpath
 web/.project
 web/.settings/
 web/target/
+rdbms-connection-pool/src/main/resources/db-config.yaml
+xmart-city-client-commons/src/main/resources/network.yaml
