@@ -1,9 +1,11 @@
 package edu.ezip.ing1.pds.services.Citoyen.Connexion;
 
 import edu.ezip.ing1.pds.business.dto.Citoyen;
+import edu.ezip.ing1.pds.services.Citoyen.Connexion.ConsulteIncident.RecupIncident;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class AccueilConnexion extends JFrame {
 
@@ -38,6 +40,31 @@ public class AccueilConnexion extends JFrame {
         JButton consulterTicketButton = new JButton("Consulter mes Tickets");
         consulterTicketButton.setFont(new Font("Arial", Font.PLAIN, 12));
         consulterTicketButton.setPreferredSize(null);
+
+        consulterTicketButton.addActionListener(e -> {
+            Object[] options = {"Incident", "Suggestion"};
+            int choice = JOptionPane.showOptionDialog(
+                    AccueilConnexion.this,
+                    "Quel type de ticket souhaitez-vous consulter ?",
+                    "Consulter Tickets",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    null
+            );
+
+            if (choice == 0) {
+                dispose();
+                RecupIncident recupIncident = new RecupIncident(citoyen);
+                recupIncident.actionPerformed(new ActionEvent(consulterTicketButton, ActionEvent.ACTION_PERFORMED, null));
+
+            } else if (choice == 1) {
+                JOptionPane.showMessageDialog(this, "Fonctionnalité Suggestion à implémenter.");
+            }
+
+        });
+
         buttonPanel.add(consulterTicketButton);
 
         add(buttonPanel, BorderLayout.CENTER);
