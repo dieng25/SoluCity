@@ -1,5 +1,9 @@
 databaseName: "solucity"
+<<<<<<< HEAD
+host: "172.31.250.110"
+=======
 host: "172.31.250.110" #"127.0.0.1"
+>>>>>>> adb763258770454bc285bf09045ea55a1f237e73
 port: 3306
 username : "root"
 password: "solucity"
