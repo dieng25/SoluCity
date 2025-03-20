@@ -67,14 +67,14 @@ public class MainDashboard extends JFrame {
         JMenuItem TableauItem = new JMenuItem("Tableau de bord spécifique");
         
         dashboardsMenu.add(General);
-        dashboardsMenu.addSeparator();
-        dashboardsMenu.add(IncidentItem);
-        dashboardsMenu.addSeparator();
-        dashboardsMenu.add(SuggestionItem);
-        dashboardsMenu.addSeparator();
-        dashboardsMenu.add(MairieItem);
-        dashboardsMenu.addSeparator();
-        dashboardsMenu.add(TableauItem);
+        //dashboardsMenu.addSeparator();
+        //dashboardsMenu.add(IncidentItem);
+        //dashboardsMenu.addSeparator();
+        //dashboardsMenu.add(SuggestionItem);
+        //dashboardsMenu.addSeparator();
+        //dashboardsMenu.add(MairieItem);
+        //dashboardsMenu.addSeparator();
+        //dashboardsMenu.add(TableauItem);
         menuBar.add(dashboardsMenu);
 
         setJMenuBar(menuBar);

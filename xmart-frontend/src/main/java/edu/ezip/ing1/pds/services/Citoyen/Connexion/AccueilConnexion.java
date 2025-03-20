@@ -2,6 +2,7 @@ package edu.ezip.ing1.pds.services.Citoyen.Connexion;
 
 import edu.ezip.ing1.pds.business.dto.Citoyen;
 import edu.ezip.ing1.pds.services.Citoyen.Connexion.ConsulteIncident.RecupIncident;
+import edu.ezip.ing1.pds.services.Citoyen.Connexion.IncidentConnect.CategorieIncidentConnect;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,11 +31,18 @@ public class AccueilConnexion extends JFrame {
         JButton incidentButton = new JButton("Déclarer un Incident");
         incidentButton.setFont(new Font("Arial", Font.PLAIN, 12));
         incidentButton.setPreferredSize(null);
+        incidentButton.addActionListener(e -> {
+                    new CategorieIncidentConnect(citoyen);
+                    dispose();
+        });
         buttonPanel.add(incidentButton);
 
         JButton suggestionButton = new JButton("Faire une Suggestion");
         suggestionButton.setFont(new Font("Arial", Font.PLAIN, 12));
         suggestionButton.setPreferredSize(null);
+        suggestionButton.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "Fonctionnalité Suggestion à implémenter.");
+        });
         buttonPanel.add(suggestionButton);
 
         JButton consulterTicketButton = new JButton("Consulter mes Tickets");
