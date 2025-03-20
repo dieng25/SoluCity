@@ -42,16 +42,18 @@ public class GlobalIHM extends JFrame {
     private String codePostal;
 
     public GlobalIHM() throws InterruptedException, IOException {
-        setTitle("Dashboard Global");
+        setTitle("Vue d'ensemble");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        setVisible(true);
         
         initializeComponents();
         Date dateDebut = (Date) datePickerStart.getModel().getValue();
         Date dateFin = (Date) datePickerEnd.getModel().getValue();
         System.out.println("Date de début sélectionnée : " + datePickerStart.getModel().getValue());
         System.out.println("Date de fin sélectionnée : " + datePickerEnd.getModel().getValue());
+        
 
         codePostal = (String) codePostalComboBox.getSelectedItem();
         System.out.println("Code postal sélectionné : " + codePostal);
@@ -63,12 +65,6 @@ public class GlobalIHM extends JFrame {
         
         DashboardServiceGlobal dashboardService = new DashboardServiceGlobal(networkConfig);
         GlobalDatas globalDatas = dashboardService.global(filterDTO);
-
-        /*try {
-            globalDatas = dashboardService.global(filterDTO);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } */
 
         if (globalDatas != null) {
             updateCharts(globalDatas); 
@@ -85,8 +81,6 @@ public class GlobalIHM extends JFrame {
         modelStart.setSelected(true);
         modelEnd.setSelected(true);
         
-
-
         Properties p = new Properties();
         p.put("text.today", "Aujourd'hui");
         p.put("text.month", "Mois");
@@ -108,7 +102,7 @@ public class GlobalIHM extends JFrame {
         datePanel.add(datePickerEnd);
 
         JLabel codePostalLabel = new JLabel("Code Postal:");
-        codePostalComboBox = new JComboBox<>(new String[] {"Tout", "77200", "92300", "93300"});
+        codePostalComboBox = new JComboBox<>(new String[] {"tout", "77200", "92300", "93300"});
         
 
         datePanel.add(codePostalLabel);
@@ -116,6 +110,7 @@ public class GlobalIHM extends JFrame {
 
         JButton applyButton = new JButton("Appliquer");
         applyButton.addActionListener(e -> {
+            System.out.println("Bouton Appliquer cliqué !");
             try {
                 applyFilters();
             } catch (IOException e1) {
@@ -142,6 +137,24 @@ public class GlobalIHM extends JFrame {
         Date startDate = (Date) datePickerStart.getModel().getValue();
         Date endDate = (Date) datePickerEnd.getModel().getValue();
         codePostal = (String) codePostalComboBox.getSelectedItem();
+        //initializeComponents();
+        System.out.println("Code postal sélectionné : " + codePostal);
+
+
+        NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
+
+        DashboardFilterDTO filterDTO = new DashboardFilterDTO(startDate, endDate, codePostal);
+        
+        DashboardServiceGlobal dashboardService = new DashboardServiceGlobal(networkConfig);
+        GlobalDatas globalDatas = dashboardService.global(filterDTO);
+
+
+        if (globalDatas != null) {
+            updateCharts(globalDatas); 
+        } else {
+            System.out.println("Les données renvoyées par le backend sont nulles.");
+        }
+
 
         if (startDate == null || endDate == null) {
             JOptionPane.showMessageDialog(this, "Veuillez sélectionner des dates valides.");
@@ -242,16 +255,4 @@ public class GlobalIHM extends JFrame {
         chartPanel.repaint();
     }
     
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            try {
-                new GlobalIHM();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-    }
 }
