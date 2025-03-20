@@ -1,6 +1,7 @@
 package edu.ezip.ing1.pds.services.Citoyen.Connexion;
 
 import edu.ezip.ing1.pds.business.dto.Citoyen;
+import edu.ezip.ing1.pds.services.Citoyen.ConfirmeExit;
 import edu.ezip.ing1.pds.services.Citoyen.Connexion.ConsulteIncident.RecupIncident;
 import edu.ezip.ing1.pds.services.Citoyen.Connexion.IncidentConnect.CategorieIncidentConnect;
 
@@ -8,12 +9,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class AccueilConnexion extends JFrame {
+public class AccueilConnexion extends ConfirmeExit {
 
     public AccueilConnexion(Citoyen citoyen) {
+        super();
         setTitle("Accueil de connexion");
         setSize(400, 300);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 

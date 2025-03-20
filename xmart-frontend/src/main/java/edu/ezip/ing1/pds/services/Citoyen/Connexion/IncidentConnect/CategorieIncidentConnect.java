@@ -1,17 +1,19 @@
 package edu.ezip.ing1.pds.services.Citoyen.Connexion.IncidentConnect;
 
 import edu.ezip.ing1.pds.business.dto.Citoyen;
+import edu.ezip.ing1.pds.services.Citoyen.ConfirmeExit;
 import edu.ezip.ing1.pds.services.Citoyen.Connexion.AccueilConnexion;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class CategorieIncidentConnect extends JFrame {
+public class CategorieIncidentConnect extends ConfirmeExit {
 
     public CategorieIncidentConnect(Citoyen citoyen) {
+        super();
         setTitle("Sélection Catégorie");
         setSize(650, 400);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 

@@ -1,16 +1,18 @@
 package edu.ezip.ing1.pds.services.Citoyen.Incident;
 
 import edu.ezip.ing1.pds.MainFrameCitoyen;
+import edu.ezip.ing1.pds.services.Citoyen.ConfirmeExit;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class CategorieIncident extends JFrame {
+public class CategorieIncident extends ConfirmeExit {
 
     public CategorieIncident() {
+        super();
         setTitle("Sélection Catégorie");
         setSize(650, 400);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
