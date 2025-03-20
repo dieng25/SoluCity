@@ -1,4 +1,4 @@
 #ipaddress : 127.0.0.1
 #ipaddress : 172.31.249.5
-ipaddress : 127.0.0.1 #vm solucity backend
+ipaddress : 172.31.249.224 #vm solucity backend
 tcpport : 45065
