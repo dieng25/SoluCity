@@ -22,6 +22,14 @@ public class IncidentConsulte extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JLabel titleLabel = new JLabel("Ticket Incidents", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
+        mainPanel.add(titleLabel, BorderLayout.NORTH);
+
         TableModel model = new IncidentTableModel(incidents);
         JTable table = new JTable(model);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -40,7 +48,8 @@ public class IncidentConsulte extends JFrame {
         });
 
         JScrollPane scrollPane = new JScrollPane(table);
-        add(scrollPane, BorderLayout.CENTER);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -49,6 +58,7 @@ public class IncidentConsulte extends JFrame {
             }
         });
 
+        add(mainPanel);
         setVisible(true);
     }
 
