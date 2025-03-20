@@ -5,6 +5,7 @@ import edu.ezip.ing1.pds.business.dto.Mairie;
 import edu.ezip.ing1.pds.business.dto.Mairies;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
+import edu.ezip.ing1.pds.services.Citoyen.ConfirmeExit;
 import edu.ezip.ing1.pds.services.Citoyen.MairieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.Date;
 
-public class FormIncidentConnect extends JFrame {
+public class FormIncidentConnect extends ConfirmeExit {
 
     private final static String LoggingLabel = "FrontEnd";
     private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
@@ -29,12 +30,12 @@ public class FormIncidentConnect extends JFrame {
     private Date date_sql;
 
     public FormIncidentConnect(String categorie, Citoyen citoyen) {
-
+        super();
         getContentPane().removeAll();
         this.categorie = categorie;
         setTitle("Déclaration d'Incident");
         setSize(500, 600);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
 
         JPanel formPanel = new JPanel();
