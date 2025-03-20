@@ -60,12 +60,15 @@ public class SoluCityService {
                     response = incidentService.dispatch(request, connection);
                     break;
             }
+        } catch (SQLException e) {
+            logger.error("Erreur SQL lors du traitement de la requête", e);
+        } catch (IOException e) {
+            logger.error("Erreur d'entrée/sortie lors du traitement de la requête", e);
         } catch (Exception e) {
-            logger.error("Erreur lors du traitement de la requête", e);
+            logger.error("Erreur inconnue lors du traitement de la requête", e);
         }
+
         return response;
+        
     }
 }
-
-
-
