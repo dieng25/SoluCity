@@ -27,8 +27,8 @@ public class FenetreSuggestion extends JFrame {
         setTitle("Fenêtre des Suggestions");
         setLayout(new BorderLayout());
         setSize(950, 950);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null); // Centrer la fenêtre
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null); 
 
         // Charger la configuration réseau
         try {
@@ -36,7 +36,7 @@ public class FenetreSuggestion extends JFrame {
             logger.debug("Chargement du fichier de configuration réseau : {}", networkConfig.toString());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
-                    "Erreur de connexion au serveur. Veuillez réessayer.",
+                    "Erreur de connexion au serveur. ",
                     "Erreur", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -44,7 +44,7 @@ public class FenetreSuggestion extends JFrame {
         // Bouton pour afficher les suggestions
         JButton suggestionButton = new JButton("Voir les Suggestions");
         suggestionButton.addActionListener(e -> displaySuggestions());
-        suggestionButton.setBackground(Color.CYAN);
+        suggestionButton.setBackground(new Color(0, 123, 255));
         add(suggestionButton, BorderLayout.NORTH);
 
         // Table des suggestions
