@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "FenetreSuggestion",
+            "request": "launch",
+            "mainClass": "edu.ezip.ing1.pds.FenetreSuggestion",
+            "projectName": "xmart-frontend"
+        },
+        {
+            "type": "java",
             "name": "FenetreIncident",
             "request": "launch",
             "mainClass": "edu.ezip.ing1.pds.FenetreIncident",
