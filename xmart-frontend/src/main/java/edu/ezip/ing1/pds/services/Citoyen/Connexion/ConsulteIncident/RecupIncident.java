@@ -39,7 +39,7 @@ public class RecupIncident implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Aucun incident trouvé pour cet utilisateur.",
                         "Information", JOptionPane.INFORMATION_MESSAGE);
             } else {
-                new IncidentConsulte(incidents);
+                new IncidentConsulte(incidents, citoyen);
             }
 
         } catch (InterruptedException | IOException ex) {
