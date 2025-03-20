@@ -29,7 +29,7 @@ public class IncidentConsulte extends JFrame {
                     int row = table.getSelectedRow();
                     if (row != -1) {
                         Incident incident = incidents.get(row);
-                        showIncidentDetails(incident);
+                        new ShowIncidentDetails(incident);
                     }
                 }
             }
@@ -41,18 +41,7 @@ public class IncidentConsulte extends JFrame {
         setVisible(true);
     }
 
-    private void showIncidentDetails(Incident incident) {
-        JFrame detailsFrame = new JFrame("Détails de l'Incident");
-        detailsFrame.setSize(400, 300);
-        detailsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        detailsFrame.setLocationRelativeTo(null);
-        detailsFrame.setLayout(new GridLayout(0, 1));
 
-        detailsFrame.add(new JLabel("Priorité: " + incident.getPriorite()));
-        detailsFrame.add(new JLabel("Description: " + incident.getDescription()));
-
-        detailsFrame.setVisible(true);
-    }
 
 
 }
