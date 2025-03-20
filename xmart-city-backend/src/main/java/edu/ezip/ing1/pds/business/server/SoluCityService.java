@@ -47,6 +47,8 @@ public class SoluCityService {
                 case "SELECT_CITOYEN":
                 case "SELECT_TEL_EXIST":
                 case "SELECT_INCIDENT":
+                case "SELECT_CONNEXION":
+                case "SELECT_INCIDENT_BY_TEL":
                     response = interfaceCitoyenService.dispatch(request, connection);
                     break;
                 case "DASHBOARD_REQUEST":
