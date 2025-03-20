@@ -2,6 +2,7 @@ package edu.ezip.ing1.pds.services.Citoyen;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import edu.ezip.commons.LoggingUtils;
 import edu.ezip.ing1.pds.business.dto.Incident;
 import edu.ezip.ing1.pds.business.dto.Incidents;
@@ -10,14 +11,13 @@ import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.requests.InterfaceCitoyenRequests.InsertIncidentClientRequest;
 import edu.ezip.ing1.pds.requests.InterfaceCitoyenRequests.SelectAllIncidentsClientRequest;
+import edu.ezip.ing1.pds.requests.InterfaceCitoyenRequests.SelectIncidentByTelClientRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
 import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.UUID;
+import java.util.*;
 
 public class IncidentService {
 
@@ -27,6 +27,7 @@ public class IncidentService {
 
     final String insertRequestOrder = "INSERT_INCIDENT";
     final String selectRequestOrder = "SELECT_INCIDENT";
+    final String selectTicketIncidentsByTel = "SELECT_INCIDENT_BY_TEL";
 
     private final NetworkConfig networkConfig;
 
@@ -96,6 +97,41 @@ public class IncidentService {
         } else {
             logger.error("Pas de d'incident trouvé");
             return null;
+        }
+    }
+
+    public List<Incident> selectIncidentsByTel(String telNum) throws InterruptedException, IOException {
+        int birthdate = 0;
+        final Deque<ClientRequest> clientRequests = new ArrayDeque<>();
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final String requestId = UUID.randomUUID().toString();
+        final Request request = new Request();
+        request.setRequestId(requestId);
+        request.setRequestOrder(selectTicketIncidentsByTel);
+
+        //Converti en Json tel, pour que le serveur puisse le lire
+        ObjectNode requestContent = objectMapper.createObjectNode();
+        requestContent.put("citoyen_telNum", telNum);
+        request.setRequestContent(objectMapper.writeValueAsString(requestContent));
+
+        objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+        final byte[] requestBytes = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request);
+        LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestBytes);
+
+        final SelectIncidentByTelClientRequest clientRequest = new SelectIncidentByTelClientRequest(
+                networkConfig,
+                birthdate++, request, null, requestBytes);
+        clientRequests.push(clientRequest);
+
+        if (!clientRequests.isEmpty()) {
+            final ClientRequest joinedClientRequest = clientRequests.pop();
+            joinedClientRequest.join();
+            logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
+
+            return (List<Incident>) joinedClientRequest.getResult();
+        } else {
+            logger.error("Aucune réponse reçue du serveur.");
+            return new ArrayList<>();
         }
     }
 }

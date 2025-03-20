@@ -11,6 +11,7 @@ import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.requests.InterfaceCitoyenRequests.InsertCitoyenClientRequest;
 import edu.ezip.ing1.pds.requests.InterfaceCitoyenRequests.SelectAllCitoyensClientRequest;
+import edu.ezip.ing1.pds.requests.InterfaceCitoyenRequests.SelectConnexionClientRequest;
 import edu.ezip.ing1.pds.requests.InterfaceCitoyenRequests.SelectTelExistClientRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ public class CitoyenService {
     final String insertRequestOrder = "INSERT_CITOYEN";
     final String selectRequestOrder = "SELECT_CITOYEN";
     final String selectTelExistRequestOrder = "SELECT_TEL_EXIST";
+    final String selectConnexionRequestOrder = "SELECT_CONNEXION";
 
     private final NetworkConfig networkConfig;
 
@@ -139,6 +141,48 @@ public class CitoyenService {
         }
         else {
             return false;
+        }
+    }
+
+    public Citoyen selectConnexion(String tel, String id) throws InterruptedException, IOException {
+        int birthdate = 0;
+        final Deque<ClientRequest> clientRequests = new ArrayDeque<>();
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final String requestId = UUID.randomUUID().toString();
+        final Request request = new Request();
+        request.setRequestId(requestId);
+        request.setRequestOrder(selectConnexionRequestOrder);
+
+        // Converti en Json tel et id, pour que le serveur puisse le lire
+        ObjectNode requestContent = objectMapper.createObjectNode();
+        requestContent.put("citoyen_telNum", tel);
+        requestContent.put("citoyen_identifiant", id);
+        request.setRequestContent(objectMapper.writeValueAsString(requestContent));
+
+        objectMapper.enable(SerializationFeature.WRAP_ROOT_VALUE);
+        final byte[] requestBytes = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(request);
+        LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestBytes);
+
+        final SelectConnexionClientRequest clientRequest = new SelectConnexionClientRequest(
+                networkConfig,
+                birthdate++, request, null, requestBytes);
+        clientRequests.push(clientRequest);
+
+        if (!clientRequests.isEmpty()) {
+            final ClientRequest joinedClientRequest = clientRequests.pop();
+            joinedClientRequest.join();
+            logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
+
+            Citoyen citoyen = (Citoyen) joinedClientRequest.getResult();
+            if (citoyen == null)  {
+                logger.warn("Aucun citoyen trouvé avec ce numéro et cet identifiant.");
+                return null;
+            }
+            return citoyen;
+        }
+        else {
+            logger.error("Aucune réponse reçue du serveur.");
+            return null;
         }
     }
 
