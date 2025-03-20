@@ -31,7 +31,10 @@ public class AccueilConnexion extends JFrame {
         JButton incidentButton = new JButton("Déclarer un Incident");
         incidentButton.setFont(new Font("Arial", Font.PLAIN, 12));
         incidentButton.setPreferredSize(null);
-        incidentButton.addActionListener(e -> new CategorieIncidentConnect(citoyen));
+        incidentButton.addActionListener(e -> {
+                    new CategorieIncidentConnect(citoyen);
+                    dispose();
+        });
         buttonPanel.add(incidentButton);
 
         JButton suggestionButton = new JButton("Faire une Suggestion");
