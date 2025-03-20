@@ -17,16 +17,16 @@ public class Suggestions {
     }
 
     // Getter
-    public Set<Suggestion> getIncidents() {
+    public Set<Suggestion> getSuggestions() {
         return suggestions;
     }
 
     // Setter
-    public void setIncidents(Set<Incident> incidents) {
+    public void setSuggestions(Set<Suggestion> suggestions) {
         this.suggestions = suggestions;
     }
 
-    // Ajouter un incident à la liste
+    // Ajouter une sugg à la liste
     public final Suggestions add(final Suggestion suggestion) {
         suggestions.add(suggestion);
         return this;
@@ -34,8 +34,8 @@ public class Suggestions {
 
     @Override
     public String toString() {
-        return "Incidents{" +
-                "incidents=" + suggestions +
+        return "Suggestions{" +
+                "suggestions=" + suggestions +
                 '}';
     }
 }

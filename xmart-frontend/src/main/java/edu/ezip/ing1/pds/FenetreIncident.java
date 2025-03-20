@@ -27,7 +27,7 @@ public class FenetreIncident extends JFrame {
         setTitle("Fenêtre des Incidents");
         setLayout(new BorderLayout());
         setSize(950, 950);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         // setLocationRelativeTo(null);
 
         // Charger la configuration réseau
@@ -44,7 +44,7 @@ public class FenetreIncident extends JFrame {
         // Bouton pour afficher les incidents
         JButton incidentButton = new JButton("voir les incidents");
         incidentButton.addActionListener(e -> displayIncidents());
-        incidentButton.setBackground(Color.CYAN);
+        incidentButton.setBackground(new Color(0, 123, 255));
         add(incidentButton, BorderLayout.NORTH);
 
         //table des incidents
@@ -53,7 +53,6 @@ public class FenetreIncident extends JFrame {
         incidentTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(incidentTable);
         add(scrollPane, BorderLayout.CENTER);
-        setBackground(Color.CYAN);
         setVisible(true);
     }
 
