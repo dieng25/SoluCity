@@ -1,12 +1,13 @@
 package edu.ezip.ing1.pds.DashboardFenetre;
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class MainDashboard extends JFrame {
 
     public MainDashboard() {
 
-        setTitle("SoluCityBoard");
+        setTitle("Tableau de bord dynamique");
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -14,22 +15,35 @@ public class MainDashboard extends JFrame {
 
 
         JPanel backgroundPanel = new JPanel();
-        backgroundPanel.setBackground(Color.CYAN);
+        backgroundPanel.setBackground(Color.WHITE);
         backgroundPanel.setLayout(new BorderLayout());
 
 
-        JLabel welcomeLabel = new JLabel("Welcome to SoluCityBoard! Admin", JLabel.CENTER);
+        JLabel welcomeLabel = new JLabel("Bienvenue Admin!", JLabel.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        welcomeLabel.setForeground(new Color(0, 123, 255));
+        welcomeLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
         backgroundPanel.add(welcomeLabel, BorderLayout.NORTH);
 
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout());
+        //buttonPanel.setLayout(new FlowLayout());
         buttonPanel.setBackground(Color.lightGray);
+        buttonPanel.setLayout(new GridLayout(3, 1, 10, 10));
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
+
+        JButton viewProfileButton = new JButton("Mon compte");
+        JButton settingsButton = new JButton("Parametres");
+        JButton logoutButton = new JButton("Deconnexion");
         
-        JButton viewProfileButton = new JButton("View Profile");
-        JButton settingsButton = new JButton("Settings");
-        JButton logoutButton = new JButton("Logout");
+        JButton[] buttons = {viewProfileButton, settingsButton, logoutButton};
+        for (JButton btn : buttons) {
+            btn.setBackground(new Color(0, 123, 255));
+            btn.setForeground(Color.WHITE);
+            btn.setFont(new Font("Arial", Font.BOLD, 16));
+            btn.setFocusPainted(false);
+            btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        }
 
         buttonPanel.add(viewProfileButton);
         buttonPanel.add(settingsButton);
@@ -41,7 +55,7 @@ public class MainDashboard extends JFrame {
 
         JMenuBar menuBar = new JMenuBar();
 
-        JMenu dashboardsMenu = new JMenu("Dashboards");
+        JMenu dashboardsMenu = new JMenu("Tableaux de bord");
 
         JMenuItem General = new JMenuItem("Vue d'ensemble");
         General.addActionListener(e -> openIncidentDashboard());
@@ -70,7 +84,13 @@ public class MainDashboard extends JFrame {
     private void openIncidentDashboard() {
         SwingUtilities.invokeLater(() -> {
             try {
-                new IncidentDashboardGlobal();
+                try {
+                    new GlobalIHM();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                //setVisible(true);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

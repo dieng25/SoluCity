@@ -24,6 +24,11 @@ import java.sql.SQLException;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
+import edu.ezip.ing1.pds.business.dto.DashboardDto.DashboardFilterDTO;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Optional;
+
 
 public class RequestHandler implements Runnable {
     private final Socket socket;
@@ -59,45 +64,42 @@ public class RequestHandler implements Runnable {
         self.start();
     }
 
-
-
+    
     @Override
-    public void run() {
-        try {
-
-            int timeout = maxTimeLapToGetAClientPayloadInMs;
-            while (0 == instream.available() && 0 < timeout) {
-                waitArtifact.pollFirst(timeStepMs, TimeUnit.MILLISECONDS);
-                timeout-=timeStepMs;
-            }
-            if (0>timeout) return;
-
-            final byte [] inputData = new byte[instream.available()];
-            instream.read(inputData);
-            final Request request = getRequest(inputData);
-            final Date dateDebut = null;
-            final Date dateFin = null;
-            final String codePostal = null;
-            final Response response = soluCityService.dispatch(request, connection, dateDebut, dateFin, codePostal);
-
-            final byte [] outoutData = getResponse(response);
-            LoggingUtils.logDataMultiLine(logger, Level.DEBUG, outoutData);
-            outstream.write(outoutData);
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            father.completeRequestHandler(this);
+public void run() {
+    try {
+        int timeout = maxTimeLapToGetAClientPayloadInMs;
+        while (0 == instream.available() && 0 < timeout) {
+            waitArtifact.pollFirst(timeStepMs, TimeUnit.MILLISECONDS);
+            timeout -= timeStepMs;
         }
+        if (0 > timeout) return;
+
+        final byte[] inputData = new byte[instream.available()];
+        instream.read(inputData);
+        final Request request = getRequest(inputData);
+
+        Date dateDebut = request.getDateDebut(); 
+        Date dateFin = request.getDateFin();
+        String codePostal = Optional.ofNullable(request.getCodePostal()).orElse("tout");
+
+        java.sql.Date sqlDateDebut = (dateDebut != null) ? new java.sql.Date(dateDebut.getTime()) : null;
+        java.sql.Date sqlDateFin = (dateFin != null) ? new java.sql.Date(dateFin.getTime()) : null;
+
+        //DashboardFilterDTO filterDataDTO = new DashboardFilterDTO(sqlDateDebut, sqlDateFin, codePostal);
+
+        final Response response = soluCityService.dispatch(request, connection, sqlDateDebut, sqlDateFin, codePostal);
+
+        final byte[] outputData = getResponse(response);
+        LoggingUtils.logDataMultiLine(logger, Level.DEBUG, outputData);
+        outstream.write(outputData);
+
+    } catch (IOException | IllegalAccessException | InvocationTargetException | InterruptedException | SQLException e) {
+        logger.error("Erreur dans RequestHandler", e);
+    } finally {
+        father.completeRequestHandler(this);
     }
+}
 
     private final Request getRequest(byte [] data) throws IOException {
         logger.debug("data received {} bytes", data.length);
