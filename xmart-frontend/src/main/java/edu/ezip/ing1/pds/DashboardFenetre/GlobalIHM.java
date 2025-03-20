@@ -102,7 +102,7 @@ public class GlobalIHM extends JFrame {
         datePanel.add(datePickerEnd);
 
         JLabel codePostalLabel = new JLabel("Code Postal:");
-        codePostalComboBox = new JComboBox<>(new String[] {"tout", "77200", "92300", "93300"});
+        codePostalComboBox = new JComboBox<>(new String[] {"tout", "95000", "94000", "75003", "75002"});
         
 
         datePanel.add(codePostalLabel);
