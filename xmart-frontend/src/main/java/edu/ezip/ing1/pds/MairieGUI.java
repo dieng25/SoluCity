@@ -78,7 +78,7 @@ public class MairieGUI {
 
         //Actions des boutons
         incidentsButton.addActionListener(e -> new FenetreIncident());
-        // suggestionsButton.addActionListener(e -> new FenetreSuggestion());
+        suggestionsButton.addActionListener(e -> new FenetreSuggestion());
         // statistiqueButton.addActionListener(e -> new FenetreStatistiques());
         // trierButton.addActionListener(e -> new FenetreTrier());
 
@@ -87,6 +87,7 @@ public class MairieGUI {
 
 
     public static void main(String[] args) {
-        User.initMainFrame();
+        new MairieGUI();
+        // User.initMainFrame(); //pour l'authentification
     }
 }

@@ -48,7 +48,7 @@ public class SuggestionService {
         // Log de la requête
         LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestBytes);
 
-        // Créer la requête client pour sélectionner tous les incidents
+        // Créer la requête client pour sélectionner tous les sugg
         try {
             final SelectAllSuggestionsClientRequest clientRequest = new SelectAllSuggestionsClientRequest(
                 networkConfig,

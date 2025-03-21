@@ -74,9 +74,6 @@ public class FenetreSuggestion extends JFrame {
                         suggestion.getCP_Ticket(),
                         suggestion.getStatut()
                 });
-
-                // Affichage dans la console
-                System.out.println("Suggestion : " + suggestion.getTitre());
             }
         } catch (IOException | InterruptedException e) {
             logger.error("Erreur lors du chargement des suggestions", e);
