@@ -60,26 +60,60 @@ public class FenetreIncident extends JFrame {
         try {
             IncidentService incidentService = new IncidentService(networkConfig);
             Incidents incidents = incidentService.selectIncidents();
-
+    
             // Vider le tableau avant de recharger les données
             tableModel.setRowCount(0);
-
+    
             // Remplir le tableau avec les incidents
             for (Incident incident : incidents.getIncidents()) {
+                // Conversion de la priorité en chaîne
+                String prioriteString = convertPrioriteToString(incident.getPriorite());
+                
+                // Conversion du statut en chaîne
+                String statutString = convertStatutToString(incident.getStatut());
+    
                 tableModel.addRow(new Object[]{
                         incident.getTitre(),
                         incident.getDescription(),
                         incident.getDate_creation(),
                         incident.getCP_Ticket(),
-                        incident.getPriorite(),
-                        incident.getStatut()
+                        prioriteString,  // Afficher la priorité -> correspondance en chaine 
+                        statutString 
                 });
             }
         } catch (IOException | InterruptedException e) {
             logger.error("Erreur lors du chargement des incidents", e);
         }
     }
-
+    
+    private String convertPrioriteToString(int priorite) {
+        switch (priorite) {
+            case 0:
+                return "vide";
+            case 1:
+                return "faible";
+            case 2:
+                return "moyen";
+            case 3:
+                return "élevé";
+            default:
+                return "non definie";
+        }
+    }
+    
+    private String convertStatutToString(int statut) {
+        switch (statut) {
+            case 0:
+                return "reçu";
+            case 1:
+                return "en cours de traitement";
+            case 2:
+                return "demande traitée";
+            default:
+                return "non definie";
+        }
+    }
+    
     public static void main(String[] args) {
         SwingUtilities.invokeLater(FenetreIncident::new);
     }
