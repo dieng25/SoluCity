@@ -19,12 +19,14 @@ public class SoluCityService {
     private static SoluCityService inst = null;
     private final InterfaceCitoyenService interfaceCitoyenService;
     private final IncidentService incidentService;
+    private final SuggestionService suggestionService;
     private final DashboardRepository dashboardRepository;
 
     public SoluCityService() {
         this.interfaceCitoyenService = InterfaceCitoyenService.getInstance();
         this.dashboardRepository = DashboardRepository.getInstance();
         this.incidentService = IncidentService.getInstance();
+        this.suggestionService = SuggestionService.getInstance();
     }
 
 
@@ -59,6 +61,9 @@ public class SoluCityService {
                     break;
                 case "SELECT_ALL_INCIDENTS":
                     response = incidentService.dispatch(request, connection);
+                    break;
+                case "SELECT_ALL_SUGGESTIONS":
+                    response = suggestionService.dispatch(request, connection);
                     break;
             }
         } catch (SQLException e) {
