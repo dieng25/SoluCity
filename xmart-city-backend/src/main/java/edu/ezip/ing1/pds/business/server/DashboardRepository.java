@@ -81,7 +81,35 @@ public class DashboardRepository {
                         "    (SELECT COUNT(*) FROM Incident WHERE Priorite = 2 AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentLevelMoyen,\r\n" + //
                         "    \r\n" + //
                         "    (SELECT COUNT(*) FROM Incident WHERE Priorite = 3 AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentLevelHaut\r\n" + //
-                        "");
+                        ""),
+
+        STAT_INCIDENT_REQUEST("SELECT\r\n" + //
+                        "    -- Répartition des incidents par statut\r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE Statut = 0 AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentStatutEnAttente,\r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE Statut = 1 AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentStatutEnCours,\r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE Statut = 2 AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentStatutResolus,\r\n" + //
+                        "\r\n" + //
+                        "    -- Délai moyen de résolution des incidents par catégorie\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Categorie = 'Voirie' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenVoirie,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Categorie = 'Eclairage Public' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenEclairagePublic,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Categorie = 'Espaces Verts' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenEspaceVerts,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Categorie = 'Proprete' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenProprete,\r\n" + //
+                        "\r\n" + //
+                        "    -- Top 2 des catégories des incidents les plus signalées\r\n" + //
+                        "    (SELECT Categorie FROM Incident WHERE (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout') GROUP BY Categorie ORDER BY COUNT(*) DESC LIMIT 1) AS topIncidentCategorie1,\r\n" + //
+                        "    (SELECT Categorie FROM Incident WHERE (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout') GROUP BY Categorie ORDER BY COUNT(*) DESC LIMIT 1 OFFSET 1) AS topIncidentCategorie2,\r\n" + //
+                        "\r\n" + //
+                        "    -- Tableau des incidents les plus urgents (priorité élevée, en attente de traitement)\r\n" + //
+                        "    (SELECT Id_ticket, Titre, Description, date_creation, Priorite, Statut, CodePostal_ticket \n" + //
+                                                        "FROM Incident \n" + //
+                                                        "WHERE Priorite = 3  \n" + //
+                                                        "AND Statut = 0  \n" + //
+                                                        "AND (date_creation BETWEEN ? AND ?)  \n" + //
+                                                        "AND (CodePostal_ticket = ? OR ? = 'tout')  \n" + //
+                                                        "ORDER BY date_creation ASC;\n" + //
+                                                         ");"
+        );
+        
 
         private final String query;
 
