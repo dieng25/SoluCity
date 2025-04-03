@@ -1,5 +1,8 @@
 package edu.ezip.ing1.pds.business.server;
 
+import edu.ezip.ing1.pds.business.server.RequestInterfaceCitoyenService.RequestCitoyen;
+import edu.ezip.ing1.pds.business.server.RequestInterfaceCitoyenService.RequestIncident;
+import edu.ezip.ing1.pds.business.server.RequestInterfaceCitoyenService.RequestMairie;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.commons.Response;
 import org.slf4j.Logger;
@@ -17,14 +20,20 @@ public class SoluCityService {
     private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
 
     private static SoluCityService inst = null;
-    private final InterfaceCitoyenService interfaceCitoyenService;
+    private final RequestIncident requestIncident;
+    private final RequestMairie requestMairie;
+    private final RequestCitoyen requestCitoyen;
     private final IncidentService incidentService;
+    private final SuggestionService suggestionService;
     private final DashboardRepository dashboardRepository;
 
     public SoluCityService() {
-        this.interfaceCitoyenService = InterfaceCitoyenService.getInstance();
         this.dashboardRepository = DashboardRepository.getInstance();
         this.incidentService = IncidentService.getInstance();
+        this.suggestionService = SuggestionService.getInstance();
+        this.requestIncident = RequestIncident.getInstance();
+        this.requestMairie = RequestMairie.getInstance();
+        this.requestCitoyen = RequestCitoyen.getInstance();
     }
 
 
@@ -41,15 +50,20 @@ public class SoluCityService {
 
         try {
             switch (request.getRequestOrder()) {
-                case "INSERT_CITOYEN":
                 case "INSERT_INCIDENT":
+                case "SELECT_INCIDENT":
+                case "SELECT_INCIDENT_BY_TEL":
+                    response = requestIncident.dispatch(request, connection);
+                    break;
                 case "SELECT_ALL_MAIRIES":
+                    response = requestMairie.dispatch(request, connection);
+                    break;
+                case "INSERT_CITOYEN":
                 case "SELECT_CITOYEN":
                 case "SELECT_TEL_EXIST":
-                case "SELECT_INCIDENT":
                 case "SELECT_CONNEXION":
-                case "SELECT_INCIDENT_BY_TEL":
-                    response = interfaceCitoyenService.dispatch(request, connection);
+                case "SELECT_CITOYEN_BY_TEL":
+                    response = requestCitoyen.dispatch(request, connection);
                     break;
                 case "DASHBOARD_REQUEST":
                     response = dashboardRepository.fetchDashboardData(request, connection);
@@ -59,6 +73,9 @@ public class SoluCityService {
                     break;
                 case "SELECT_ALL_INCIDENTS":
                     response = incidentService.dispatch(request, connection);
+                    break;
+                case "SELECT_ALL_SUGGESTIONS":
+                    response = suggestionService.dispatch(request, connection);
                     break;
             }
         } catch (SQLException e) {
