@@ -32,11 +32,13 @@ public class MainDashboard extends JFrame {
         buttonPanel.setLayout(new GridLayout(3, 1, 10, 10));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
 
-        JButton viewProfileButton = new JButton("Mon compte");
-        JButton settingsButton = new JButton("Parametres");
-        JButton logoutButton = new JButton("Deconnexion");
+        JButton VueEnsemble = new JButton("Vue d'ensemble");
+        VueEnsemble.addActionListener(e -> openIncidentDashboard());
+        JButton StatsIncidents = new JButton("Stats Incidents");
+        JButton StatsSuggestions = new JButton("Stats Suggestions");
+        JButton StatsMairies = new JButton("Stats Mairies");
         
-        JButton[] buttons = {viewProfileButton, settingsButton, logoutButton};
+        JButton[] buttons = {VueEnsemble, StatsIncidents, StatsSuggestions,StatsMairies };
         for (JButton btn : buttons) {
             btn.setBackground(new Color(0, 123, 255));
             btn.setForeground(Color.WHITE);
@@ -45,28 +47,29 @@ public class MainDashboard extends JFrame {
             btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         }
 
-        buttonPanel.add(viewProfileButton);
-        buttonPanel.add(settingsButton);
-        buttonPanel.add(logoutButton);
+        buttonPanel.add(VueEnsemble);
+        buttonPanel.add(StatsIncidents);
+        buttonPanel.add(StatsSuggestions);
+        buttonPanel.add(StatsMairies);
 
         backgroundPanel.add(buttonPanel, BorderLayout.CENTER);
 
         add(backgroundPanel, BorderLayout.CENTER);
 
-        JMenuBar menuBar = new JMenuBar();
+        //JMenuBar menuBar = new JMenuBar();
 
-        JMenu dashboardsMenu = new JMenu("Tableaux de bord");
+        //JMenu dashboardsMenu = new JMenu("Tableaux de bord");
 
-        JMenuItem General = new JMenuItem("Vue d'ensemble");
-        General.addActionListener(e -> openIncidentDashboard());
-        dashboardsMenu.add(General);
+        //JMenuItem General = new JMenuItem("Vue d'ensemble");
+        //General.addActionListener(e -> openIncidentDashboard());
+        //dashboardsMenu.add(General);
 
-        JMenuItem IncidentItem = new JMenuItem("Statistiques sur les incidents");
-        JMenuItem SuggestionItem = new JMenuItem("Statistiques sur les suggestions");
-        JMenuItem MairieItem = new JMenuItem("Statistiques par Mairie");
-        JMenuItem TableauItem = new JMenuItem("Tableau de bord spécifique");
+        //JMenuItem IncidentItem = new JMenuItem("Statistiques sur les incidents");
+        //JMenuItem SuggestionItem = new JMenuItem("Statistiques sur les suggestions");
+        //JMenuItem MairieItem = new JMenuItem("Statistiques par Mairie");
+        // TableauItem = new JMenuItem("Tableau de bord spécifique");
         
-        dashboardsMenu.add(General);
+        //dashboardsMenu.add(General);
         //dashboardsMenu.addSeparator();
         //dashboardsMenu.add(IncidentItem);
         //dashboardsMenu.addSeparator();
@@ -75,9 +78,9 @@ public class MainDashboard extends JFrame {
         //dashboardsMenu.add(MairieItem);
         //dashboardsMenu.addSeparator();
         //dashboardsMenu.add(TableauItem);
-        menuBar.add(dashboardsMenu);
+        //menuBar.add(dashboardsMenu);
 
-        setJMenuBar(menuBar);
+        //setJMenuBar(menuBar);
     }
 
     // fonction pour ouvrir la fenêtre qui va afficher les infos globales
