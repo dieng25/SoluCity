@@ -1,12 +1,10 @@
 package edu.ezip.ing1.pds;
-
 import edu.ezip.ing1.pds.business.dto.Fonctionnaire;
 import edu.ezip.ing1.pds.services.Mairie.FonctionnaireService;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.swing.*;
 import java.awt.*;
 

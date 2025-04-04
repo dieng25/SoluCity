@@ -69,7 +69,8 @@ public class FonctionnaireService {
         try {
             // Sérialiser la requête en JSON
             final byte[] requestBytes = objectMapper.writeValueAsBytes(request);
-
+            String fonctionnaireJson = objectMapper.writeValueAsString(fonctionnaire);
+            request.setRequestContent(fonctionnaireJson);
             AuthenticateFonctionnaireClientRequest clientRequest = new AuthenticateFonctionnaireClientRequest(
                     networkConfig,
                     0,
