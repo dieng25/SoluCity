@@ -22,39 +22,40 @@ public class FonctionnaireService {
         this.networkConfig = networkConfig;
     }
 
-    // Inscription d'un fonctionnaire
     public boolean registerFonctionnaire(Fonctionnaire fonctionnaire) {
         final ObjectMapper objectMapper = new ObjectMapper();
         final String requestId = UUID.randomUUID().toString();
         final Request request = new Request();
         request.setRequestId(requestId);
         request.setRequestOrder("REGISTER");
-
+    
         try {
-            // Sérialiser la requête en JSON
+            String fonctionnaireJson = objectMapper.writeValueAsString(fonctionnaire);
+            request.setRequestContent(fonctionnaireJson); 
+    
             final byte[] requestBytes = objectMapper.writeValueAsBytes(request);
-
+    
             RegisterFonctionnaireClientRequest clientRequest = new RegisterFonctionnaireClientRequest(
                     networkConfig,
-                    0, 
+                    0,
                     request,
                     fonctionnaire,
                     requestBytes
             );
-
-            // Attendre la réponse de la requête
+    
+          
             clientRequest.join();
+    
             return (boolean) clientRequest.getResult();
         } catch (InterruptedException e) {
-            logger.error("Thread interrupted during fonctionnaire registration.", e);
+            logger.error("Thread interrompu lors de l'inscription.", e);
             return false;
-
         } catch (IOException e) {
-            // Capturer les erreurs d'entrée/sortie (erreurs de sérialisation)
-            logger.error("Error serializing the request for fonctionnaire registration.", e);
+            logger.error("Erreur de sérialisation lors de la requête d'inscription.", e);
             return false;
         }
     }
+    
 
     // Authentification d'un fonctionnaire
     public boolean authenticateFonctionnaire(Fonctionnaire fonctionnaire) {
@@ -63,6 +64,7 @@ public class FonctionnaireService {
         final Request request = new Request();
         request.setRequestId(requestId);
         request.setRequestOrder("AUTHENTICATE");
+        
 
         try {
             // Sérialiser la requête en JSON
