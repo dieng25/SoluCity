@@ -42,7 +42,7 @@ public class FonctionnaireService {
 
         final Queries queryEnum = Enum.valueOf(FonctionnaireService.Queries.class, request.getRequestOrder());
         final ObjectMapper objectMapper = new ObjectMapper();
-        Fonctionnaire fonctionnaire = objectMapper.readValue(request.getPayload(), Fonctionnaire.class);
+        Fonctionnaire fonctionnaire = objectMapper.readValue(request.getRequestBody(), Fonctionnaire.class);
         Response response = null;
 
         switch (queryEnum) {
