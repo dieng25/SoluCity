@@ -16,7 +16,7 @@ public class FonctionnaireService {
     private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
 
     private enum Queries {
-        AUTHENTICATE("SELECT * FROM Fonctionnaire WHERE email = ? AND mdp = ?"),
+        AUTHENTICATE("SELECT * FROM Fonctionnaire WHERE email = ? AND mdp = ? AND Code_Postal = ?"),
         REGISTER("INSERT INTO Fonctionnaire (email, mdp, code_postal) VALUES (?, ?, ?)");
 
         private final String query;
@@ -63,7 +63,7 @@ public class FonctionnaireService {
         try (PreparedStatement ps = connection.prepareStatement(Queries.AUTHENTICATE.query)) {
             ps.setString(1, fonctionnaire.getEmail());
             ps.setString(2, fonctionnaire.getMdp());
-
+            ps.setString(3, fonctionnaire.getCodePostal()); 
             try (ResultSet rs = ps.executeQuery()) {
                 boolean success = rs.next(); // Si on trouve un utilisateur => login OK
                 return new Response(request.getRequestId(), String.valueOf(success));

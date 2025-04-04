@@ -64,7 +64,7 @@ public class FenetreCreationCompteFonctionnaire extends JFrame {
         String motDePasse = new String(passwordField.getPassword());
         String codePostal = codePostalField.getText();
 
-        // Validation simple
+        // controle de validation
         if (email.isEmpty() || motDePasse.isEmpty() || codePostal.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Tous les champs sont obligatoires.", "Erreur",
                     JOptionPane.ERROR_MESSAGE);
@@ -78,10 +78,9 @@ public class FenetreCreationCompteFonctionnaire extends JFrame {
 
         if (isCorrect) {
             JOptionPane.showMessageDialog(this, "Inscription réussie !", "Succès", JOptionPane.INFORMATION_MESSAGE);
-            // Fermer la fenêtre d'inscription
+            // Fermer la fenêtre d'inscription et reddirection vers la page de d'authentification
             this.dispose();
-            // Ouvrir la fenêtre de connexion
-            new FenetreConnexionFonctionnaire(); // Fenêtre de connexion après inscription
+            new FenetreConnexionFonctionnaire();
         } else {
             JOptionPane.showMessageDialog(this, "Erreur lors de l'inscription.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
