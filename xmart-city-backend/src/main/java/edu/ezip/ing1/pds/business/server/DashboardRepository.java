@@ -2,8 +2,11 @@ package edu.ezip.ing1.pds.business.server;
 
 import edu.ezip.ing1.pds.business.dto.DashboardData;
 import edu.ezip.ing1.pds.business.dto.DashboardDatas;
+import edu.ezip.ing1.pds.business.dto.Incident;
 import edu.ezip.ing1.pds.business.dto.DashboardDto.GlobalData;
 import edu.ezip.ing1.pds.business.dto.DashboardDto.GlobalDatas;
+import edu.ezip.ing1.pds.business.dto.DashboardDto.StatIncidentData;
+import edu.ezip.ing1.pds.business.dto.DashboardDto.StatIncidentDatas;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.commons.Response;
 
@@ -94,20 +97,22 @@ public class DashboardRepository {
                         "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Categorie = 'Eclairage Public' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenEclairagePublic,\r\n" + //
                         "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Categorie = 'Espaces Verts' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenEspaceVerts,\r\n" + //
                         "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Categorie = 'Proprete' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenProprete,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Categorie = 'Animaux errants ou retrouvés morts' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenAnimaux,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Categorie = 'Autres' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenAutres,\r\n" + //
                         "\r\n" + //
                         "    -- Top 2 des catégories des incidents les plus signalées\r\n" + //
                         "    (SELECT Categorie FROM Incident WHERE (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout') GROUP BY Categorie ORDER BY COUNT(*) DESC LIMIT 1) AS topIncidentCategorie1,\r\n" + //
                         "    (SELECT Categorie FROM Incident WHERE (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout') GROUP BY Categorie ORDER BY COUNT(*) DESC LIMIT 1 OFFSET 1) AS topIncidentCategorie2,\r\n" + //
                         "\r\n" + //
                         "    -- Tableau des incidents les plus urgents (priorité élevée, en attente de traitement)\r\n" + //
-                        "    (SELECT Id_ticket, Titre, Description, date_creation, Priorite, Statut, CodePostal_ticket \n" + //
-                                                        "FROM Incident \n" + //
-                                                        "WHERE Priorite = 3  \n" + //
-                                                        "AND Statut = 0  \n" + //
-                                                        "AND (date_creation BETWEEN ? AND ?)  \n" + //
-                                                        "AND (CodePostal_ticket = ? OR ? = 'tout')  \n" + //
-                                                        "ORDER BY date_creation ASC;\n" + //
-                                                         ");"
+                        "    (SELECT * \n" + //
+                                 "FROM Incident \n" + //
+                                 "WHERE Priorite = 3  \n" + //
+                                 "AND Statut = 0  \n" + //
+                                 "AND (date_creation BETWEEN ? AND ?)  \n" + //
+                                 "AND (CodePostal_ticket = ? OR ? = 'tout')  \n" + //
+                                 "ORDER BY date_creation ASC;\n" + //
+                        ");"
         );
         
 
@@ -203,6 +208,66 @@ public class DashboardRepository {
 
     }
 
+public Response fetchIncidentStatData(final Request request, final Connection connection, Date dateDebut, Date dateFin, String codePostal)
+        throws SQLException, JsonProcessingException {
+
+    final ObjectMapper objectMapper = new ObjectMapper();
+    StatIncidentDatas statIncidentDatas = new StatIncidentDatas();
+    StatIncidentData statIncidentData = new StatIncidentData();
+
+    try (PreparedStatement statPs = connection.prepareStatement(Queries.STAT_INCIDENT_REQUEST.query)) {
+        int index = 1;
+        final int NbrSousRequetes = 11; 
+        for (int i = 0; i < NbrSousRequetes; i++) {
+            statPs.setDate(index++, dateDebut);
+            statPs.setDate(index++, dateFin);
+            statPs.setString(index++, codePostal);
+            statPs.setString(index++, codePostal);
+        }
+
+        ResultSet statResult = statPs.executeQuery();
+
+        if (statResult.next()) {
+            statIncidentData.setIncidentNonResolu(statResult.getInt("incidentStatutEnAttente"));
+            statIncidentData.setIncidentEnCours(statResult.getInt("incidentStatutEnCours"));
+            statIncidentData.setIncidentResolu(statResult.getInt("incidentStatutResolus"));
+
+            statIncidentData.setDelaiVoirie(statResult.getDouble("delaiMoyenVoirie"));
+            statIncidentData.setDelaiEclairagePublic(statResult.getDouble("delaiMoyenEclairagePublic"));
+            statIncidentData.setDelaiEspaceVerts(statResult.getDouble("delaiMoyenEspaceVerts"));
+            statIncidentData.setDelaiProprete(statResult.getDouble("delaiMoyenProprete"));
+            statIncidentData.setDelaiAnimauxErrants(statResult.getDouble("delaiMoyenAnimaux"));
+            statIncidentData.setDelaiAutres(statResult.getDouble("delaiMoyenAutres"));
+
+            statIncidentData.setIncidentTop1(statResult.getString("topIncidentCategorie1"));
+            statIncidentData.setIncidentTop2(statResult.getString("topIncidentCategorie2"));
+        }
+
+        // pour les incidents urgents
+        if (statResult.getStatement().getMoreResults()) {
+            ResultSet urgentResult = statResult.getStatement().getResultSet();
+            while (urgentResult.next()) {
+                Incident incident = null;
+                try {
+                    incident = new Incident().build(urgentResult);
+                } catch (NoSuchFieldException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } 
+                statIncidentData.getIncidentsUrgents().add(incident);
+            }
+        }
+    }
+
+    statIncidentDatas.getStatIncidentDataSet().add(statIncidentData);
+    return new Response(request.getRequestId(), objectMapper.writeValueAsString(statIncidentDatas));
+}
 
 public final Response dispatch(final Request request, final Connection connection, Date dateDebut, Date dateFin, String codePostal)
     throws InvocationTargetException, IllegalAccessException, SQLException, IOException {
@@ -215,6 +280,9 @@ switch(queryEnum) {
         break;
     case GLOBAL_REQUEST:
         response = fetchGlobalData(request, connection, dateDebut, dateFin, codePostal);
+        break;
+    case STAT_INCIDENT_REQUEST:
+        response = fetchIncidentStatData(request, connection, dateDebut, dateFin, codePostal);
         break;
     default:
         break;

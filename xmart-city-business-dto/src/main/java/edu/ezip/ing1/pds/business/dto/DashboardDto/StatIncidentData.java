@@ -3,6 +3,9 @@ import java.lang.reflect.Field;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
+import edu.ezip.ing1.pds.business.dto.Incident;
+
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -21,6 +24,7 @@ public class StatIncidentData {
     private double DelaiAutres;
     private String IncidentTop1;
     private String IncidentTop2;
+    private List<Incident> incidentsUrgents;
 
     // Getters
     public int getIncidentNonResolu() {
@@ -65,6 +69,10 @@ public class StatIncidentData {
 
     public String getIncidentTop2() {
         return IncidentTop2;
+    }
+
+    public List<Incident> getIncidentsUrgents() {
+        return incidentsUrgents;
     }
 
     @JsonProperty("incident_non_resolu")
@@ -122,18 +130,23 @@ public class StatIncidentData {
         this.IncidentTop2 = IncidentTop2;
     }
 
+    @JsonProperty("incident_urgents")
+    public void setIncidentsUrgents(List<Incident> incidentsUrgents) {
+        this.incidentsUrgents = incidentsUrgents;
+    }
+
     public StatIncidentData build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
         setFieldsFromResultSet(resultSet, "IncidentNonResolu", "IncidentEnCours", 
                 "IncidentResolu", "DelaiVoirie",  "DelaiEclairagePublic", "DelaiEspaceVerts", 
-                "DelaiProprete", "DelaiAnimauxErrants", "DelaiAutres", "IncidentTop1", "IncidentTop2");
+                "DelaiProprete", "DelaiAnimauxErrants", "DelaiAutres", "IncidentTop1", "IncidentTop2, incidentsUrgents");
         return this;
     }
 
     public final PreparedStatement build(PreparedStatement preparedStatement)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
         return buildPreparedStatement(preparedStatement, IncidentNonResolu, IncidentEnCours, 
-                IncidentResolu, DelaiVoirie, DelaiEclairagePublic, DelaiEspaceVerts, DelaiProprete, DelaiAnimauxErrants, DelaiAutres, IncidentTop1, IncidentTop2);
+                IncidentResolu, DelaiVoirie, DelaiEclairagePublic, DelaiEspaceVerts, DelaiProprete, DelaiAnimauxErrants, DelaiAutres, IncidentTop1, IncidentTop2, incidentsUrgents);
     }
 
     private void setFieldsFromResultSet(final ResultSet resultSet, final String... fieldNames)
@@ -155,6 +168,15 @@ public class StatIncidentData {
                 preparedStatement.setDouble(++ix, (Double) fieldValue);
             } else if (fieldValue instanceof String) {
                 preparedStatement.setString(++ix, (String) fieldValue);
+            } else if (fieldValue instanceof List<?>) {
+                List<?> list = (List<?>) fieldValue;
+                for (Object item : list) {
+                    if (item instanceof Integer) {
+                        preparedStatement.setInt(++ix, (Integer) item);
+                    } else if (item instanceof String) {
+                        preparedStatement.setString(++ix, (String) item);
+                    }
+                }
             }
         }
         return preparedStatement;
@@ -174,6 +196,7 @@ public class StatIncidentData {
                 ", DelaiAutres=" + DelaiAutres +
                 ", IncidentTop1='" + IncidentTop1 + '\'' +
                 ", IncidentTop2='" + IncidentTop2 + '\'' +
+                ", incidentsUrgents='" + incidentsUrgents + '\'' +
                 '}';
     }
 }

@@ -35,6 +35,7 @@ public class MainDashboard extends JFrame {
         JButton VueEnsemble = new JButton("Vue d'ensemble");
         VueEnsemble.addActionListener(e -> openIncidentDashboard());
         JButton StatsIncidents = new JButton("Stats Incidents");
+        StatsIncidents.addActionListener(e -> openIncidentStats());
         JButton StatsSuggestions = new JButton("Stats Suggestions");
         JButton StatsMairies = new JButton("Stats Mairies");
         
@@ -89,6 +90,22 @@ public class MainDashboard extends JFrame {
             try {
                 try {
                     new GlobalIHM();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                //setVisible(true);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+    // fonction pour ouvrir la fenêtre qui va afficher les stats incidents
+    private void openIncidentStats() {
+        SwingUtilities.invokeLater(() -> {
+            try {
+                try {
+                    new IncidentIHM();
                 } catch (IOException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
