@@ -23,9 +23,9 @@ public class FenetreCreationCompteFonctionnaire extends JFrame {
     public FenetreCreationCompteFonctionnaire() {
         setTitle("Inscription Fonctionnaire");
         setLayout(new GridLayout(4, 2, 10, 10));
-        setSize(400, 250);
+        setSize(700, 650);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        // setLocationRelativeTo(null);
 
         // Charger la configuration réseau
         try {

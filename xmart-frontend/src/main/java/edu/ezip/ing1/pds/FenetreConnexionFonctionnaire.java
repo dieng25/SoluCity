@@ -17,11 +17,12 @@ public class FenetreConnexionFonctionnaire extends JFrame {
     private JTextField emailField, codePostalField;
     private JPasswordField passwordField;
     private JButton submitButton;
+    private JButton registerButton;
 
     public FenetreConnexionFonctionnaire() {
         setTitle("Connexion Fonctionnaire");
         setLayout(new GridLayout(4, 2, 10, 10));
-        setSize(400, 250);
+        setSize(650, 700);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -53,6 +54,10 @@ public class FenetreConnexionFonctionnaire extends JFrame {
         submitButton = new JButton("Se connecter");
         submitButton.addActionListener(e -> authentifierFonctionnaire());
         add(submitButton);
+        
+        registerButton = new JButton("Creer un compte");
+        registerButton.addActionListener(e -> new FenetreCreationCompteFonctionnaire());
+        add(registerButton);
 
         setVisible(true);
     }
