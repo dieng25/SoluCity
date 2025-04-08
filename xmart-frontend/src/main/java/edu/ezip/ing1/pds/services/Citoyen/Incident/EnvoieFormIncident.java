@@ -73,7 +73,7 @@ public class EnvoieFormIncident implements ActionListener {
                     "Erreur", JOptionPane.ERROR_MESSAGE);
         }
 
-        Incident incident = new Incident(titre, description, date, categorie, 0, cp, priorite, null, tel, cp);
+        Incident incident = new Incident(titre, description, date, categorie, 0, cp, priorite, null, tel, cp, categorie);
         IncidentService incidentService = new IncidentService(networkConfig);
         try {
             incidentService.insertIncident(incident);

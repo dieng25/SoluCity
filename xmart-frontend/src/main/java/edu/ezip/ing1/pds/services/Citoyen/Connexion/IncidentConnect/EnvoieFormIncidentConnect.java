@@ -44,7 +44,7 @@ public class EnvoieFormIncidentConnect implements ActionListener {
 
         final NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
 
-        Incident incident = new Incident(titre, description, date, categorie, 0, cp, priorite, null, tel, cp);
+        Incident incident = new Incident(titre, description, date, categorie, 0, cp, priorite, null, tel, cp, categorie);
         IncidentService incidentService = new IncidentService(networkConfig);
         JOptionPane.showMessageDialog(form, "Le Ticket Incident a bien été envoyé.  ",
                 "Succès", JOptionPane.INFORMATION_MESSAGE);
