@@ -23,7 +23,8 @@ public class FormIncidentConnect extends ConfirmeExit {
     private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
     private final static String networkConfigFile = "network.yaml";
 
-    private JTextField telField, titreField;
+    private JTextField titreField;
+    private JLabel telField;
     private JTextArea descriptionArea;
     private JComboBox<String> cpField, prioriteBox;
     private String categorie;
@@ -58,7 +59,7 @@ public class FormIncidentConnect extends ConfirmeExit {
         formPanel.add(new JLabel(citoyen.getPrenom()));
 
         formPanel.add(new JLabel("Numéro de téléphone: "));
-        telField = new JTextField(citoyen.getTelNum());
+        telField = new JLabel(citoyen.getTelNum());
         formPanel.add(telField);
 
         formPanel.add(new JLabel("Email: "));
