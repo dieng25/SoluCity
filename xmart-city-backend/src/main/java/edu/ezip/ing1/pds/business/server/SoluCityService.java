@@ -3,6 +3,7 @@ package edu.ezip.ing1.pds.business.server;
 import edu.ezip.ing1.pds.business.server.RequestInterfaceCitoyenService.RequestCitoyen;
 import edu.ezip.ing1.pds.business.server.RequestInterfaceCitoyenService.RequestIncident;
 import edu.ezip.ing1.pds.business.server.RequestInterfaceCitoyenService.RequestMairie;
+import edu.ezip.ing1.pds.business.server.RequestInterfaceCitoyenService.ResquestCategorieIncident;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.commons.Response;
 import org.slf4j.Logger;
@@ -23,6 +24,7 @@ public class SoluCityService {
     private final RequestIncident requestIncident;
     private final RequestMairie requestMairie;
     private final RequestCitoyen requestCitoyen;
+    private final ResquestCategorieIncident resquestCategorieIncident;
     private final IncidentService incidentService;
     private final SuggestionService suggestionService;
     private final FonctionnaireService fonctionnaireService;
@@ -36,6 +38,7 @@ public class SoluCityService {
         this.requestIncident = RequestIncident.getInstance();
         this.requestMairie = RequestMairie.getInstance();
         this.requestCitoyen = RequestCitoyen.getInstance();
+        this.resquestCategorieIncident = ResquestCategorieIncident.getInstance();
     }
 
 
@@ -52,6 +55,8 @@ public class SoluCityService {
 
         try {
             switch (request.getRequestOrder()) {
+                case "SELECT_ALL_CategorieIncident":
+                    response = resquestCategorieIncident.dispatch(request, connection);
                 case "INSERT_INCIDENT":
                 case "SELECT_INCIDENT":
                 case "SELECT_INCIDENT_BY_TEL":
