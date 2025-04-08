@@ -25,12 +25,14 @@ public class SoluCityService {
     private final RequestCitoyen requestCitoyen;
     private final IncidentService incidentService;
     private final SuggestionService suggestionService;
+    private final FonctionnaireService fonctionnaireService;
     private final DashboardRepository dashboardRepository;
 
     public SoluCityService() {
         this.dashboardRepository = DashboardRepository.getInstance();
         this.incidentService = IncidentService.getInstance();
         this.suggestionService = SuggestionService.getInstance();
+        this.fonctionnaireService = FonctionnaireService.getInstance();
         this.requestIncident = RequestIncident.getInstance();
         this.requestMairie = RequestMairie.getInstance();
         this.requestCitoyen = RequestCitoyen.getInstance();
@@ -76,6 +78,10 @@ public class SoluCityService {
                     break;
                 case "SELECT_ALL_SUGGESTIONS":
                     response = suggestionService.dispatch(request, connection);
+                    break;
+                case "AUTHENTICATE":
+                case "REGISTER":
+                    response = fonctionnaireService.dispatch(request, connection);
                     break;
             }
         } catch (SQLException e) {

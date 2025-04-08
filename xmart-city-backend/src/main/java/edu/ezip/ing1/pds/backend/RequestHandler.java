@@ -21,9 +21,6 @@ import java.sql.SQLException;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
-import edu.ezip.ing1.pds.business.dto.DashboardDto.DashboardFilterDTO;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Optional;
 
 
