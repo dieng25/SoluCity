@@ -21,7 +21,7 @@ import java.sql.Date;
 
 public class EnvoieFormIncident implements ActionListener {
 
-    private final static String LoggingLabel = "FrontEnd";
+    private final static String LoggingLabel = "FrontEnd - EnvoieFormIncident";
     private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
     private final static String networkConfigFile = "network.yaml";
 
