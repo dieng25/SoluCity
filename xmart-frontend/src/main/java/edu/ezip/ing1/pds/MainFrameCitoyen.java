@@ -1,12 +1,10 @@
 package edu.ezip.ing1.pds;
 
 import edu.ezip.ing1.pds.services.Citoyen.Connexion.InterfaceConnexion;
-import edu.ezip.ing1.pds.services.Citoyen.Incident.CategorieIncident;
+import edu.ezip.ing1.pds.services.Citoyen.Incident.FormulaireIncident;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
 public class MainFrameCitoyen {
@@ -38,7 +36,7 @@ public class MainFrameCitoyen {
                 if (response == JOptionPane.NO_OPTION) {
                     JOptionPane.showMessageDialog(mainFrame, "Veuillez vous connecter pour déclarer un incident.");
                 } else {
-                    new CategorieIncident();
+                    new FormulaireIncident().setVisible(true);
                     mainFrame.dispose();
                 }
             });
