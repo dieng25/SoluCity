@@ -23,7 +23,7 @@ import java.sql.Date;
 
 public class FormulaireIncident extends ConfirmeExit {
 
-    private final static String LoggingLabel = "FrontEnd";
+    private final static String LoggingLabel = "FrontEnd - FormulaireIncident";
     private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
     private final static String networkConfigFile = "network.yaml";
 
