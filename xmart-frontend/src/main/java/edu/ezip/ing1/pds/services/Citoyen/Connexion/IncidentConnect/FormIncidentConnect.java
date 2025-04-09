@@ -1,11 +1,11 @@
 package edu.ezip.ing1.pds.services.Citoyen.Connexion.IncidentConnect;
 
-import edu.ezip.ing1.pds.business.dto.Citoyen;
-import edu.ezip.ing1.pds.business.dto.Mairie;
-import edu.ezip.ing1.pds.business.dto.Mairies;
+import edu.ezip.ing1.pds.business.dto.*;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
+import edu.ezip.ing1.pds.services.Citoyen.CategorieIncidentService;
 import edu.ezip.ing1.pds.services.Citoyen.ConfirmeExit;
+import edu.ezip.ing1.pds.services.Citoyen.Connexion.AccueilConnexion;
 import edu.ezip.ing1.pds.services.Citoyen.MairieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,14 +26,12 @@ public class FormIncidentConnect extends ConfirmeExit {
     private JTextField titreField;
     private JLabel telField;
     private JTextArea descriptionArea;
-    private JComboBox<String> cpField, prioriteBox;
-    private String categorie;
+    private JComboBox<String> categorieI, cpField, prioriteBox;
     private Date date_sql;
 
-    public FormIncidentConnect(String categorie, Citoyen citoyen) {
+    public FormIncidentConnect(Citoyen citoyen) {
         super();
         getContentPane().removeAll();
-        this.categorie = categorie;
         setTitle("Déclaration d'Incident");
         setSize(500, 600);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -43,8 +41,31 @@ public class FormIncidentConnect extends ConfirmeExit {
         formPanel.setLayout(new GridLayout(9, 2, 10, 10));
         formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        formPanel.add(new JLabel("Catégorie: "));
-        formPanel.add(new JLabel(categorie));
+        NetworkConfig networkConfig = null;
+        try {
+            networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
+            logger.debug("Load Network config file : {}", networkConfig.toString());
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+
+        try{
+            final CategorieIncidentService categorieIncidentService = new CategorieIncidentService(networkConfig);
+            CategorieIncidents categorieIncidents = categorieIncidentService.selectCategorieIncidents();
+
+            formPanel.add(new JLabel("Catégorie : "));
+            categorieI = new JComboBox<>();
+            for (CategorieIncident categorieIncident : categorieIncidents.getCategorieIncidents()) {
+                categorieI.addItem(categorieIncident.getCategorieIncident());
+            }
+            formPanel.add(categorieI);
+
+        } catch (IOException | InterruptedException e) {
+            logger.error("Erreur lors du chargement des catégorie incident", e);
+        }
+
 
         java.util.Date currentDate = new java.util.Date();
         date_sql = new Date(currentDate.getTime());
@@ -66,15 +87,7 @@ public class FormIncidentConnect extends ConfirmeExit {
         formPanel.add(new JLabel(citoyen.getEmail()));
 
 
-        NetworkConfig networkConfig = null;
-        try {
-            networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
-            logger.debug("Load Network config file : {}", networkConfig.toString());
-        }catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
-                    "Erreur", JOptionPane.ERROR_MESSAGE);
-        }
+
 
 
         try{
@@ -125,7 +138,7 @@ public class FormIncidentConnect extends ConfirmeExit {
         backButton.setPreferredSize(null);
         backButton.addActionListener(e -> {
             this.dispose();
-            new CategorieIncidentConnect(citoyen).setVisible(true);
+            new AccueilConnexion(citoyen).setVisible(true);
         });
         buttonPanel.add(backButton);
 
@@ -144,7 +157,7 @@ public class FormIncidentConnect extends ConfirmeExit {
         });
     }
 
-    public String getCategorie() { return categorie; }
+    public String getCategorie() { return (String) categorieI.getSelectedItem(); }
     public String getTel() { return telField.getText(); }
     public String getCodePostal() { return (String) cpField.getSelectedItem(); }
     public String getTitre() { return titreField.getText(); }

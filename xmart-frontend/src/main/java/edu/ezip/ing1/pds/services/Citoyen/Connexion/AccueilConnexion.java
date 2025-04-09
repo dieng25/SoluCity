@@ -3,7 +3,7 @@ package edu.ezip.ing1.pds.services.Citoyen.Connexion;
 import edu.ezip.ing1.pds.business.dto.Citoyen;
 import edu.ezip.ing1.pds.services.Citoyen.ConfirmeExit;
 import edu.ezip.ing1.pds.services.Citoyen.Connexion.ConsulteIncident.RecupIncident;
-import edu.ezip.ing1.pds.services.Citoyen.Connexion.IncidentConnect.CategorieIncidentConnect;
+import edu.ezip.ing1.pds.services.Citoyen.Connexion.IncidentConnect.FormIncidentConnect;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +34,7 @@ public class AccueilConnexion extends ConfirmeExit {
         incidentButton.setFont(new Font("Arial", Font.PLAIN, 12));
         incidentButton.setPreferredSize(null);
         incidentButton.addActionListener(e -> {
-                    new CategorieIncidentConnect(citoyen);
+                    new FormIncidentConnect(citoyen);
                     dispose();
         });
         buttonPanel.add(incidentButton);

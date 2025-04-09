@@ -50,6 +50,7 @@ public class FormulaireIncident extends ConfirmeExit {
             networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
             logger.debug("Load Network config file : {}", networkConfig.toString());
         }catch (Exception e) {
+            logger.error("erreur de connexion au serveur", e);
             JOptionPane.showMessageDialog(this,
                     "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
                     "Erreur", JOptionPane.ERROR_MESSAGE);
