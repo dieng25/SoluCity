@@ -1,9 +1,6 @@
 package edu.ezip.ing1.pds.business.server;
 
-import edu.ezip.ing1.pds.business.server.RequestInterfaceCitoyenService.RequestCitoyen;
-import edu.ezip.ing1.pds.business.server.RequestInterfaceCitoyenService.RequestIncident;
-import edu.ezip.ing1.pds.business.server.RequestInterfaceCitoyenService.RequestMairie;
-import edu.ezip.ing1.pds.business.server.RequestInterfaceCitoyenService.ResquestCategorieIncident;
+import edu.ezip.ing1.pds.business.server.RequestInterfaceCitoyenService.*;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.commons.Response;
 import org.slf4j.Logger;
@@ -22,6 +19,7 @@ public class SoluCityService {
 
     private static SoluCityService inst = null;
     private final RequestIncident requestIncident;
+    private final RequestSuggestion requestSuggestion;
     private final RequestMairie requestMairie;
     private final RequestCitoyen requestCitoyen;
     private final ResquestCategorieIncident resquestCategorieIncident;
@@ -29,6 +27,7 @@ public class SoluCityService {
     private final SuggestionService suggestionService;
     private final FonctionnaireService fonctionnaireService;
     private final DashboardRepository dashboardRepository;
+    private final RequestCategorieSuggestion requestCategorieSuggestion;
 
     public SoluCityService() {
         this.dashboardRepository = DashboardRepository.getInstance();
@@ -39,6 +38,8 @@ public class SoluCityService {
         this.requestMairie = RequestMairie.getInstance();
         this.requestCitoyen = RequestCitoyen.getInstance();
         this.resquestCategorieIncident = ResquestCategorieIncident.getInstance();
+        this.requestSuggestion = RequestSuggestion.getInstance();
+        this.requestCategorieSuggestion = RequestCategorieSuggestion.getInstance();
     }
 
 
@@ -55,6 +56,13 @@ public class SoluCityService {
 
         try {
             switch (request.getRequestOrder()) {
+                case "SELECT_ALL_CategorieSuggestion":
+                    response = requestCategorieSuggestion.dispatch(request, connection);
+                case "INSERT_SUGGESTION":
+                case "SELECT_SUGGESTION":
+                case "SELECT_SUGGESTION_BY_TEL":
+                    response = requestSuggestion.dispatch(request, connection);
+                    break;
                 case "SELECT_ALL_CategorieIncident":
                     response = resquestCategorieIncident.dispatch(request, connection);
                 case "INSERT_INCIDENT":

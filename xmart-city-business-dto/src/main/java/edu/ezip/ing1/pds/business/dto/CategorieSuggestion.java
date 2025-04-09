@@ -14,18 +14,19 @@ public class CategorieSuggestion {
 
     public CategorieSuggestion() {}
 
-    public CategorieSuggestion(String CategorieIncident) {
-        this.CategorieSuggestion = CategorieIncident;
+    public CategorieSuggestion(String CategorieSuggestion) {
+        this.CategorieSuggestion = CategorieSuggestion;
     }
 
     public String getCategorieSuggestion() {
         return CategorieSuggestion;
     }
 
-    @JsonProperty("categorieI_CategorieIncident")
-    public void setCategorieSuggestion(String CategorieIncident) {
-        this.CategorieSuggestion = CategorieIncident;
+    @JsonProperty("categorieS_CategorieSuggestion")
+    public void setCategorieSuggestion(String CategorieS) {
+        this.CategorieSuggestion = CategorieSuggestion;
     }
+
 
     public final CategorieSuggestion build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
