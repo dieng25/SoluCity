@@ -58,10 +58,10 @@ public class SuggestionService {
             Suggestion suggestion = new Suggestion();
             suggestion.setTitre(res.getString("Titre"));
             suggestion.setDescription(res.getString("Description"));
-            suggestion.setDate(res.getString("date_creation"));
+            suggestion.setDate_creation(res.getDate("date_creation"));
             suggestion.setCategorie(res.getString("Categorie"));
             suggestion.setStatut(res.getInt("Statut"));
-            suggestion.setCP_Ticket(res.getInt("CodePostal_ticket"));
+            suggestion.setCP_Ticket(res.getString("CodePostal_ticket"));
 
             suggestions.add(suggestion);
              
