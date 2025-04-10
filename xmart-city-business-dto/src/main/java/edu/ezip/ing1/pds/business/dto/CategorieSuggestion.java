@@ -23,7 +23,7 @@ public class CategorieSuggestion {
     }
 
     @JsonProperty("categorieS_CategorieSuggestion")
-    public void setCategorieSuggestion(String CategorieS) {
+    public void setCategorieSuggestion(String CategorieSuggestion) {
         this.CategorieSuggestion = CategorieSuggestion;
     }
 
