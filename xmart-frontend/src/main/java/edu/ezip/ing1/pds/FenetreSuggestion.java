@@ -73,7 +73,7 @@ public class FenetreSuggestion extends JFrame {
                 tableModel.addRow(new Object[]{
                         suggestion.getTitre(),
                         suggestion.getDescription(),
-                        suggestion.getDate(),
+                        suggestion.getDate_creation(),
                         suggestion.getCP_Ticket(),
                         statutString
                 });

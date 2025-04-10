@@ -2,6 +2,7 @@ package edu.ezip.ing1.pds;
 
 import edu.ezip.ing1.pds.services.Citoyen.Connexion.InterfaceConnexion;
 import edu.ezip.ing1.pds.services.Citoyen.Incident.FormulaireIncident;
+import edu.ezip.ing1.pds.services.Citoyen.Suggestion.FormulaireSuggestion;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,7 +52,8 @@ public class MainFrameCitoyen {
                 if (response == JOptionPane.NO_OPTION) {
                     JOptionPane.showMessageDialog(mainFrame, "Veuillez vous connecter pour faire une suggestion.");
                 } else {
-                    JOptionPane.showMessageDialog(mainFrame, "Fonctionnalité Suggestion à implémenter.");
+                    new FormulaireSuggestion().setVisible(true);
+                    mainFrame.dispose();
                 }
             });
 
