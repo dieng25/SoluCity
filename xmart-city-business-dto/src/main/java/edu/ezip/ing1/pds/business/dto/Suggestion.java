@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import java.lang.reflect.Field;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,27 +13,42 @@ import java.sql.SQLException;
 
 @JsonRootName(value = "suggestion")
 public class Suggestion {
+    private int IdTicket;
     private String Titre;
     private String Description;
-    private String Date;
+    private Date date_creation;
     private String Categorie;
     private int Statut;
-    private int CP_Ticket;
+    private String CP_Ticket;
+    private Date date_cloture;
+    private String Commentaire;
+    private String telNum;
+    private String CP;
+    private String CategorieSuggestion;
 
     public Suggestion() {
         this.Statut = 0;
     }
 
 
-    public Suggestion(String Titre, String Description, String Date, String Categorie, int Statut, int CP_Ticket) {
+    public Suggestion(String Titre, String Description, Date date_creation, String Categorie, int Statut, String CP_Ticket, Date date_cloture, String Commentaire, String telNum, String CP, String CategorieSuggestion) {
         this.Titre = Titre;
         this.Description = Description;
-        this.Date = Date;
+        this.date_creation = date_creation;
         this.Categorie = Categorie;
         this.Statut = Statut;
         this.CP_Ticket = CP_Ticket;
+        this.date_cloture = date_cloture;
+        this.Commentaire = Commentaire;
+        this.telNum = telNum;
+        this.CP = CP;
+        this.CategorieSuggestion = CategorieSuggestion;
     }
 
+
+    public int getIdTicket() {
+        return IdTicket;
+    }
 
     public String getTitre() {
         return Titre;
@@ -42,8 +58,8 @@ public class Suggestion {
         return Description;
     }
 
-    public String getDate() {
-        return Date;
+    public Date getDate_creation() {
+        return date_creation;
     }
 
     public String getCategorie() {
@@ -54,13 +70,34 @@ public class Suggestion {
         return Statut;
     }
 
-    public int getCP_Ticket() {
+    public String getCP_Ticket() {
         return CP_Ticket;
     }
-    public void setCP_Ticket(int CP_Ticket) {
-        this.CP_Ticket = CP_Ticket;
+
+    public Date getDate_cloture() {
+        return date_cloture;
     }
 
+    public String getCommentaire() {
+        return Commentaire;
+    }
+
+    public String getTelNum() {
+        return telNum;
+    }
+
+    public String getCP() {
+        return CP;
+    }
+
+    public String getCategorieSuggestion() {
+        return CategorieSuggestion;
+    }
+
+    @JsonProperty("suggestion_IdTicket")
+    public void setIdTicket(int IdTicket) {
+        this.IdTicket = IdTicket;
+    }
 
     @JsonProperty("suggestion_Titre")
     public void setTitre(String Titre) {
@@ -72,9 +109,9 @@ public class Suggestion {
         this.Description = Description;
     }
 
-    @JsonProperty("suggestion_Date")
-    public void setDate(String Date) {
-        this.Date = Date;
+    @JsonProperty("suggestion_DateCreation")
+    public void setDate_creation(Date date_creation) {
+        this.date_creation = date_creation;
     }
 
     @JsonProperty("suggestion_Categorie")
@@ -87,15 +124,46 @@ public class Suggestion {
         this.Statut = Statut;
     }
 
+    @JsonProperty("suggestion_CPTicket")
+    public void setCP_Ticket(String CP_Ticket) {
+        this.CP_Ticket = CP_Ticket;
+    }
+
+    @JsonProperty("suggestion_DateCloture")
+    public void setDate_cloture(Date date_cloture) {
+        this.date_cloture = date_cloture;
+    }
+
+    @JsonProperty("suggestion_Commentaire")
+    public void setCommentaire(String Commentaire) {
+        this.Commentaire = Commentaire;
+    }
+
+    @JsonProperty("suggestion_TelNum")
+    public void setTelNum(String telNum) {
+        this.telNum = telNum;
+    }
+
+    @JsonProperty("suggestion_CP")
+    public void setCP(String CP) {
+        this.CP = CP;
+    }
+
+    @JsonProperty("suggestion_CategorieSuggestion")
+    public void setCategorieSuggestion(String CategorieSuggestion) {
+        this.CategorieSuggestion = CategorieSuggestion;
+    }
+
+
     public final Suggestion build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        setFieldsFromResultSet(resultSet,  "Titre", "Description", "date_emis", "Catégorie", "statut", "CodePostal_ticket");
+        setFieldsFromResultSet(resultSet,  "Id_ticket", "Titre", "Description", "date_creation", "Categorie", "Statut", "CodePostal_ticket", "date_cloture", "Commentaire",  "Code_Postal", "tel_num", "CategorieIncident");
         return this;
     }
 
     public final PreparedStatement build(PreparedStatement preparedStatement)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        return buildPreparedStatement(preparedStatement, Titre, Description, Date, Categorie, Statut, CP_Ticket);
+        return buildPreparedStatement(preparedStatement, IdTicket, Titre, Description, date_creation, Categorie, Statut, CP_Ticket, date_cloture, Commentaire, telNum, CP, CategorieSuggestion);
     }
 
     private void setFieldsFromResultSet(final ResultSet resultSet, final String... fieldNames)
@@ -118,12 +186,15 @@ public class Suggestion {
     @Override
     public String toString() {
         return "Suggestion{" +
-                ", Titre='" + Titre + '\'' +
+                "IdTicket=" + IdTicket +
+                "Titre='" + Titre + '\'' +
                 ", Description='" + Description + '\'' +
-                ", Date='" + Date + '\'' +
+                ", date_creation='" + date_creation + '\'' +
                 ", Categorie='" + Categorie + '\'' +
-                ", Statut=" + Statut +
-                ", CP_Ticket=" + CP_Ticket +
+                ", Statut=" + Statut + '\'' +
+                ", CP_Ticket=" + CP_Ticket + '\'' +
+                ", date_cloture=" + date_cloture +
+                ", Commentaire='" + Commentaire + '\'' +
                 '}';
     }
 }

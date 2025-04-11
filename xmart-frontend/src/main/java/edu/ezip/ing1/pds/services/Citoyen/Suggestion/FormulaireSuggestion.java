@@ -1,11 +1,11 @@
-package edu.ezip.ing1.pds.services.Citoyen.Connexion.IncidentConnect;
+package edu.ezip.ing1.pds.services.Citoyen.Suggestion;
 
+import edu.ezip.ing1.pds.MainFrameCitoyen;
 import edu.ezip.ing1.pds.business.dto.*;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
-import edu.ezip.ing1.pds.services.Citoyen.CategorieIncidentService;
+import edu.ezip.ing1.pds.services.Citoyen.CategorieSuggestionService;
 import edu.ezip.ing1.pds.services.Citoyen.ConfirmeExit;
-import edu.ezip.ing1.pds.services.Citoyen.Connexion.AccueilConnexion;
 import edu.ezip.ing1.pds.services.Citoyen.MairieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,22 +17,22 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.Date;
 
-public class FormIncidentConnect extends ConfirmeExit {
+public class FormulaireSuggestion extends ConfirmeExit {
 
-    private final static String LoggingLabel = "FrontEnd";
+    private final static String LoggingLabel = "FrontEnd - FormulaireSuggestion";
     private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
     private final static String networkConfigFile = "network.yaml";
 
-    private JTextField titreField;
-    private JLabel telField;
+    private JTextField nomField, prenomField, telField, emailField, titreField;
     private JTextArea descriptionArea;
-    private JComboBox<String> categorieI, cpField, prioriteBox;
+    private JComboBox<String> categorieS, cpField, prioriteBox;
+    private String categorie;
     private Date date_sql;
 
-    public FormIncidentConnect(Citoyen citoyen) {
+    public FormulaireSuggestion() {
         super();
         getContentPane().removeAll();
-        setTitle("Déclaration d'Incident");
+        setTitle("Déclaration de Suggestion");
         setSize(500, 600);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -46,21 +46,22 @@ public class FormIncidentConnect extends ConfirmeExit {
             networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
             logger.debug("Load Network config file : {}", networkConfig.toString());
         }catch (Exception e) {
+            logger.error("erreur de connexion au serveur", e);
             JOptionPane.showMessageDialog(this,
                     "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
                     "Erreur", JOptionPane.ERROR_MESSAGE);
         }
 
         try{
-            final CategorieIncidentService categorieIncidentService = new CategorieIncidentService(networkConfig);
-            CategorieIncidents categorieIncidents = categorieIncidentService.selectCategorieIncidents();
+            final CategorieSuggestionService categorieSuggestionService = new CategorieSuggestionService(networkConfig);
+            CategorieSuggestions categorieSuggestions = categorieSuggestionService.selectCategorieSuggestions();
 
             formPanel.add(new JLabel("Catégorie : "));
-            categorieI = new JComboBox<>();
-            for (CategorieIncident categorieIncident : categorieIncidents.getCategorieIncidents()) {
-                categorieI.addItem(categorieIncident.getCategorieIncident());
+            categorieS = new JComboBox<>();
+            for (CategorieSuggestion categorieSuggestion : categorieSuggestions.getCategorieSuggestions()) {
+                categorieS.addItem(categorieSuggestion.getCategorieSuggestion());
             }
-            formPanel.add(categorieI);
+            formPanel.add(categorieS);
 
         } catch (IOException | InterruptedException e) {
             logger.error("Erreur lors du chargement des catégorie incident", e);
@@ -74,20 +75,22 @@ public class FormIncidentConnect extends ConfirmeExit {
         formPanel.add(new JLabel(date_sql.toString()));
 
         formPanel.add(new JLabel("Nom: "));
-        formPanel.add(new JLabel(citoyen.getNom()));
+        nomField = new JTextField();
+        formPanel.add(nomField);
+        setUppercaseKeyListener(nomField);
 
         formPanel.add(new JLabel("Prénom: "));
-        formPanel.add(new JLabel(citoyen.getPrenom()));
+        prenomField = new JTextField();
+        formPanel.add(prenomField);
+        setUppercaseKeyListener(prenomField);
 
         formPanel.add(new JLabel("Numéro de téléphone: "));
-        telField = new JLabel(citoyen.getTelNum());
+        telField = new JTextField();
         formPanel.add(telField);
 
         formPanel.add(new JLabel("Email: "));
-        formPanel.add(new JLabel(citoyen.getEmail()));
-
-
-
+        emailField = new JTextField();
+        formPanel.add(emailField);
 
 
         try{
@@ -110,9 +113,6 @@ public class FormIncidentConnect extends ConfirmeExit {
         formPanel.add(titreField);
         setUppercaseKeyListener(titreField);
 
-        formPanel.add(new JLabel("Priorité: "));
-        prioriteBox = new JComboBox<>(new String[]{"", "Faible", "Moyen", "Élevée"});
-        formPanel.add(prioriteBox);
 
         JPanel descriptionPanel = new JPanel(new BorderLayout());
         descriptionPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
@@ -131,14 +131,14 @@ public class FormIncidentConnect extends ConfirmeExit {
 
         JButton sendButton = new JButton("Envoyer");
         sendButton.setPreferredSize(null);
-        sendButton.addActionListener(new EnvoieFormIncidentConnect(this, citoyen));
+        sendButton.addActionListener(new EnvoieFormSuggestion(this));
         buttonPanel.add(sendButton);
 
         JButton backButton = new JButton("Retour");
         backButton.setPreferredSize(null);
         backButton.addActionListener(e -> {
             this.dispose();
-            new AccueilConnexion(citoyen).setVisible(true);
+            new MainFrameCitoyen();
         });
         buttonPanel.add(backButton);
 
@@ -157,17 +157,14 @@ public class FormIncidentConnect extends ConfirmeExit {
         });
     }
 
-    public String getCategorie() { return (String) categorieI.getSelectedItem(); }
+    public String getCategorie() { return (String) categorieS.getSelectedItem(); }
+    public String getNom() { return nomField.getText(); }
+    public String getPrenom() { return prenomField.getText(); }
     public String getTel() { return telField.getText(); }
+    public String getEmail() { return emailField.getText(); }
     public String getCodePostal() { return (String) cpField.getSelectedItem(); }
     public String getTitre() { return titreField.getText(); }
     public String getDescription() { return descriptionArea.getText(); }
     public Date getDate() { return date_sql; }
-    public String getPriorite() { return (String) prioriteBox.getSelectedItem(); }
 
-
-
-    }
-
-
-
+}

@@ -3,7 +3,9 @@ package edu.ezip.ing1.pds.services.Citoyen.Connexion;
 import edu.ezip.ing1.pds.business.dto.Citoyen;
 import edu.ezip.ing1.pds.services.Citoyen.ConfirmeExit;
 import edu.ezip.ing1.pds.services.Citoyen.Connexion.ConsulteIncident.RecupIncident;
-import edu.ezip.ing1.pds.services.Citoyen.Connexion.IncidentConnect.CategorieIncidentConnect;
+import edu.ezip.ing1.pds.services.Citoyen.Connexion.ConsulteSuggestion.RecupSuggestion;
+import edu.ezip.ing1.pds.services.Citoyen.Connexion.IncidentConnect.FormIncidentConnect;
+import edu.ezip.ing1.pds.services.Citoyen.Connexion.SuggestionConnect.FormSuggestionConnect;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +36,7 @@ public class AccueilConnexion extends ConfirmeExit {
         incidentButton.setFont(new Font("Arial", Font.PLAIN, 12));
         incidentButton.setPreferredSize(null);
         incidentButton.addActionListener(e -> {
-                    new CategorieIncidentConnect(citoyen);
+                    new FormIncidentConnect(citoyen);
                     dispose();
         });
         buttonPanel.add(incidentButton);
@@ -43,7 +45,8 @@ public class AccueilConnexion extends ConfirmeExit {
         suggestionButton.setFont(new Font("Arial", Font.PLAIN, 12));
         suggestionButton.setPreferredSize(null);
         suggestionButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Fonctionnalité Suggestion à implémenter.");
+                new FormSuggestionConnect(citoyen);
+                dispose();
         });
         buttonPanel.add(suggestionButton);
 
@@ -70,7 +73,9 @@ public class AccueilConnexion extends ConfirmeExit {
                 recupIncident.actionPerformed(new ActionEvent(consulterTicketButton, ActionEvent.ACTION_PERFORMED, null));
 
             } else if (choice == 1) {
-                JOptionPane.showMessageDialog(this, "Fonctionnalité Suggestion à implémenter.");
+                dispose();
+                RecupSuggestion recupSuggestion = new RecupSuggestion(citoyen);
+                recupSuggestion.actionPerformed(new ActionEvent(consulterTicketButton, ActionEvent.ACTION_PERFORMED, null));
             }
 
         });

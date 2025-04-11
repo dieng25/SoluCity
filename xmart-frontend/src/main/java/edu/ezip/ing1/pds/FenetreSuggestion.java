@@ -67,12 +67,15 @@ public class FenetreSuggestion extends JFrame {
 
             // Remplir le tableau avec les suggestions
             for (Suggestion suggestion : suggestions.getSuggestions()) {
+
+                 // Conversion du statut en chaîne
+                String statutString = convertStatutToString(suggestion.getStatut());
                 tableModel.addRow(new Object[]{
                         suggestion.getTitre(),
                         suggestion.getDescription(),
-                        suggestion.getDate(),
+                        suggestion.getDate_creation(),
                         suggestion.getCP_Ticket(),
-                        suggestion.getStatut()
+                        statutString
                 });
             }
         } catch (IOException | InterruptedException e) {
@@ -83,6 +86,18 @@ public class FenetreSuggestion extends JFrame {
         }
     }
 
+    private String convertStatutToString(int statut) {
+        switch (statut) {
+            case 0:
+                return "reçu";
+            case 1:
+                return "en cours de traitement";
+            case 2:
+                return "demande traitée";
+            default:
+                return "non definie";
+        }
+    }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(FenetreSuggestion::new);
     }

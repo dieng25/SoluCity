@@ -1,10 +1,14 @@
 package edu.ezip.ing1.pds.services.Citoyen.Incident;
 
 
+import edu.ezip.ing1.pds.MainFrameCitoyen;
+import edu.ezip.ing1.pds.business.dto.CategorieIncident;
+import edu.ezip.ing1.pds.business.dto.CategorieIncidents;
 import edu.ezip.ing1.pds.business.dto.Mairie;
 import edu.ezip.ing1.pds.business.dto.Mairies;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
+import edu.ezip.ing1.pds.services.Citoyen.CategorieIncidentService;
 import edu.ezip.ing1.pds.services.Citoyen.ConfirmeExit;
 import edu.ezip.ing1.pds.services.Citoyen.MairieService;
 import org.slf4j.Logger;
@@ -19,20 +23,19 @@ import java.sql.Date;
 
 public class FormulaireIncident extends ConfirmeExit {
 
-    private final static String LoggingLabel = "FrontEnd";
+    private final static String LoggingLabel = "FrontEnd - FormulaireIncident";
     private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
     private final static String networkConfigFile = "network.yaml";
 
     private JTextField nomField, prenomField, telField, emailField, titreField;
     private JTextArea descriptionArea;
-    private JComboBox<String> cpField, prioriteBox;
+    private JComboBox<String> categorieI, cpField, prioriteBox;
     private String categorie;
     private Date date_sql;
 
-    public FormulaireIncident(String categorie) {
+    public FormulaireIncident() {
         super();
         getContentPane().removeAll();
-        this.categorie = categorie;
         setTitle("Déclaration d'Incident");
         setSize(500, 600);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -42,8 +45,32 @@ public class FormulaireIncident extends ConfirmeExit {
         formPanel.setLayout(new GridLayout(9, 2, 10, 10));
         formPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        formPanel.add(new JLabel("Catégorie: "));
-        formPanel.add(new JLabel(categorie));
+        NetworkConfig networkConfig = null;
+        try {
+            networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
+            logger.debug("Load Network config file : {}", networkConfig.toString());
+        }catch (Exception e) {
+            logger.error("erreur de connexion au serveur", e);
+            JOptionPane.showMessageDialog(this,
+                    "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
+
+        try{
+            final CategorieIncidentService categorieIncidentService = new CategorieIncidentService(networkConfig);
+            CategorieIncidents categorieIncidents = categorieIncidentService.selectCategorieIncidents();
+
+            formPanel.add(new JLabel("Catégorie : "));
+            categorieI = new JComboBox<>();
+            for (CategorieIncident categorieIncident : categorieIncidents.getCategorieIncidents()) {
+                categorieI.addItem(categorieIncident.getCategorieIncident());
+            }
+            formPanel.add(categorieI);
+
+        } catch (IOException | InterruptedException e) {
+            logger.error("Erreur lors du chargement des catégorie incident", e);
+        }
+
 
         java.util.Date currentDate = new java.util.Date();
         date_sql = new Date(currentDate.getTime());
@@ -68,16 +95,6 @@ public class FormulaireIncident extends ConfirmeExit {
         formPanel.add(new JLabel("Email: "));
         emailField = new JTextField();
         formPanel.add(emailField);
-
-        NetworkConfig networkConfig = null;
-        try {
-            networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
-            logger.debug("Load Network config file : {}", networkConfig.toString());
-        }catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
-                    "Erreur", JOptionPane.ERROR_MESSAGE);
-        }
 
 
         try{
@@ -128,7 +145,7 @@ public class FormulaireIncident extends ConfirmeExit {
         backButton.setPreferredSize(null);
         backButton.addActionListener(e -> {
             this.dispose();
-            new CategorieIncident().setVisible(true);
+            new MainFrameCitoyen();
         });
         buttonPanel.add(backButton);
 
@@ -147,7 +164,7 @@ public class FormulaireIncident extends ConfirmeExit {
         });
     }
 
-    public String getCategorie() { return categorie; }
+    public String getCategorie() { return (String) categorieI.getSelectedItem(); }
     public String getNom() { return nomField.getText(); }
     public String getPrenom() { return prenomField.getText(); }
     public String getTel() { return telField.getText(); }

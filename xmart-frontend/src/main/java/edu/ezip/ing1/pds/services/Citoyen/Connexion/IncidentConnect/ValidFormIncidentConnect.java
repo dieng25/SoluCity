@@ -5,8 +5,7 @@ import javax.swing.*;
 public class ValidFormIncidentConnect {
 
     public static boolean isValid(FormIncidentConnect form){
-        if ( form.getTel().isEmpty() || form.getCodePostal().isEmpty() || form.getTitre().isEmpty() ||
-                form.getDescription().isEmpty()) {
+        if (form.getTitre().isEmpty() || form.getDescription().isEmpty()) {
             JOptionPane.showMessageDialog(form, "Tous les champs doivent être remplis.", "Erreur", JOptionPane.ERROR_MESSAGE);
             return false;
         }

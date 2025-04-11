@@ -1,9 +1,9 @@
-package edu.ezip.ing1.pds.services.Citoyen.Connexion.IncidentConnect;
+package edu.ezip.ing1.pds.services.Citoyen.Connexion.SuggestionConnect;
 
 import edu.ezip.ing1.pds.business.dto.*;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
-import edu.ezip.ing1.pds.services.Citoyen.CategorieIncidentService;
+import edu.ezip.ing1.pds.services.Citoyen.CategorieSuggestionService;
 import edu.ezip.ing1.pds.services.Citoyen.ConfirmeExit;
 import edu.ezip.ing1.pds.services.Citoyen.Connexion.AccueilConnexion;
 import edu.ezip.ing1.pds.services.Citoyen.MairieService;
@@ -17,7 +17,7 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.sql.Date;
 
-public class FormIncidentConnect extends ConfirmeExit {
+public class FormSuggestionConnect extends ConfirmeExit {
 
     private final static String LoggingLabel = "FrontEnd";
     private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
@@ -26,13 +26,13 @@ public class FormIncidentConnect extends ConfirmeExit {
     private JTextField titreField;
     private JLabel telField;
     private JTextArea descriptionArea;
-    private JComboBox<String> categorieI, cpField, prioriteBox;
+    private JComboBox<String> categorieS, cpField, prioriteBox;
     private Date date_sql;
 
-    public FormIncidentConnect(Citoyen citoyen) {
+    public FormSuggestionConnect(Citoyen citoyen) {
         super();
         getContentPane().removeAll();
-        setTitle("Déclaration d'Incident");
+        setTitle("Déclaration de Suggestions");
         setSize(500, 600);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -52,18 +52,18 @@ public class FormIncidentConnect extends ConfirmeExit {
         }
 
         try{
-            final CategorieIncidentService categorieIncidentService = new CategorieIncidentService(networkConfig);
-            CategorieIncidents categorieIncidents = categorieIncidentService.selectCategorieIncidents();
+            final CategorieSuggestionService categorieSuggestionService = new CategorieSuggestionService(networkConfig);
+            CategorieSuggestions categorieSuggestions = categorieSuggestionService.selectCategorieSuggestions();
 
             formPanel.add(new JLabel("Catégorie : "));
-            categorieI = new JComboBox<>();
-            for (CategorieIncident categorieIncident : categorieIncidents.getCategorieIncidents()) {
-                categorieI.addItem(categorieIncident.getCategorieIncident());
+            categorieS = new JComboBox<>();
+            for (CategorieSuggestion categorieSuggestion : categorieSuggestions.getCategorieSuggestions()) {
+                categorieS.addItem(categorieSuggestion.getCategorieSuggestion());
             }
-            formPanel.add(categorieI);
+            formPanel.add(categorieS);
 
         } catch (IOException | InterruptedException e) {
-            logger.error("Erreur lors du chargement des catégorie incident", e);
+            logger.error("Erreur lors du chargement des catégorie suggestion", e);
         }
 
 
@@ -110,9 +110,6 @@ public class FormIncidentConnect extends ConfirmeExit {
         formPanel.add(titreField);
         setUppercaseKeyListener(titreField);
 
-        formPanel.add(new JLabel("Priorité: "));
-        prioriteBox = new JComboBox<>(new String[]{"", "Faible", "Moyen", "Élevée"});
-        formPanel.add(prioriteBox);
 
         JPanel descriptionPanel = new JPanel(new BorderLayout());
         descriptionPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
@@ -131,7 +128,7 @@ public class FormIncidentConnect extends ConfirmeExit {
 
         JButton sendButton = new JButton("Envoyer");
         sendButton.setPreferredSize(null);
-        sendButton.addActionListener(new EnvoieFormIncidentConnect(this, citoyen));
+        sendButton.addActionListener(new EnvoieFormSuggestionConnect(this, citoyen));
         buttonPanel.add(sendButton);
 
         JButton backButton = new JButton("Retour");
@@ -157,17 +154,14 @@ public class FormIncidentConnect extends ConfirmeExit {
         });
     }
 
-    public String getCategorie() { return (String) categorieI.getSelectedItem(); }
+    public String getCategorie() { return (String) categorieS.getSelectedItem(); }
     public String getTel() { return telField.getText(); }
     public String getCodePostal() { return (String) cpField.getSelectedItem(); }
     public String getTitre() { return titreField.getText(); }
     public String getDescription() { return descriptionArea.getText(); }
     public Date getDate() { return date_sql; }
-    public String getPriorite() { return (String) prioriteBox.getSelectedItem(); }
 
 
 
-    }
 
-
-
+}
