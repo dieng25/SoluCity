@@ -20,7 +20,7 @@ public class RequestSuggestion {
     private enum Queries {
         INSERT_SUGGESTION("INSERT INTO Suggestion (Titre, Description, date_creation, Categorie, Statut, CodePostal_ticket, date_cloture, Commentaire, tel_num, Code_Postal, CategorieSuggestion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"),
         SELECT_SUGGESTION("SELECT t.Id_ticket, t.Titre, t.Description, t.date_creation, t.Categorie, t.Statut, t.CodePostal_ticket, t.date_cloture, t.Commentaire, t.tel_num, FROM Suggestion t"),
-        SELECT_SUGGESTION_BY_TEL("SELECT Id_ticket, Titre, Description, date_creation, Categorie, Statut, CodePostal_ticket, Priorite, date_cloture, Commentaire, tel_num FROM Suggestion WHERE tel_num = ?");
+        SELECT_SUGGESTION_BY_TEL("SELECT Id_ticket, Titre, Description, date_creation, Categorie, Statut, CodePostal_ticket, date_cloture, Commentaire, tel_num FROM Suggestion WHERE tel_num = ?");
 
         private final String query;
 
