@@ -172,7 +172,7 @@ public class IncidentIHM extends JFrame {
         delayDataset.addValue(delaiAnimauxErrants, "Incident", "Animaux errants ou retrouvés morts");
         delayDataset.addValue(delaiAutres, "Incident", "Autres");
 
-        JFreeChart barChart = ChartFactory.createBarChart("Delai Moyen par Catégorie", "Catégorie", "Jours", delayDataset);
+        JFreeChart barChart = ChartFactory.createBarChart("Delai Moyen de traitement par Catégorie", "Catégorie", "Jours", delayDataset);
         chartPanel.add(new ChartPanel(barChart));
 
         // Top 2 catégories les plus signalées

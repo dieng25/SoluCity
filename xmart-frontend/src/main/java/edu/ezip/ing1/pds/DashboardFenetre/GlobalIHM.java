@@ -43,7 +43,7 @@ public class GlobalIHM extends JFrame {
 
     public GlobalIHM() throws InterruptedException, IOException {
         setTitle("Vue d'ensemble");
-        setSize(600, 400);
+        setSize(1200, 800);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);

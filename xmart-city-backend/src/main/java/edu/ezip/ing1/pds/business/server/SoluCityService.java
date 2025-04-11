@@ -97,16 +97,18 @@ public class SoluCityService {
                 case "REGISTER":
                     response = fonctionnaireService.dispatch(request, connection);
                     break;
+                default:
+                break;
             }
-        } catch (SQLException e) {
-            logger.error("Erreur SQL lors du traitement de la requête", e);
-        } catch (IOException e) {
-            logger.error("Erreur d'entrée/sortie lors du traitement de la requête", e);
-        } catch (Exception e) {
-            logger.error("Erreur inconnue lors du traitement de la requête", e);
-        }
-
-        return response;
-        
+            
+    
+    } catch (SQLException e) {
+        logger.error("Erreur SQL lors du traitement de la requête", e);
+    } catch (IOException e) {
+        logger.error("Erreur d'entrée/sortie lors du traitement de la requête", e);
+    } catch (Exception e) {
+        logger.error("Erreur inconnue lors du traitement de la requête", e);
     }
+    return response;
+}
 }

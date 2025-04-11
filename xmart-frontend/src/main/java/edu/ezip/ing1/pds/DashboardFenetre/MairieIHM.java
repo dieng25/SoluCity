@@ -154,7 +154,7 @@ public class MairieIHM extends JFrame {
         DefaultCategoryDataset delayDataset = new DefaultCategoryDataset();
         delayDataset.addValue(delaiMoyenIncident, "Mairie", "Incident");
         delayDataset.addValue(delaiMoyenSuggestion, "Mairie", "Suggestion");
-        JFreeChart barChart = ChartFactory.createBarChart("Delai Moyen par Mairie", "Catégorie", "Jours", delayDataset);
+        JFreeChart barChart = ChartFactory.createBarChart("Delai Moyen de traitement par Mairie", "Catégorie", "Jours", delayDataset);
         chartPanel.add(new ChartPanel(barChart));
 
         // Top 3 mairies les plus signalées en matière d'incidents
