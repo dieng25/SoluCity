@@ -23,14 +23,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.ezip.ing1.pds.business.dto.DashboardDto.DashboardFilterDTO;
-import edu.ezip.ing1.pds.business.dto.DashboardDto.StatIncidentData;
-import edu.ezip.ing1.pds.business.dto.DashboardDto.StatIncidentDatas;
-import edu.ezip.ing1.pds.business.dto.Incident;
+import edu.ezip.ing1.pds.business.dto.DashboardDto.StatSuggestionData;
+import edu.ezip.ing1.pds.business.dto.DashboardDto.StatSuggestionDatas;
+import edu.ezip.ing1.pds.business.dto.Suggestion;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
-import edu.ezip.ing1.pds.services.Dashboard.StatIncidentService;
+import edu.ezip.ing1.pds.services.Dashboard.StatSuggestionService;
 
-public class IncidentIHM extends JFrame {
+public class SuggestionIHM extends JFrame {
 
     private final static String LoggingLabel = "FrontEnd";
     private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
@@ -42,8 +42,8 @@ public class IncidentIHM extends JFrame {
     private JPanel chartPanel;
     private String codePostal;
 
-    public IncidentIHM() throws InterruptedException, IOException {
-        setTitle("Statistiques sur les Incidents");
+    public SuggestionIHM() throws InterruptedException, IOException {
+        setTitle("Statistiques sur les Suggestions");
         setSize(1200, 800);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -110,13 +110,13 @@ public class IncidentIHM extends JFrame {
         System.out.println("Code postal sélectionné : " + codePostal);
 
         NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
-        StatIncidentService statIncidentService = new StatIncidentService(networkConfig);
+        StatSuggestionService statSuggestionService = new StatSuggestionService(networkConfig);
         DashboardFilterDTO filterDTO = new DashboardFilterDTO(startDate, endDate, codePostal);
 
-        StatIncidentDatas statIncidentDatas = statIncidentService.incident(filterDTO);
+        StatSuggestionDatas statSuggestionDatas = statSuggestionService.suggestion(filterDTO);
 
-        if (statIncidentDatas != null) {
-            updateCharts(statIncidentDatas);
+        if (statSuggestionDatas != null) {
+            updateCharts(statSuggestionDatas);
         } else {
             JOptionPane.showMessageDialog(this, "Les données sont nulles.");
         }
@@ -127,59 +127,59 @@ public class IncidentIHM extends JFrame {
 
     }
     @SuppressWarnings("unchecked")
-    private void updateCharts(StatIncidentDatas statIncidentDatas) {
+    private void updateCharts(StatSuggestionDatas statSuggestionDatas) {
         chartPanel.removeAll();
 
-    int incidentNonResolu = 0, incidentEnCours = 0, incidentResolu = 0;
+    int suggestionNonResolu = 0, suggestionEnCours = 0, suggestionResolu = 0;
     double delaiVoirie = 0, delaiEclairagePublic = 0, delaiEspaceVerts = 0, delaiProprete = 0;
     double delaiAnimauxErrants = 0, delaiAutres = 0;
-    String incidentTop1 = "", incidentTop2 = "";
+    String suggestionTop1 = "", suggestionTop2 = "";
 
-    for (StatIncidentData statIncidentData : statIncidentDatas.getStatIncidentDataSet()) {
+    for (StatSuggestionData statSuggestionData : statSuggestionDatas.getStatSuggestionDataSet()) {
       
-            incidentNonResolu += statIncidentData.getIncidentNonResolu();
-            incidentEnCours += statIncidentData.getIncidentEnCours();
-            incidentResolu += statIncidentData.getIncidentResolu();
+            suggestionNonResolu += statSuggestionData.getSuggestionNonVue();
+            suggestionEnCours += statSuggestionData.getSuggestionEnCours();
+            suggestionResolu += statSuggestionData.getSuggestionTraitee();
 
-            delaiVoirie += statIncidentData.getDelaiVoirie();
-            delaiEclairagePublic += statIncidentData.getDelaiEclairagePublic();
-            delaiEspaceVerts += statIncidentData.getDelaiEspaceVerts();
-            delaiProprete += statIncidentData.getDelaiProprete();
-            delaiAnimauxErrants += statIncidentData.getDelaiAnimauxErrants();
-            delaiAutres  += statIncidentData.getDelaiAutres();
+            delaiVoirie += statSuggestionData.getDelaiVoirie();
+            delaiEclairagePublic += statSuggestionData.getDelaiEclairagePublic();
+            delaiEspaceVerts += statSuggestionData.getDelaiEspaceVerts();
+            delaiProprete += statSuggestionData.getDelaiProprete();
+            delaiAnimauxErrants += statSuggestionData.getDelaiAnimauxErrants();
+            delaiAutres  += statSuggestionData.getDelaiAutres();
         
-            incidentTop1 += statIncidentData.getIncidentTop1();
-            incidentTop2 += statIncidentData.getIncidentTop2();
+            suggestionTop1 += statSuggestionData.getSuggestionTop1();
+            suggestionTop2 += statSuggestionData.getSuggestionTop2();
 
         }
 
         // Répartition des incidents par statut
         @SuppressWarnings("rawtypes")
         DefaultPieDataset pieDataset = new DefaultPieDataset();
-        pieDataset.setValue("Non Ouverts", incidentNonResolu);
-        pieDataset.setValue("En cours de traitement", incidentEnCours);
-        pieDataset.setValue("Résolu", incidentResolu);
-        JFreeChart pieChart = ChartFactory.createPieChart("Repartition des Incidents par Statut", pieDataset, true, true, false);
+        pieDataset.setValue("Non Ouverts", suggestionNonResolu);
+        pieDataset.setValue("En cours de traitement", suggestionEnCours);
+        pieDataset.setValue("Résolu", suggestionResolu);
+        JFreeChart pieChart = ChartFactory.createPieChart("Repartition des Suggestions par Statut", pieDataset, true, true, false);
         chartPanel.add(new ChartPanel(pieChart));
 
         // Délai moyen par catégorie
         @SuppressWarnings("rawtypes")
         DefaultCategoryDataset delayDataset = new DefaultCategoryDataset();
-        delayDataset.addValue(delaiVoirie, "Incident", "Voirie");
-        delayDataset.addValue(delaiEclairagePublic, "Incident", "Eclairage Public");
-        delayDataset.addValue(delaiEspaceVerts, "Incident", "Espaces Verts");
-        delayDataset.addValue(delaiProprete, "Incident", "Proprete");
-        delayDataset.addValue(delaiAnimauxErrants, "Incident", "Animaux errants ou retrouvés morts");
-        delayDataset.addValue(delaiAutres, "Incident", "Autres");
+        delayDataset.addValue(delaiVoirie, "Suggestion", "Voirie");
+        delayDataset.addValue(delaiEclairagePublic, "Suggestion", "Eclairage Public");
+        delayDataset.addValue(delaiEspaceVerts, "Suggestion", "Espaces Verts");
+        delayDataset.addValue(delaiProprete, "Suggestion", "Proprete");
+        delayDataset.addValue(delaiAnimauxErrants, "Suggestion", "Animaux errants ou retrouvés morts");
+        delayDataset.addValue(delaiAutres, "Suggestion", "Autres");
 
-        JFreeChart barChart = ChartFactory.createBarChart("Delai Moyen par Catégorie", "Catégorie", "Jours", delayDataset);
+        JFreeChart barChart = ChartFactory.createBarChart("Delai Moyen par Categorie", "Catégorie", "Jours", delayDataset);
         chartPanel.add(new ChartPanel(barChart));
 
         // Top 2 catégories les plus signalées
         String[] columnNames = {"Statistique", "Valeur"};
         Object[][] data = {
-          {"Top 1 categorie d'incident la plus signalée", incidentTop1},
-          {"Top 2 categorie d'incident la plus signalée", incidentTop2},
+          {"Top 1 categorie de suggestion la plus signalée", suggestionTop1},
+          {"Top 2 categorie de suggestion la plus signalée", suggestionTop2},
         };
 
         DefaultTableModel model = new DefaultTableModel(data, columnNames);
@@ -188,22 +188,8 @@ public class IncidentIHM extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(statsTable);
         chartPanel.add(scrollPane);
-
-        /* 
-        // Tableau - Incidents urgents
-        String[][] urgentsData = incidentUrgent.stream().map(i -> new String[]{
-            String.valueOf(i.getIdTicket()),  
-            i.getTitre(),
-            i.getCategorie(),                   
-            new SimpleDateFormat("dd/MM/yyyy").format(i.getDate_creation()) 
-    }).toArray(String[][]::new);
-
-    JTable tableUrgents = new JTable(new DefaultTableModel(urgentsData,
-            new String[]{"ID", "Titre", "Catégorie", "Date"}));
-    chartPanel.add(new JScrollPane(tableUrgents));
-
-    */
         chartPanel.revalidate();
         chartPanel.repaint();
     }
 }
+

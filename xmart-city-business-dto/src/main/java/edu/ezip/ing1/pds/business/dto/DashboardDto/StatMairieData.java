@@ -17,6 +17,8 @@ public class StatMairieData {
     private String SuggestionMairieTop1;
     private String SuggestionMairieTop2;
     private String SuggestionMairieTop3;
+    private int delaiIncidentMairie;
+    private int delaiSuggestionMairie;
 
     // Getters
     public String getIncidentMairieTop1() {
@@ -41,6 +43,14 @@ public class StatMairieData {
 
     public String getSuggestionMairieTop3() {
         return SuggestionMairieTop3;
+    }
+
+    public int getDelaiIncidentMairie() {
+        return delaiIncidentMairie;
+    }
+
+    public int getDelaiSuggestionMairie() {
+        return delaiSuggestionMairie;
     }
 
     // Setters avec annotations @JsonProperty
@@ -74,6 +84,16 @@ public class StatMairieData {
         this.SuggestionMairieTop3 = SuggestionMairieTop3;
     }
 
+    @JsonProperty("delai_incident_mairie")
+    public void setDelaiIncidentMairie(int delaiIncidentMairie) {
+        this.delaiIncidentMairie = delaiIncidentMairie;
+    }
+
+    @JsonProperty("delai_suggestion_mairie")
+    public void setDelaiSuggestionMairie(int delaiSuggestionMairie) {
+        this.delaiSuggestionMairie = delaiSuggestionMairie;
+    }
+    
     // Construction depuis un ResultSet
     public StatMairieData build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {

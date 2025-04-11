@@ -66,10 +66,11 @@ public class SoluCityService {
                     response = requestCitoyen.dispatch(request, connection);
                     break;
                 case "DASHBOARD_REQUEST":
-                    response = dashboardRepository.fetchDashboardData(request, connection);
-                    break;
                 case "GLOBAL_REQUEST":
-                    response = dashboardRepository.fetchGlobalData(request, connection, dateDebut, dateFin, codePostal);
+                case "STAT_INCIDENT_REQUEST":
+                case "STAT_SUGGESTION_REQUEST":
+                case "STAT_MAIRIE_REQUEST":
+                    response = dashboardRepository.dispatch(request, connection, dateDebut, dateFin, codePostal);
                     break;
                 case "SELECT_ALL_INCIDENTS":
                     response = incidentService.dispatch(request, connection);

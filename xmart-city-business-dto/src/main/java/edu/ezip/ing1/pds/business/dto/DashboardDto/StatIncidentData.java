@@ -24,7 +24,7 @@ public class StatIncidentData {
     private double DelaiAutres;
     private String IncidentTop1;
     private String IncidentTop2;
-    private List<Incident> incidentsUrgents;
+    //private List<Incident> incidentsUrgents;
 
     // Getters
     public int getIncidentNonResolu() {
@@ -71,10 +71,10 @@ public class StatIncidentData {
         return IncidentTop2;
     }
 
-    public List<Incident> getIncidentsUrgents() {
+    /*public List<Incident> getIncidentsUrgents() {
         return incidentsUrgents;
     }
-
+*/
     @JsonProperty("incident_non_resolu")
     public void setIncidentNonResolu(int IncidentNonResolu) {
         this.IncidentNonResolu = IncidentNonResolu;
@@ -130,23 +130,23 @@ public class StatIncidentData {
         this.IncidentTop2 = IncidentTop2;
     }
 
-    @JsonProperty("incident_urgents")
+    /*@JsonProperty("incident_urgents")
     public void setIncidentsUrgents(List<Incident> incidentsUrgents) {
         this.incidentsUrgents = incidentsUrgents;
     }
-
+*/
     public StatIncidentData build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
         setFieldsFromResultSet(resultSet, "IncidentNonResolu", "IncidentEnCours", 
                 "IncidentResolu", "DelaiVoirie",  "DelaiEclairagePublic", "DelaiEspaceVerts", 
-                "DelaiProprete", "DelaiAnimauxErrants", "DelaiAutres", "IncidentTop1", "IncidentTop2, incidentsUrgents");
+                "DelaiProprete", "DelaiAnimauxErrants", "DelaiAutres", "IncidentTop1", "IncidentTop2");
         return this;
     }
 
     public final PreparedStatement build(PreparedStatement preparedStatement)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
         return buildPreparedStatement(preparedStatement, IncidentNonResolu, IncidentEnCours, 
-                IncidentResolu, DelaiVoirie, DelaiEclairagePublic, DelaiEspaceVerts, DelaiProprete, DelaiAnimauxErrants, DelaiAutres, IncidentTop1, IncidentTop2, incidentsUrgents);
+                IncidentResolu, DelaiVoirie, DelaiEclairagePublic, DelaiEspaceVerts, DelaiProprete, DelaiAnimauxErrants, DelaiAutres, IncidentTop1, IncidentTop2);
     }
 
     private void setFieldsFromResultSet(final ResultSet resultSet, final String... fieldNames)
@@ -196,7 +196,6 @@ public class StatIncidentData {
                 ", DelaiAutres=" + DelaiAutres +
                 ", IncidentTop1='" + IncidentTop1 + '\'' +
                 ", IncidentTop2='" + IncidentTop2 + '\'' +
-                ", incidentsUrgents='" + incidentsUrgents + '\'' +
                 '}';
     }
 }

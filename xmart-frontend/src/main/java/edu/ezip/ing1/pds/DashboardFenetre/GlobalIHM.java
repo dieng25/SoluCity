@@ -95,7 +95,7 @@ public class GlobalIHM extends JFrame {
         JPanel datePanel = new JPanel();
         datePanel.setLayout(new FlowLayout());
 
-        datePanel.add(new JLabel("Date de début:"));
+        datePanel.add(new JLabel("Date de debut:"));
         datePanel.add(datePickerStart);
 
         datePanel.add(new JLabel("Date de fin:"));
@@ -226,7 +226,7 @@ public class GlobalIHM extends JFrame {
         incidentDataset.setValue("Propreté", incidentProprete);
         incidentDataset.setValue("Animaux Errants", incidentAnimauxErrants);
         incidentDataset.setValue("Autres", incidentAutres);
-        JFreeChart incidentChart = ChartFactory.createPieChart("Répartition des Incidents par Catégorie", incidentDataset, true, true, false);
+        JFreeChart incidentChart = ChartFactory.createPieChart("Repartition des Incidents par Catégorie", incidentDataset, true, true, false);
         ChartPanel incidentChartPanel = new ChartPanel(incidentChart);
         chartPanel.add(incidentChartPanel);
     
@@ -238,7 +238,7 @@ public class GlobalIHM extends JFrame {
         suggestionDataset.setValue("Propreté", suggestionProprete);
         suggestionDataset.setValue("Animaux Errants", suggestionAnimauxErrants);
         suggestionDataset.setValue("Autres", suggestionAutres);
-        JFreeChart suggestionChart = ChartFactory.createPieChart("Répartition des Suggestions par Catégorie", suggestionDataset, true, true, false);
+        JFreeChart suggestionChart = ChartFactory.createPieChart("Repartition des Suggestions par Catégorie", suggestionDataset, true, true, false);
         ChartPanel suggestionChartPanel = new ChartPanel(suggestionChart);
         chartPanel.add(suggestionChartPanel);
 
@@ -247,7 +247,7 @@ public class GlobalIHM extends JFrame {
         priorityDataset.addValue(incidentLevelMoyen, "Incident", "Moyenne");
         priorityDataset.addValue(incidentLevelHaut, "Incident", "Haute");
         priorityDataset.addValue(incidentNonDefini, "Incident", "Non défini");
-        JFreeChart priorityChart = ChartFactory.createBarChart("Répartition des Incidents par Priorité", "Priorité", "Nombre", priorityDataset);
+        JFreeChart priorityChart = ChartFactory.createBarChart("Repartition des Incidents par Priorité", "Priorité", "Nombre", priorityDataset);
         ChartPanel priorityChartPanel = new ChartPanel(priorityChart);
         chartPanel.add(priorityChartPanel);
     
