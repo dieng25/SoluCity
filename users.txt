@@ -1,3 +1,0 @@
-75015,maireparis15@.gouv.fr,paris15
-6,d,d
-93800,n,n
