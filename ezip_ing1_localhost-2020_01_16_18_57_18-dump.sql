@@ -31,7 +31,7 @@ CREATE TABLE CategorieSuggestion(
 );
 
 CREATE TABLE Incident(
-                         Id_ticket INT,
+                         Id_ticket INT NOT NULL AUTO_INCREMENT,
                          Titre VARCHAR(50) NOT NULL,
                          Description TEXT NOT NULL,
                          date_creation DATE NOT NULL,
@@ -50,13 +50,13 @@ CREATE TABLE Incident(
 );
 
 CREATE TABLE Suggestion(
-                           Id_ticket INT,
+                           Id_ticket INT NOT NULL AUTO_INCREMENT,
                            Titre VARCHAR(50) NOT NULL,
                            Description TEXT NOT NULL,
                            date_creation DATE NOT NULL,
                            Categorie VARCHAR(50) NOT NULL,
                            Statut INT,
-                           CodePostal_ticket INT NOT NULL,
+                           CodePostal_ticket VARCHAR(50) NOT NULL,
                            date_cloture DATE,
                            Commentaire TEXT,
                            Code_Postal VARCHAR(50) NOT NULL,

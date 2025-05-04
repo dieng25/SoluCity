@@ -1,15 +1,13 @@
-package edu.ezip.ing1.pds.services.Citoyen.Incident;
-
-
+package edu.ezip.ing1.pds.services.Citoyen.Suggestion;
 
 import edu.ezip.ing1.pds.business.dto.Citoyen;
 import edu.ezip.ing1.pds.business.dto.Citoyens;
-import edu.ezip.ing1.pds.business.dto.Incident;
+import edu.ezip.ing1.pds.business.dto.Suggestion;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.services.Citoyen.CitoyenService;
 import edu.ezip.ing1.pds.services.Citoyen.Connexion.ConfirmationInscription;
-import edu.ezip.ing1.pds.services.Citoyen.IncidentService;
+import edu.ezip.ing1.pds.services.Citoyen.SuggestionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,20 +17,20 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.Date;
 
-public class EnvoieFormIncident implements ActionListener {
+public class EnvoieFormSuggestion implements ActionListener {
 
-    private final static String LoggingLabel = "FrontEnd - EnvoieFormIncident";
+    private final static String LoggingLabel = "FrontEnd - EnvoieFormSuggestion";
     private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
     private final static String networkConfigFile = "network.yaml";
 
-    private FormulaireIncident form;
+    private FormulaireSuggestion form;
 
-    public EnvoieFormIncident(FormulaireIncident formulaireIncident) {
-        form = formulaireIncident;
+    public EnvoieFormSuggestion(FormulaireSuggestion formulaireSuggestion) {
+        form = formulaireSuggestion;
     }
 
     public void actionPerformed(ActionEvent e) {
-        if (!ValidFormIncident.isValid(form)) {
+        if (!ValidFormSuggestion.isValid(form)) {
             return;
         }
 
@@ -45,7 +43,7 @@ public class EnvoieFormIncident implements ActionListener {
         String titre = form.getTitre();
         String description = form.getDescription();
         Date date = form.getDate();
-        int priorite = ValidFormIncident.getPrioriteIndex(form.getPriorite());
+
 
 
         final NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
@@ -73,10 +71,10 @@ public class EnvoieFormIncident implements ActionListener {
                     "Erreur", JOptionPane.ERROR_MESSAGE);
         }
 
-        Incident incident = new Incident(titre, description, date, categorie, 0, cp, priorite, null, tel, cp, categorie);
-        IncidentService incidentService = new IncidentService(networkConfig);
+        Suggestion suggestion = new Suggestion(titre, description, date, categorie, 0, cp, null,null, tel, cp, categorie);
+        SuggestionService suggestionService = new SuggestionService(networkConfig);
         try {
-            incidentService.insertIncident(incident);
+            suggestionService.insertSuggestion(suggestion);
         } catch (InterruptedException | IOException ex) {
             logger.error("Erreur lors de l'envoie des données ticket incident", e);
             JOptionPane.showMessageDialog(form, "Erreur de connexion au serveur. Veuillez réessayer plus tard.",

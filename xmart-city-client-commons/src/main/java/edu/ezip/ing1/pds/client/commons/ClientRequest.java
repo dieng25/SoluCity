@@ -76,8 +76,16 @@ public abstract class ClientRequest<N, S> implements Runnable {
             logger.trace("Bytes read = {}", inputData.length);
             instream.read(inputData);
             LoggingUtils.logDataMultiLine(logger, Level.TRACE, inputData);
+           
+            logger.debug("Received raw response: {}", new String(inputData));
+
 
             Response response = mapper.readValue(inputData, Response.class);
+            if (response != null) {
+                logger.debug("Response = {}", response.toString());
+            } else {
+                logger.error("Failed to deserialize response. Response is null.");
+            }
             logger.debug("Response = {}", response.toString());
 
             result = readResult(response.responseBody);

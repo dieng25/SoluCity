@@ -27,8 +27,6 @@ public class SoluCityApp extends JFrame {
         JButton mairieButton = new JButton("Mairie");
         JButton dashboardButton = new JButton("Statistiques");
         
-
-
         JButton[] buttons = {dashboardButton, citoyenButton, mairieButton};
         for (JButton btn : buttons) {
             btn.setBackground(new Color(0, 123, 255));
@@ -86,5 +84,3 @@ public class SoluCityApp extends JFrame {
         SwingUtilities.invokeLater(() -> new SoluCityApp().setVisible(true));
     }
 }
-
-

@@ -19,7 +19,7 @@ public class RequestIncident {
     private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
 
     private enum Queries {
-        INSERT_INCIDENT("INSERT INTO Incident (Titre, Description, date_creation, Categorie, Statut, CodePostal_ticket, Priorite, date_cloture, tel_num, Code_Postal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"),
+        INSERT_INCIDENT("INSERT INTO Incident (Titre, Description, date_creation, Categorie, Statut, CodePostal_ticket, Priorite, date_cloture, tel_num, Code_Postal, CategorieIncident) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"),
         SELECT_INCIDENT("SELECT t.Id_ticket, t.Titre, t.Description, t.date_creation, t.Categorie, t.Statut, t.CodePostal_ticket, t.Priorite, t.date_cloture, t.tel_num, FROM Incident t"),
         SELECT_INCIDENT_BY_TEL("SELECT Id_ticket, Titre, Description, date_creation, Categorie, Statut, CodePostal_ticket, Priorite, date_cloture, tel_num FROM Incident WHERE tel_num = ?");
 
@@ -82,6 +82,7 @@ public class RequestIncident {
         stmt.setDate(8, incident.getDate_cloture());
         stmt.setString(9, incident.getTelNum());
         stmt.setString(10, incident.getCP());
+        stmt.setString(11, incident.getCategorieIncident());
         int rowsInserted = stmt.executeUpdate();
 
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(incident));

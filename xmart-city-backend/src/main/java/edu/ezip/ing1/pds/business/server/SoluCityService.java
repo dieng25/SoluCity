@@ -1,8 +1,6 @@
 package edu.ezip.ing1.pds.business.server;
 
-import edu.ezip.ing1.pds.business.server.RequestInterfaceCitoyenService.RequestCitoyen;
-import edu.ezip.ing1.pds.business.server.RequestInterfaceCitoyenService.RequestIncident;
-import edu.ezip.ing1.pds.business.server.RequestInterfaceCitoyenService.RequestMairie;
+import edu.ezip.ing1.pds.business.server.RequestInterfaceCitoyenService.*;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.commons.Response;
 import org.slf4j.Logger;
@@ -21,12 +19,15 @@ public class SoluCityService {
 
     private static SoluCityService inst = null;
     private final RequestIncident requestIncident;
+    private final RequestSuggestion requestSuggestion;
     private final RequestMairie requestMairie;
     private final RequestCitoyen requestCitoyen;
+    private final ResquestCategorieIncident resquestCategorieIncident;
     private final IncidentService incidentService;
     private final SuggestionService suggestionService;
     private final FonctionnaireService fonctionnaireService;
     private final DashboardRepository dashboardRepository;
+    private final RequestCategorieSuggestion requestCategorieSuggestion;
 
     public SoluCityService() {
         this.dashboardRepository = DashboardRepository.getInstance();
@@ -36,6 +37,9 @@ public class SoluCityService {
         this.requestIncident = RequestIncident.getInstance();
         this.requestMairie = RequestMairie.getInstance();
         this.requestCitoyen = RequestCitoyen.getInstance();
+        this.resquestCategorieIncident = ResquestCategorieIncident.getInstance();
+        this.requestSuggestion = RequestSuggestion.getInstance();
+        this.requestCategorieSuggestion = RequestCategorieSuggestion.getInstance();
     }
 
 
@@ -52,6 +56,15 @@ public class SoluCityService {
 
         try {
             switch (request.getRequestOrder()) {
+                case "SELECT_ALL_CategorieSuggestion":
+                    response = requestCategorieSuggestion.dispatch(request, connection);
+                case "INSERT_SUGGESTION":
+                case "SELECT_SUGGESTION":
+                case "SELECT_SUGGESTION_BY_TEL":
+                    response = requestSuggestion.dispatch(request, connection);
+                    break;
+                case "SELECT_ALL_CategorieIncident":
+                    response = resquestCategorieIncident.dispatch(request, connection);
                 case "INSERT_INCIDENT":
                 case "SELECT_INCIDENT":
                 case "SELECT_INCIDENT_BY_TEL":
@@ -68,10 +81,11 @@ public class SoluCityService {
                     response = requestCitoyen.dispatch(request, connection);
                     break;
                 case "DASHBOARD_REQUEST":
-                    response = dashboardRepository.fetchDashboardData(request, connection);
-                    break;
                 case "GLOBAL_REQUEST":
-                    response = dashboardRepository.fetchGlobalData(request, connection, dateDebut, dateFin, codePostal);
+                case "STAT_INCIDENT_REQUEST":
+                case "STAT_SUGGESTION_REQUEST":
+                case "STAT_MAIRIE_REQUEST":
+                    response = dashboardRepository.dispatch(request, connection, dateDebut, dateFin, codePostal);
                     break;
                 case "UPDATE_INCIDENT":
                 case "SELECT_ALL_INCIDENTS":
@@ -84,16 +98,18 @@ public class SoluCityService {
                 case "REGISTER":
                     response = fonctionnaireService.dispatch(request, connection);
                     break;
+                default:
+                break;
             }
-        } catch (SQLException e) {
-            logger.error("Erreur SQL lors du traitement de la requête", e);
-        } catch (IOException e) {
-            logger.error("Erreur d'entrée/sortie lors du traitement de la requête", e);
-        } catch (Exception e) {
-            logger.error("Erreur inconnue lors du traitement de la requête", e);
-        }
-
-        return response;
-        
+            
+    
+    } catch (SQLException e) {
+        logger.error("Erreur SQL lors du traitement de la requête", e);
+    } catch (IOException e) {
+        logger.error("Erreur d'entrée/sortie lors du traitement de la requête", e);
+    } catch (Exception e) {
+        logger.error("Erreur inconnue lors du traitement de la requête", e);
     }
+    return response;
+}
 }

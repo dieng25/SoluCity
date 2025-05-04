@@ -1,14 +1,13 @@
 package edu.ezip.ing1.pds.services.Dashboard;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import edu.ezip.commons.LoggingUtils;
 import edu.ezip.ing1.pds.business.dto.DashboardDto.DashboardFilterDTO;
-import edu.ezip.ing1.pds.business.dto.DashboardDto.GlobalDatas;
+import edu.ezip.ing1.pds.business.dto.DashboardDto.StatMairieDatas;
 import edu.ezip.ing1.pds.client.commons.ClientRequest;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.commons.Request;
-import edu.ezip.ing1.pds.requests.DashboardRequest.DashboardGlobalRequest;
+import edu.ezip.ing1.pds.requests.DashboardRequest.StatMairieRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
@@ -18,19 +17,19 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.UUID;
 
-public class DashboardServiceGlobal {
-    private final static String LoggingLabel = "FrontEnd - DashboardServiceGlobal";
+public class StatMairieService {
+    private final static String LoggingLabel = "FrontEnd - StatMairieService";
     private final static Logger logger = LoggerFactory.getLogger(LoggingLabel);
 
-    private final String dashboardRequestOrder = "GLOBAL_REQUEST";
+    private final String dashboardRequestOrder = "STAT_MAIRIE_REQUEST";
     private final NetworkConfig networkConfig;
 
-    public DashboardServiceGlobal(NetworkConfig networkConfig) {
+    public StatMairieService(NetworkConfig networkConfig) {
         this.networkConfig = networkConfig;
     }
 
-    // Envoie une requête GLOBAL_REQUEST pour récupérer les statistiques des incidents.
-    public GlobalDatas global(DashboardFilterDTO filterDTO) throws InterruptedException, IOException {
+    // Envoie une requête STAT_MAIRIE_REQUEST pour récupérer les statistiques des incidents
+    public StatMairieDatas mairie(DashboardFilterDTO filterDTO) throws InterruptedException, IOException {
         int birthdate = 0;
         final Deque<ClientRequest> clientRequests = new ArrayDeque<>();
         final ObjectMapper objectMapper = new ObjectMapper();
@@ -39,7 +38,6 @@ public class DashboardServiceGlobal {
         final Request request = new Request();
         request.setRequestId(requestId);
         request.setRequestOrder(dashboardRequestOrder);
-        //request.setRequestOrder("GLOBAL_REQUEST");
 
         java.util.Date utilDateDebut = filterDTO.getDateDebut();
         java.util.Date utilDateFin = filterDTO.getDateFin();
@@ -55,7 +53,7 @@ public class DashboardServiceGlobal {
         LoggingUtils.logDataMultiLine(logger, Level.TRACE, requestBytes);
             System.out.println("JSON envoyé au backend : " + new String(requestBytes));
 
-        final DashboardGlobalRequest clientRequest = new DashboardGlobalRequest(
+        final StatMairieRequest clientRequest = new StatMairieRequest(
                 networkConfig, birthdate++, request, filterDTO, requestBytes);
         clientRequests.push(clientRequest);
 
@@ -63,7 +61,7 @@ public class DashboardServiceGlobal {
             final ClientRequest joinedClientRequest = clientRequests.pop();
             joinedClientRequest.join();
             logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
-            return (GlobalDatas) joinedClientRequest.getResult();
+            return (StatMairieDatas) joinedClientRequest.getResult();
         } else {
             logger.error("Aucun résultat de dashboard n'a été obtenu");
             return null;

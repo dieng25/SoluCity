@@ -22,13 +22,14 @@ public class Incident {
     private Date date_cloture;
     private String telNum;
     private String CP;
+    private String CategorieIncident;
 
 
     public Incident() {
         this.Statut = 0;
     }
 
-    public Incident(String Titre, String Description, Date date_creation, String Categorie, int Statut, String CP_Ticket, int Priorite, Date date_cloture, String telNum, String CP) {
+    public Incident(String Titre, String Description, Date date_creation, String Categorie, int Statut, String CP_Ticket, int Priorite, Date date_cloture, String telNum, String CP, String CategorieIncident) {
         this.Titre = Titre;
         this.Description = Description;
         this.date_creation = date_creation;
@@ -39,6 +40,7 @@ public class Incident {
         this.date_cloture = date_cloture;
         this.telNum = telNum;
         this.CP = CP;
+        this.CategorieIncident = CategorieIncident;
 
     }
 
@@ -142,15 +144,24 @@ public class Incident {
         this.CP = CP;
     }
 
+    public String getCategorieIncident() {
+        return CategorieIncident;
+    }
+
+    @JsonProperty("incident_CategorieIncident")
+    public void setCategorieIncident(String CategorieIncident) {
+        this.CategorieIncident = CategorieIncident;
+    }
+
     public final Incident build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        setFieldsFromResultSet(resultSet,  "Id_ticket", "Titre", "Description", "date_creation", "Categorie", "Statut", "CodePostal_ticket", "Priorite", "date_cloture", "tel_num", "Code_Postal");
+        setFieldsFromResultSet(resultSet,  "Id_ticket", "Titre", "Description", "date_creation", "Categorie", "Statut", "CodePostal_ticket", "Priorite", "date_cloture", "tel_num", "Code_Postal", "CategorieIncident");
         return this;
     }
 
     public final PreparedStatement build(PreparedStatement preparedStatement)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        return buildPreparedStatement(preparedStatement, IdTicket, Titre, Description, date_creation, Categorie, Statut, CP_Ticket, Priorite, date_cloture, telNum, CP);
+        return buildPreparedStatement(preparedStatement, IdTicket, Titre, Description, date_creation, Categorie, Statut, CP_Ticket, Priorite, date_cloture, telNum, CP, CategorieIncident);
     }
 
     private void setFieldsFromResultSet(final ResultSet resultSet, final String... fieldNames)
