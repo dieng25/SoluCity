@@ -73,6 +73,7 @@ public class SoluCityService {
                 case "GLOBAL_REQUEST":
                     response = dashboardRepository.fetchGlobalData(request, connection, dateDebut, dateFin, codePostal);
                     break;
+                case "UPDATE_INCIDENT":
                 case "SELECT_ALL_INCIDENTS":
                     response = incidentService.dispatch(request, connection);
                     break;
