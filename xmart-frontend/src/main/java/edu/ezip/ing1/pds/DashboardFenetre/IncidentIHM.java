@@ -26,8 +26,11 @@ import edu.ezip.ing1.pds.business.dto.DashboardDto.DashboardFilterDTO;
 import edu.ezip.ing1.pds.business.dto.DashboardDto.StatIncidentData;
 import edu.ezip.ing1.pds.business.dto.DashboardDto.StatIncidentDatas;
 import edu.ezip.ing1.pds.business.dto.Incident;
+import edu.ezip.ing1.pds.business.dto.Mairie;
+import edu.ezip.ing1.pds.business.dto.Mairies;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
+import edu.ezip.ing1.pds.services.Citoyen.MairieService;
 import edu.ezip.ing1.pds.services.Dashboard.StatIncidentService;
 
 public class IncidentIHM extends JFrame {
@@ -38,7 +41,7 @@ public class IncidentIHM extends JFrame {
 
     private JDatePickerImpl datePickerStart;
     private JDatePickerImpl datePickerEnd;
-    private JComboBox<String> codePostalComboBox;
+    private JComboBox<String> cpField;
     private JPanel chartPanel;
     private String codePostal;
 
@@ -81,10 +84,26 @@ public class IncidentIHM extends JFrame {
         datePanel.add(datePickerEnd);
 
         JLabel codePostalLabel = new JLabel("Code Postal:");
-        codePostalComboBox = new JComboBox<>(new String[] {"tout", "95000", "94000", "75003", "75002"});
+        
+        try{
+            NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
+            final MairieService mairieService = new MairieService(networkConfig);
+            Mairies mairies = mairieService.selectMairies();
 
+            datePanel.add(new JLabel("Code Postal: "));
+            cpField = new JComboBox<>();
+            cpField.addItem("tout");
+            for (Mairie mairie : mairies.getMairies()) {
+                cpField.addItem(mairie.getCodePostal());
+            }
+            datePanel.add(cpField);
+
+        } catch (IOException | InterruptedException e) {
+            logger.error("Erreur lors du chargement des codes postaux", e);
+        }
+    
         datePanel.add(codePostalLabel);
-        datePanel.add(codePostalComboBox);
+        datePanel.add(cpField);
 
         JButton applyButton = new JButton("Appliquer");
         applyButton.addActionListener(e -> {
@@ -106,7 +125,7 @@ public class IncidentIHM extends JFrame {
     private void applyFilters() throws IOException, InterruptedException {
         Date startDate = (Date) datePickerStart.getModel().getValue();
         Date endDate = (Date) datePickerEnd.getModel().getValue();
-        codePostal = (String) codePostalComboBox.getSelectedItem();
+        codePostal = (String) cpField.getSelectedItem();
         System.out.println("Code postal sélectionné : " + codePostal);
 
         NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
@@ -188,21 +207,6 @@ public class IncidentIHM extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(statsTable);
         chartPanel.add(scrollPane);
-
-        /* 
-        // Tableau - Incidents urgents
-        String[][] urgentsData = incidentUrgent.stream().map(i -> new String[]{
-            String.valueOf(i.getIdTicket()),  
-            i.getTitre(),
-            i.getCategorie(),                   
-            new SimpleDateFormat("dd/MM/yyyy").format(i.getDate_creation()) 
-    }).toArray(String[][]::new);
-
-    JTable tableUrgents = new JTable(new DefaultTableModel(urgentsData,
-            new String[]{"ID", "Titre", "Catégorie", "Date"}));
-    chartPanel.add(new JScrollPane(tableUrgents));
-
-    */
         chartPanel.revalidate();
         chartPanel.repaint();
     }

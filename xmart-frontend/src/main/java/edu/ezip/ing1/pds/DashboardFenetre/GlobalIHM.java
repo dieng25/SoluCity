@@ -114,6 +114,7 @@ public class GlobalIHM extends JFrame {
 
             datePanel.add(new JLabel("Code Postal: "));
             cpField = new JComboBox<>();
+            cpField.addItem("tout");
             for (Mairie mairie : mairies.getMairies()) {
                 cpField.addItem(mairie.getCodePostal());
             }
