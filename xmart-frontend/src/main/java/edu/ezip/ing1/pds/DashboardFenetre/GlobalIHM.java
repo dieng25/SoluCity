@@ -10,11 +10,14 @@ import javax.swing.table.DefaultTableModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.ezip.ing1.pds.business.dto.Mairie;
+import edu.ezip.ing1.pds.business.dto.Mairies;
 import edu.ezip.ing1.pds.business.dto.DashboardDto.DashboardFilterDTO;
 import edu.ezip.ing1.pds.business.dto.DashboardDto.GlobalData;
 import edu.ezip.ing1.pds.business.dto.DashboardDto.GlobalDatas;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
+import edu.ezip.ing1.pds.services.Citoyen.MairieService;
 import edu.ezip.ing1.pds.services.Dashboard.DashboardServiceGlobal;
 
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -35,12 +38,13 @@ public class GlobalIHM extends JFrame {
     private JDatePickerImpl datePickerStart;
     private JDatePickerImpl datePickerEnd;
 
-    private JComboBox<String> codePostalComboBox;
+    private JComboBox<String> cpField;
     
     private JPanel chartPanel;
 
     private String codePostal;
 
+    @SuppressWarnings("null")
     public GlobalIHM() throws InterruptedException, IOException {
         setTitle("Vue d'ensemble");
         setSize(1200, 800);
@@ -54,12 +58,13 @@ public class GlobalIHM extends JFrame {
         System.out.println("Date de début sélectionnée : " + datePickerStart.getModel().getValue());
         System.out.println("Date de fin sélectionnée : " + datePickerEnd.getModel().getValue());
         
-
-        codePostal = (String) codePostalComboBox.getSelectedItem();
+        codePostal = (String) cpField.getSelectedItem();
         System.out.println("Code postal sélectionné : " + codePostal);
 
+        NetworkConfig networkConfig= null;
 
-        NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
+
+        networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
 
         DashboardFilterDTO filterDTO = new DashboardFilterDTO(dateDebut, dateFin, codePostal);
         
@@ -74,6 +79,7 @@ public class GlobalIHM extends JFrame {
         setVisible(true);
     }
 
+    @SuppressWarnings("unchecked")
     private void initializeComponents() {
 
         UtilDateModel modelStart = new UtilDateModel();
@@ -101,12 +107,22 @@ public class GlobalIHM extends JFrame {
         datePanel.add(new JLabel("Date de fin:"));
         datePanel.add(datePickerEnd);
 
-        JLabel codePostalLabel = new JLabel("Code Postal:");
-        codePostalComboBox = new JComboBox<>(new String[] {"tout", "95000", "94000", "75003", "75002"});
-        
+        try{
+            NetworkConfig networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
+            final MairieService mairieService = new MairieService(networkConfig);
+            Mairies mairies = mairieService.selectMairies();
 
-        datePanel.add(codePostalLabel);
-        datePanel.add(codePostalComboBox);
+            datePanel.add(new JLabel("Code Postal: "));
+            cpField = new JComboBox<>();
+            for (Mairie mairie : mairies.getMairies()) {
+                cpField.addItem(mairie.getCodePostal());
+            }
+            datePanel.add(cpField);
+
+        } catch (IOException | InterruptedException e) {
+            logger.error("Erreur lors du chargement des codes postaux", e);
+        }
+
 
         JButton applyButton = new JButton("Appliquer");
         applyButton.addActionListener(e -> {
@@ -136,7 +152,7 @@ public class GlobalIHM extends JFrame {
     private void applyFilters() throws IOException, InterruptedException {
         Date startDate = (Date) datePickerStart.getModel().getValue();
         Date endDate = (Date) datePickerEnd.getModel().getValue();
-        codePostal = (String) codePostalComboBox.getSelectedItem();
+        codePostal = (String) cpField.getSelectedItem();
         //initializeComponents();
         System.out.println("Code postal sélectionné : " + codePostal);
 

@@ -160,7 +160,7 @@ public class MairieIHM extends JFrame {
         // Top 3 mairies les plus signalées en matière d'incidents
         String[] columnNames = {"Statistique", "Valeur"};
         Object[][] data = {
-          {"1ere Mairie en matière de nombre d'incidents signalés", incidentMairieTop1},
+          {"1ère Mairie en matière de nombre d'incidents signalés", incidentMairieTop1},
           {"2e Mairie en matière de nombre d'incidents signalés", incidentMairieTop2},
           {"3e Mairie en matière de nombre d'incidents signalés", incidentMairieTop3},
         };
@@ -168,7 +168,7 @@ public class MairieIHM extends JFrame {
         // Top 3 mairies les plus signalées en matière de suggestions
         String[] columnNames1 = {"Statistique", "Valeur"};
         Object[][] data1 = {
-          {"1ere Mairie 1 en matière de nombre de suggestions reçues", suggestionMairieTop1},
+          {"1ère Mairie en matière de nombre de suggestions reçues", suggestionMairieTop1},
           {"2e Mairie en matière de nombre de suggestions reçues", suggestionMairieTop2},
           {"3e Mairie en matière de nombre de suggestions reçues", suggestionMairieTop3},
         };
