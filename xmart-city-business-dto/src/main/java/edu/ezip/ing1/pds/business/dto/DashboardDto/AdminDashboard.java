@@ -8,59 +8,48 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@JsonRootName(value = "tableauSpecifiqueData")
-public class TableauSpecifiqueData {
+@JsonRootName(value = "adminDashboard")
 
-    private int IdUrgent;
-    private String TitreUrgent;
-    private String DescriptionUrgent;
-    private String CategorieUrgent;
+public class AdminDashboard {
 
-    public int getIdUrgent() {
-        return IdUrgent;
+    private String Username;
+    private String Password;
+
+    public AdminDashboard() {}
+
+    public AdminDashboard(String Username, String Password) {
+        this.Username = Username;
+        this.Password = Password;
+        
     }
 
-    public String getTitreUrgent() {
-        return TitreUrgent;
+    public String getUsername() {
+        return Username;
     }
 
-    public String getDescriptionUrgent() {
-        return DescriptionUrgent;
+    public String getPassword() {
+        return Password;
     }
 
-    public String getCategorieUrgent() {
-        return CategorieUrgent;
+    @JsonProperty("username")
+    public void setUsername(String Username) {
+        this.Username = Username;
     }
 
-    @JsonProperty("id_urgent")
-    public void setIdUrgent(int IdUrgent) {
-        this.IdUrgent = IdUrgent;
-    }
-
-    @JsonProperty("titre_urgent")
-    public void setTitreUrgent(String TitreUrgent) {
-        this.TitreUrgent = TitreUrgent;
-    }
-
-    @JsonProperty("description_urgent")
-    public void setDescriptionUrgent(String DescriptionUrgent) {
-        this.DescriptionUrgent = DescriptionUrgent;
-    }
-
-    @JsonProperty("categorie_urgent")
-    public void setCategorieUrgent(String CategorieUrgent) {
-        this.CategorieUrgent = CategorieUrgent;
+    @JsonProperty("password")
+    public void setPassword(String Password) {
+        this.Password = Password;
     }
     
-    public TableauSpecifiqueData build(final ResultSet resultSet)
+    public AdminDashboard build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        setFieldsFromResultSet(resultSet, "IdUrgent", "TitreUrgent", "DescriptionUrgent", "CategorieUrgent");
+        setFieldsFromResultSet(resultSet, "Username", "Password");
         return this;
     }
 
     public final PreparedStatement build(PreparedStatement preparedStatement)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        return buildPreparedStatement(preparedStatement, IdUrgent, TitreUrgent, DescriptionUrgent, CategorieUrgent);
+        return buildPreparedStatement(preparedStatement, Username, Password);
     }
 
     private void setFieldsFromResultSet(final ResultSet resultSet, final String... fieldNames)
@@ -88,10 +77,8 @@ public class TableauSpecifiqueData {
     @Override
     public String toString() {
         return "TableauSpecifiqueData{" +
-                "IdUrgent=" + IdUrgent +
-                ", TitreUrgent='" + TitreUrgent + '\'' +
-                ", DescriptionUrgent='" + DescriptionUrgent + '\'' +
-                ", CategorieUrgent='" + CategorieUrgent + '\'' +
+                "Username=" + Username +
+                ", Password='" + Password + '\'' +
                 '}';
     }
 }

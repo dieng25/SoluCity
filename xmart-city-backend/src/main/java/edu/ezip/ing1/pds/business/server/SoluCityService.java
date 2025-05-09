@@ -28,6 +28,7 @@ public class SoluCityService {
     private final FonctionnaireService fonctionnaireService;
     private final DashboardRepository dashboardRepository;
     private final RequestCategorieSuggestion requestCategorieSuggestion;
+    private final CompteAdmin compteAdmin;
 
     public SoluCityService() {
         this.dashboardRepository = DashboardRepository.getInstance();
@@ -40,6 +41,7 @@ public class SoluCityService {
         this.resquestCategorieIncident = ResquestCategorieIncident.getInstance();
         this.requestSuggestion = RequestSuggestion.getInstance();
         this.requestCategorieSuggestion = RequestCategorieSuggestion.getInstance();
+        this.compteAdmin = CompteAdmin.getInstance();
     }
 
 
@@ -86,6 +88,10 @@ public class SoluCityService {
                 case "STAT_SUGGESTION_REQUEST":
                 case "STAT_MAIRIE_REQUEST":
                     response = dashboardRepository.dispatch(request, connection, dateDebut, dateFin, codePostal);
+                    break;
+                case "AUTHENTIFICATION":
+                case "ENREGISTREMENT":
+                    response = compteAdmin.dispatch(request, connection);
                     break;
                 case "SELECT_ALL_INCIDENTS":
                     response = incidentService.dispatch(request, connection);

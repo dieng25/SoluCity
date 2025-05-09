@@ -40,7 +40,7 @@ public class SoluCityApp extends JFrame {
         dashboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MainDashboard().setVisible(true);
+                new ConnexionAdmin().setVisible(true);
 
             }
         });
