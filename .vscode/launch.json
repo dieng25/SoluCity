@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CreationAdmin",
+            "request": "launch",
+            "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.CreationAdmin",
+            "projectName": "xmart-frontend"
+        },
+        {
+            "type": "java",
+            "name": "ConnexionAdmin",
+            "request": "launch",
+            "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.ConnexionAdmin",
+            "projectName": "xmart-frontend"
+        },
+        {
+            "type": "java",
             "name": "FenetreInscriptionFonctionnaire",
             "request": "launch",
             "mainClass": "edu.ezip.ing1.pds.FenetreInscriptionFonctionnaire",

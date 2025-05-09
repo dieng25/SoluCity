@@ -22,9 +22,9 @@ public class CreationAdmin extends JFrame {
     public CreationAdmin() {
         setTitle("Inscription Administrateur");
         setLayout(new GridLayout(4, 2, 10, 10));
-        setSize(700, 650);
+        setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        // setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
 
         // Charger la configuration réseau
         try {
@@ -49,6 +49,11 @@ public class CreationAdmin extends JFrame {
         // Bouton d'inscription
         submitButton = new JButton("S'inscrire");
         submitButton.addActionListener(e -> inscrireAdmin());
+        submitButton.setBackground(new Color(0, 123, 255));
+        submitButton.setForeground(Color.WHITE);
+        submitButton.setFont(new Font("Arial", Font.BOLD, 16));
+        submitButton.setFocusPainted(false);
+        submitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         add(submitButton);
 
         setVisible(true);

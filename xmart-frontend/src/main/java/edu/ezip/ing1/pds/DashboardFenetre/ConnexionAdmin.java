@@ -24,9 +24,9 @@ public class ConnexionAdmin extends JFrame {
     public ConnexionAdmin() {
         setTitle("Connexion Administrateur");
         setLayout(new GridLayout(4, 2, 10, 10));
-        setSize(650, 700);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(600, 400);
         setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         // Charger la configuration réseau
         try {
@@ -56,6 +56,15 @@ public class ConnexionAdmin extends JFrame {
         registerButton = new JButton("Creer un compte");
         registerButton.addActionListener(e -> new CreationAdmin());
         add(registerButton);
+
+        JButton[] buttons = {submitButton, registerButton};
+        for (JButton btn : buttons) {
+            btn.setBackground(new Color(0, 123, 255));
+            btn.setForeground(Color.WHITE);
+            btn.setFont(new Font("Arial", Font.BOLD, 16));
+            btn.setFocusPainted(false);
+            btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        }
 
         setVisible(true);
     }

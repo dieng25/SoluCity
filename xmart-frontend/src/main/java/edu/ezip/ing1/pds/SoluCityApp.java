@@ -71,7 +71,7 @@ public class SoluCityApp extends JFrame {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(3, 1, 10, 10));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
-        buttonPanel.setBackground(Color.WHITE);
+        buttonPanel.setBackground(Color.LIGHT_GRAY);
 
         buttonPanel.add(citoyenButton);
         buttonPanel.add(mairieButton);
