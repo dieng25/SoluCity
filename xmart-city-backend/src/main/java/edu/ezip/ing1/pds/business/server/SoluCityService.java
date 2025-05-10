@@ -89,6 +89,7 @@ public class SoluCityService {
                 case "STAT_MAIRIE_REQUEST":
                     response = dashboardRepository.dispatch(request, connection, dateDebut, dateFin, codePostal);
                     break;
+                case "UPDATE_INCIDENT":
                 case "AUTHENTIFICATION":
                 case "ENREGISTREMENT":
                     response = compteAdmin.dispatch(request, connection);

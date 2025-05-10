@@ -1,5 +1,4 @@
 package edu.ezip.ing1.pds.business.server;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ezip.ing1.pds.business.dto.Incident;
 import edu.ezip.ing1.pds.business.dto.Incidents;
@@ -17,12 +16,16 @@ public class IncidentService {
     private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
 
     private enum Queries {
-        SELECT_ALL_INCIDENTS("SELECT * FROM Incident");
-        
+        SELECT_ALL_INCIDENTS("SELECT * FROM Incident"),
+        UPDATE_INCIDENT("UPDATE Incident SET statut = ?, date_cloture = ? WHERE Id_ticket = ?");
+
         private final String query;
 
         Queries(final String query) {
             this.query = query;
+        }
+        public String getQuery() {
+            return query;
         }
     }
 
@@ -42,8 +45,13 @@ public class IncidentService {
         Response response = null;
 
         final Queries queryEnum = Enum.valueOf(IncidentService.Queries.class, request.getRequestOrder());
-        if (queryEnum == Queries.SELECT_ALL_INCIDENTS) {
-            response = getAllIncidents(request, connection);
+        switch (queryEnum) {
+            case SELECT_ALL_INCIDENTS:
+                response =  getAllIncidents(request, connection);
+                break;
+            case UPDATE_INCIDENT:
+                response =  setIncident(request, connection);
+                break;
         }
         return response;
     }
@@ -73,4 +81,37 @@ public class IncidentService {
         }
         return new Response(request.getRequestId(), objectMapper.writeValueAsString(incidents));
     }
+    private Response setIncident(final Request request, final Connection connection)
+        throws SQLException, IOException {
+
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    Incident incident = objectMapper.readValue(request.getRequestBody(), Incident.class);
+
+    if (incident == null || incident.getIdTicket() <= 0 || incident.getStatut() < 0) {
+        return new Response(request.getRequestId(),
+                            "{\"success\": false, \"error\": \"Données d'incident invalides\"}");
+    }
+
+    try (PreparedStatement pstmt = connection.prepareStatement(
+            Queries.UPDATE_INCIDENT.getQuery())) {
+        
+
+        java.sql.Date todayDate = new java.sql.Date(System.currentTimeMillis());
+        pstmt.setInt(1, incident.getStatut());
+        pstmt.setDate(2, todayDate);
+        pstmt.setInt(3, incident.getIdTicket());
+        int rowsUpdated = pstmt.executeUpdate();
+
+        String resultJson = "{\"success\": " + (rowsUpdated > 0) + "}";
+        return new Response(request.getRequestId(), resultJson);
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return new Response(request.getRequestId(),
+                            "{\"success\": false, \"error\": \"Erreur base de données\"}");
+    }
+}
+
+    
 }
