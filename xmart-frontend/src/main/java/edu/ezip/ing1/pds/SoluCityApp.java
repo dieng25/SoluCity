@@ -13,9 +13,7 @@ public class SoluCityApp extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-
         getContentPane().setBackground(Color.WHITE);
-
 
         JLabel welcomeLabel = new JLabel("Bienvenue sur SoluCityApp!", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -35,7 +33,6 @@ public class SoluCityApp extends JFrame {
             btn.setFocusPainted(false);
             btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         }
-
 
         dashboardButton.addActionListener(new ActionListener() {
             @Override
@@ -61,12 +58,9 @@ public class SoluCityApp extends JFrame {
             }
         });
 
-
         setLayout(new BorderLayout());
 
-
         add(welcomeLabel, BorderLayout.NORTH);
-
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(3, 1, 10, 10));

@@ -35,16 +35,6 @@ public class DashboardRepository {
     private final Logger logger = LoggerFactory.getLogger(LoggingLabel);
 
     private enum Queries {
-   
-       DASHBOARD_REQUEST("SELECT " +
-                "(SELECT COUNT(*) FROM Incident) AS total_incidents, " +
-                "(SELECT COUNT(*) FROM Incident WHERE statut = 1) AS incidents_en_cours, " +
-                "(SELECT COUNT(*) FROM Incident WHERE statut = 2) AS incidents_resolus, " +
-                "(SELECT COUNT(*) FROM Incident WHERE statut = 0) AS incidents_non_ouverts, " +
-                "(SELECT COUNT(*) FROM Incident WHERE Priorite = 0) AS priorite_non_defini, " +
-                "(SELECT COUNT(*) FROM Incident WHERE Priorite = 1) AS priorite_faible, " +
-                "(SELECT COUNT(*) FROM Incident WHERE Priorite = 2) AS priorite_moyenne, " +
-                "(SELECT COUNT(*) FROM Incident WHERE Priorite = 3) AS priorite_haute"),
 
         GLOBAL_REQUEST("SELECT\r\n" + //
                         "    -- Nombre total d'incidents signalés\r\n" + //
@@ -164,32 +154,6 @@ public class DashboardRepository {
     private DashboardRepository() {
 
     }
- 
-   public Response fetchDashboardData(final Request request, final Connection connection)
-            throws SQLException, JsonProcessingException {
-        final ObjectMapper objectMapper = new ObjectMapper();
-        DashboardDatas dashboardDatas = new DashboardDatas();
-        DashboardData dashboardData = new DashboardData();
-
-        // DASHBOARD_REQUEST avec Statement
-        try (Statement stmt = connection.createStatement();
-             ResultSet dashboardResult = stmt.executeQuery(Queries.DASHBOARD_REQUEST.query)) {
-            if (dashboardResult.next()) {
-                dashboardData.setTotalIncident(dashboardResult.getInt("total_incidents"));
-        dashboardData.setIncidentEnCours(dashboardResult.getInt("incidents_en_cours"));
-        dashboardData.setIncidentResolu(dashboardResult.getInt("incidents_resolus"));
-        dashboardData.setIncidentNonOuvert(dashboardResult.getInt("incidents_non_ouverts"));
-        dashboardData.setNonDefini(dashboardResult.getInt("priorite_non_defini"));
-        dashboardData.setFaible(dashboardResult.getInt("priorite_faible"));
-        dashboardData.setMoyen(dashboardResult.getInt("priorite_moyenne"));
-        dashboardData.setHaut(dashboardResult.getInt("priorite_haute"));
-            }
-        }
-        dashboardDatas.getDashboardDataSet().add(dashboardData);
-        return new Response(request.getRequestId(), objectMapper.writeValueAsString(dashboardDatas));
-    }
-    
-    
     
     public Response fetchGlobalData(final Request request, final Connection connection, Date dateDebut, Date dateFin, String codePostal)
     throws SQLException, JsonProcessingException {
@@ -366,9 +330,6 @@ Response response = null;
 
 final Queries queryEnum = Enum.valueOf(Queries.class, request.getRequestOrder());
 switch(queryEnum) {
-    case DASHBOARD_REQUEST:
-        response = fetchDashboardData(request, connection);
-        break;
     case GLOBAL_REQUEST:
         response = fetchGlobalData(request, connection, dateDebut, dateFin, codePostal);
         break;
