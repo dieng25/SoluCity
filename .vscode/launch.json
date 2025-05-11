@@ -6,6 +6,34 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CreationUtilisateur",
+            "request": "launch",
+            "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.CreationUtilisateur",
+            "projectName": "xmart-frontend"
+        },
+        {
+            "type": "java",
+            "name": "UpdateUtilisateur",
+            "request": "launch",
+            "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.UpdateUtilisateur",
+            "projectName": "xmart-frontend"
+        },
+        {
+            "type": "java",
+            "name": "UpdateAdmin",
+            "request": "launch",
+            "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.UpdateAdmin",
+            "projectName": "xmart-frontend"
+        },
+        {
+            "type": "java",
+            "name": "ConnexionUtilisateur",
+            "request": "launch",
+            "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.ConnexionUtilisateur",
+            "projectName": "xmart-frontend"
+        },
+        {
+            "type": "java",
             "name": "CreationAdmin",
             "request": "launch",
             "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.CreationAdmin",

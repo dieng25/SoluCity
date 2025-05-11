@@ -1,8 +1,4 @@
 package edu.ezip.ing1.pds.business.server;
-
-import edu.ezip.ing1.pds.business.dto.DashboardData;
-import edu.ezip.ing1.pds.business.dto.DashboardDatas;
-import edu.ezip.ing1.pds.business.dto.Incident;
 import edu.ezip.ing1.pds.business.dto.DashboardDto.GlobalData;
 import edu.ezip.ing1.pds.business.dto.DashboardDto.GlobalDatas;
 import edu.ezip.ing1.pds.business.dto.DashboardDto.StatIncidentData;
@@ -19,7 +15,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 

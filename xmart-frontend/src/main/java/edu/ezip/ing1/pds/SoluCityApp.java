@@ -20,7 +20,6 @@ public class SoluCityApp extends JFrame {
         welcomeLabel.setForeground(new Color(0, 123, 255));
         welcomeLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
 
-
         JButton citoyenButton = new JButton("Citoyen");
         JButton mairieButton = new JButton("Mairie");
         JButton dashboardButton = new JButton("Statistiques");

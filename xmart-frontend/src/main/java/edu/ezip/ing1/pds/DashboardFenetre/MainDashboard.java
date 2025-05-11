@@ -19,7 +19,7 @@ public class MainDashboard extends JFrame {
         backgroundPanel.setLayout(new BorderLayout());
 
 
-        JLabel welcomeLabel = new JLabel("Bienvenue Admin!", JLabel.CENTER);
+        JLabel welcomeLabel = new JLabel("Bienvenue!", JLabel.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
         welcomeLabel.setForeground(new Color(0, 123, 255));
         welcomeLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));

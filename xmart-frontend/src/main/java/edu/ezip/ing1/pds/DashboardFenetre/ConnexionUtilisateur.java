@@ -1,5 +1,5 @@
 package edu.ezip.ing1.pds.DashboardFenetre;
-import edu.ezip.ing1.pds.business.dto.DashboardDto.AdminDashboard;
+import edu.ezip.ing1.pds.business.dto.DashboardDto.UserDashboard;
 import edu.ezip.ing1.pds.services.Dashboard.AdminDashboardService;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
@@ -9,20 +9,19 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
+public class ConnexionUtilisateur extends JFrame{
 
-public class ConnexionAdmin extends JFrame {
-
-    private static final Logger logger = LoggerFactory.getLogger(ConnexionAdmin.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConnexionUtilisateur.class);
     private final static String networkConfigFile = "network.yaml";
 
     private NetworkConfig networkConfig;
     private JTextField usernameField;
+    private JTextField CodePostalField;
     private JPasswordField passwordField;
     private JButton submitButton;
-    private JButton registerButton;
 
-    public ConnexionAdmin() {
-        setTitle("Connexion Administrateur");
+    public ConnexionUtilisateur() {
+        setTitle("Connexion en tant qu'utilisateur");
         setLayout(new GridLayout(4, 2, 10, 10));
         setSize(600, 400);
         setLocationRelativeTo(null);
@@ -40,6 +39,11 @@ public class ConnexionAdmin extends JFrame {
         }
 
         // Champs du formulaire
+
+        add(new JLabel("Code Postal :"));
+        CodePostalField = new JTextField();
+        add(CodePostalField);
+
         add(new JLabel("Email :"));
         usernameField = new JTextField();
         add(usernameField);
@@ -50,47 +54,40 @@ public class ConnexionAdmin extends JFrame {
 
         // Bouton de connexion
         submitButton = new JButton("Se connecter");
-        submitButton.addActionListener(e -> authentifierAdmin());
+        submitButton.addActionListener(e -> authentifierUtilisateur());
+        submitButton.setBackground(new Color(0, 123, 255));
+        submitButton.setForeground(Color.WHITE);
+        submitButton.setFont(new Font("Arial", Font.BOLD, 16));
+        submitButton.setFocusPainted(false);
+        submitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         add(submitButton);
-
-        registerButton = new JButton("Creer un compte");
-        registerButton.addActionListener(e -> new CreationAdmin());
-        add(registerButton);
-
-        JButton[] buttons = {submitButton, registerButton};
-        for (JButton btn : buttons) {
-            btn.setBackground(new Color(0, 123, 255));
-            btn.setForeground(Color.WHITE);
-            btn.setFont(new Font("Arial", Font.BOLD, 16));
-            btn.setFocusPainted(false);
-            btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        }
 
         setVisible(true);
     }
 
-    private void authentifierAdmin() {
+    private void authentifierUtilisateur() {
+        String CodePostal = CodePostalField.getText();
         String identifiant = usernameField.getText();
         String motDePasse = new String(passwordField.getPassword());
 
         // controles de validation 
-        if (identifiant.isEmpty() || motDePasse.isEmpty()) {
+        if (CodePostal.isEmpty() || identifiant.isEmpty() || motDePasse.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Tous les champs sont obligatoires.", "Erreur",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         // Création de l'Admin pour l'authentification
-        AdminDashboard adminDashboard = new AdminDashboard(null, null, identifiant, motDePasse);
+        UserDashboard userDashboard = new UserDashboard(CodePostal, identifiant, motDePasse);
 
         AdminDashboardService adminDashboardService = new AdminDashboardService(networkConfig);
-        boolean result = adminDashboardService.AuthentificationAdmin(adminDashboard);
+        boolean result = adminDashboardService.AuthentificationUtilisateur(userDashboard);
 
         if (result) {
             JOptionPane.showMessageDialog(this, "Connexion réussie !", "Succès", JOptionPane.INFORMATION_MESSAGE);
             // Fermer la fenêtre d'auth et rediriger vers la page d'accueil
             this.dispose();
-            new FenetreChoixAdmin().setVisible(true);    
+            new MainDashboard().setVisible(true);    
         } else {
             JOptionPane.showMessageDialog(this, "Erreur lors de la connexion. Email ou mot de passe incorrect.",
                     "Erreur", JOptionPane.ERROR_MESSAGE);
@@ -99,6 +96,7 @@ public class ConnexionAdmin extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(ConnexionAdmin::new);
+        SwingUtilities.invokeLater(ConnexionUtilisateur::new);
     }
 }
+

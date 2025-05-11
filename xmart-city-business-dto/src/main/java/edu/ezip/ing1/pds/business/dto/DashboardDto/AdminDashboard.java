@@ -14,42 +14,62 @@ public class AdminDashboard {
 
     private String Username;
     private String Password;
+    private String NewUsername;
+    private String NewPassword;
 
     public AdminDashboard() {}
 
-    public AdminDashboard(String Username, String Password) {
+    public AdminDashboard(String NewUsername, String NewPassword, String Username, String Password) {
         this.Username = Username;
         this.Password = Password;
-        
+        this.NewUsername = NewPassword;
+        this.NewPassword = NewPassword;
     }
 
     public String getUsername() {
         return Username;
     }
 
+    public String getNewUsername(){
+        return NewUsername;
+    }
+
     public String getPassword() {
         return Password;
+    }
+
+    public String getNewPassword(){
+        return NewPassword;
     }
 
     @JsonProperty("username")
     public void setUsername(String Username) {
         this.Username = Username;
     }
+    @JsonProperty("NewUsername")
+    public void setNewUsername(String NewUsername) {
+        this.NewUsername = NewUsername;
+    }
 
     @JsonProperty("password")
     public void setPassword(String Password) {
         this.Password = Password;
     }
+
+    @JsonProperty("Newpassword")
+    public void setNewPassword(String NewPassword) {
+        this.NewPassword = NewPassword;
+    }
     
     public AdminDashboard build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        setFieldsFromResultSet(resultSet, "Username", "Password");
+        setFieldsFromResultSet(resultSet, "Username", "NewUsername", "Password", "NewPassword");
         return this;
     }
 
     public final PreparedStatement build(PreparedStatement preparedStatement)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
-        return buildPreparedStatement(preparedStatement, Username, Password);
+        return buildPreparedStatement(preparedStatement, NewUsername, NewPassword, Username, Password);
     }
 
     private void setFieldsFromResultSet(final ResultSet resultSet, final String... fieldNames)
@@ -76,10 +96,11 @@ public class AdminDashboard {
 
     @Override
     public String toString() {
-        return "TableauSpecifiqueData{" +
-                "Username=" + Username +
+        return "AdminDashboard{" +
+                "NewUsername=" + NewUsername +
+                ", NewPassword='" + NewPassword + '\'' +
+                ", Username='" + Username + '\'' +
                 ", Password='" + Password + '\'' +
                 '}';
     }
 }
-

@@ -1,32 +1,32 @@
 package edu.ezip.ing1.pds.DashboardFenetre;
-import edu.ezip.ing1.pds.business.dto.DashboardDto.AdminDashboard;
+import edu.ezip.ing1.pds.business.dto.DashboardDto.UserDashboard;
 import edu.ezip.ing1.pds.services.Dashboard.AdminDashboardService;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.swing.*;
 import java.awt.*;
 
-public class CreationAdmin extends JFrame {
+public class CreationUtilisateur extends JFrame {
 
-    private static final Logger logger = LoggerFactory.getLogger(CreationAdmin.class);
+    private static final Logger logger = LoggerFactory.getLogger(CreationUtilisateur.class);
     private final static String networkConfigFile = "network.yaml";
 
     private NetworkConfig networkConfig;
+    private JTextField CodePostalField;
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton submitButton;
 
-    public CreationAdmin() {
-        setTitle("Inscription Administrateur");
+    public CreationUtilisateur() {
+        setTitle("Inscription Utilisateur");
         setLayout(new GridLayout(4, 2, 10, 10));
         setSize(600, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+        setVisible(true);
 
-        // Charger la configuration réseau
         try {
             networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
             logger.debug("Chargement du fichier de configuration réseau : {}", networkConfig.toString());
@@ -37,7 +37,10 @@ public class CreationAdmin extends JFrame {
             return;
         }
 
-        // Champs du formulaire
+        add(new JLabel("Code Postal :"));
+        CodePostalField = new JTextField();
+        add(CodePostalField);
+
         add(new JLabel("Email :"));
         usernameField = new JTextField();
         add(usernameField);
@@ -46,9 +49,8 @@ public class CreationAdmin extends JFrame {
         passwordField = new JPasswordField();
         add(passwordField);
 
-        // Bouton d'inscription
-        submitButton = new JButton("S'inscrire");
-        submitButton.addActionListener(e -> inscrireAdmin());
+        submitButton = new JButton("Inscrire");
+        submitButton.addActionListener(e -> inscrireUtilisateur());
         submitButton.setBackground(new Color(0, 123, 255));
         submitButton.setForeground(Color.WHITE);
         submitButton.setFont(new Font("Arial", Font.BOLD, 16));
@@ -59,27 +61,25 @@ public class CreationAdmin extends JFrame {
         setVisible(true);
     }
 
-    private void inscrireAdmin() {
+    private void inscrireUtilisateur() {
+        String CodePostal = CodePostalField.getText();
         String identifiant = usernameField.getText();
         String motDePasse = new String(passwordField.getPassword());
 
-        // controle de validation
-        if (identifiant.isEmpty() || motDePasse.isEmpty()) {
+        if (CodePostal.isEmpty() || identifiant.isEmpty() || motDePasse.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Tous les champs sont obligatoires.", "Erreur",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        AdminDashboard adminDashboard = new AdminDashboard(null, null, identifiant, motDePasse);
+        UserDashboard userDashboard = new UserDashboard(CodePostal, identifiant, motDePasse);
 
         AdminDashboardService adminDashboardService = new AdminDashboardService(networkConfig);
-        boolean isCorrect = adminDashboardService.EnregistrementAdmin(adminDashboard);
+        boolean isCorrect = adminDashboardService.EnregistrementUtilisateur(userDashboard);
 
         if (isCorrect) {
             JOptionPane.showMessageDialog(this, "Inscription réussie !", "Succès", JOptionPane.INFORMATION_MESSAGE);
-            // Fermer la fenêtre d'inscription et reddirection vers la page de d'authentification
             this.dispose();
-            new ConnexionAdmin();
         } else {
             JOptionPane.showMessageDialog(this, "Erreur lors de l'inscription.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
@@ -87,6 +87,6 @@ public class CreationAdmin extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(CreationAdmin::new);
+        SwingUtilities.invokeLater(CreationUtilisateur::new);
     }
 }

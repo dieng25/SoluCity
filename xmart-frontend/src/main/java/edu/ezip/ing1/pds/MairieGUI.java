@@ -79,7 +79,7 @@ public class MairieGUI {
         //Actions des boutons
         incidentsButton.addActionListener(e -> new FenetreIncident());
         suggestionsButton.addActionListener(e -> new FenetreSuggestion());
-        statistiqueButton.addActionListener(e ->  new MainDashboard().setVisible(true));
+        statistiqueButton.addActionListener(e ->  new ConnexionUtilisateur().setVisible(true));
         // trierButton.addActionListener(e -> new FenetreTrier());
 
         frame.setVisible(true);

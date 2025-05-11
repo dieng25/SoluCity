@@ -82,18 +82,22 @@ public class SoluCityService {
                 case "SELECT_CITOYEN_BY_TEL":
                     response = requestCitoyen.dispatch(request, connection);
                     break;
-                case "DASHBOARD_REQUEST":
                 case "GLOBAL_REQUEST":
                 case "STAT_INCIDENT_REQUEST":
                 case "STAT_SUGGESTION_REQUEST":
                 case "STAT_MAIRIE_REQUEST":
                     response = dashboardRepository.dispatch(request, connection, dateDebut, dateFin, codePostal);
                     break;
-                case "UPDATE_INCIDENT":
                 case "AUTHENTIFICATION":
                 case "ENREGISTREMENT":
+                case "ADMIN_UPDATE":
+                case "USER_UPDATE":
+                case "USER_AUTH":
+                case "USER_ENG":
                     response = compteAdmin.dispatch(request, connection);
                     break;
+
+                case "UPDATE_INCIDENT":
                 case "SELECT_ALL_INCIDENTS":
                     response = incidentService.dispatch(request, connection);
                     break;
