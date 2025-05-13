@@ -45,6 +45,16 @@ public class UpdateAdmin extends JFrame {
         panel.add(new JLabel("Ancienne adresse mail :"));
         OldUsernameField = new JTextField();
         OldUsernameField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); 
+        OldUsernameField.addKeyListener(new java.awt.event.KeyAdapter() {
+    @Override
+    public void keyReleased(java.awt.event.KeyEvent e) {
+        String currentText = OldUsernameField.getText();
+        int position = OldUsernameField.getCaretPosition();
+        OldUsernameField.setText(currentText.toLowerCase());
+        OldUsernameField.setCaretPosition(Math.min(position, OldUsernameField.getText().length()));
+    }
+});
+
         panel.add(OldUsernameField);
 
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -58,7 +68,17 @@ public class UpdateAdmin extends JFrame {
 
         panel.add(new JLabel("Nouvelle adresse mail :"));
         usernameField = new JTextField();
-        usernameField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); 
+        usernameField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+        usernameField.addKeyListener(new java.awt.event.KeyAdapter() {
+    @Override
+    public void keyReleased(java.awt.event.KeyEvent e) {
+        String currentText = usernameField.getText();
+        int position = usernameField.getCaretPosition();
+        usernameField.setText(currentText.toLowerCase());
+        usernameField.setCaretPosition(Math.min(position, usernameField.getText().length()));
+    }
+});
+ 
         panel.add(usernameField);
 
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -98,7 +118,7 @@ public class UpdateAdmin extends JFrame {
         // Validation de l'email Old
 if (!OldIdentifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$") || !identifiant.equals(identifiant.toLowerCase())) {
     JOptionPane.showMessageDialog(this,
-            "Alerte anciennes données : L'email n'est pas valide. Il doit contenir '@' et un point '.' et être en minuscules.",
+            "Alerte anciennes données : L'email n'est pas valide. Il doit contenir '@' et un point '.'",
             "Erreur", JOptionPane.ERROR_MESSAGE);
     return;
 }
@@ -127,7 +147,7 @@ if (OldMotDePasse.length() > 50) {
         // Validation de l'email
         if (!identifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$") || !identifiant.equals(identifiant.toLowerCase())) {
             JOptionPane.showMessageDialog(this,
-                    "L'email n'est pas valide. Il doit contenir '@' et un point '.' et être en minuscules.",
+                    "L'email n'est pas valide. Il doit contenir '@' et un point '.'",
                     "Erreur", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -163,7 +183,7 @@ return;
             this.dispose();
             new FenetreChoixAdmin().setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(this, "Ancienne adresse mail inexistante ou nouvelle adresse mail déjà associée à un compte.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Anciennes données inexistantes ou nouvelle adresse mail déjà associée à un compte.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
 

@@ -51,6 +51,16 @@ public class UpdateUtilisateur extends JFrame {
         panel.add(new JLabel("Modifier l'Email :"));
         usernameField = new JTextField();
         usernameField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
+        usernameField.addKeyListener(new java.awt.event.KeyAdapter() {
+    @Override
+    public void keyReleased(java.awt.event.KeyEvent e) {
+        String currentText = usernameField.getText();
+        int position = usernameField.getCaretPosition(); 
+        usernameField.setText(currentText.toLowerCase());
+        usernameField.setCaretPosition(Math.min(position, usernameField.getText().length()));
+    }
+});
+
         panel.add(usernameField);
 
         panel.add(Box.createRigidArea(new Dimension(0, 10))); 

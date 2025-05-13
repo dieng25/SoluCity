@@ -42,6 +42,17 @@ public class CreationAdmin extends JFrame {
         usernameField = new JTextField();
         add(usernameField);
 
+    usernameField.addKeyListener(new java.awt.event.KeyAdapter() {
+    @Override
+    public void keyReleased(java.awt.event.KeyEvent e) {
+        String currentText = usernameField.getText();
+        int position = usernameField.getCaretPosition(); 
+        usernameField.setText(currentText.toLowerCase());
+        usernameField.setCaretPosition(Math.min(position, usernameField.getText().length()));
+    }
+});
+
+
         add(new JLabel("Mot de passe :"));
         passwordField = new JPasswordField();
         add(passwordField);
@@ -73,9 +84,9 @@ public class CreationAdmin extends JFrame {
         }
 
 // Validation de l'email
-if (!identifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$") || !identifiant.equals(identifiant.toLowerCase())) {
+if (!identifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
     JOptionPane.showMessageDialog(this,
-            "L'email n'est pas valide. Il doit contenir '@' et un point '.' et être en minuscules.",
+            "L'email n'est pas valide. Il doit contenir '@' et un point '.'",
             "Erreur", JOptionPane.ERROR_MESSAGE);
     return;
 }
