@@ -73,11 +73,13 @@ public class CreationAdmin extends JFrame {
         }
 
 // Validation de l'email
-if (!identifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
-    JOptionPane.showMessageDialog(this, "L'email n'est pas valide. Il doit contenir '@' et un point '.'", "Erreur",
-            JOptionPane.ERROR_MESSAGE);
+if (!identifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$") || !identifiant.equals(identifiant.toLowerCase())) {
+    JOptionPane.showMessageDialog(this,
+            "L'email n'est pas valide. Il doit contenir '@' et un point '.' et être en minuscules.",
+            "Erreur", JOptionPane.ERROR_MESSAGE);
     return;
 }
+
 if (identifiant.length() > 50) {
     JOptionPane.showMessageDialog(this,
             "L'adresse mail ne doit pas dépasser 50 caractères.",
@@ -108,17 +110,17 @@ if (motDePasse.length() > 50) {
 
         if (isCorrect) {
             JOptionPane.showMessageDialog(this, "Inscription réussie !", "Succès", JOptionPane.INFORMATION_MESSAGE);
-            // Fermer la fenêtre d'inscription et reddirection vers la page de d'authentification
+            // Fermer et aller vers la page de connexion
             this.dispose();
             new ConnexionAdmin();
         } 
         else {
-            JOptionPane.showMessageDialog(this, "Erreur lors de l'inscription ou Email déjà associé à un compte.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Erreur lors de l'inscription: Email déjà associé à un compte.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
-
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(CreationAdmin::new);
     }
+
 }

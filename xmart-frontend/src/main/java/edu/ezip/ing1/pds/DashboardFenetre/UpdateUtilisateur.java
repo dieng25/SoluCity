@@ -94,11 +94,13 @@ public class UpdateUtilisateur extends JFrame {
     }
 
     // Validation de l'email
-if (!identifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
-    JOptionPane.showMessageDialog(this, "L'email n'est pas valide. Il doit contenir '@' et un point '.'", "Erreur",
-            JOptionPane.ERROR_MESSAGE);
-    return;
-}
+    if (!identifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$") || !identifiant.equals(identifiant.toLowerCase())) {
+        JOptionPane.showMessageDialog(this,
+                "L'email n'est pas valide. Il doit contenir '@' et un point '.' et être en minuscules.",
+                "Erreur", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+    
 if (identifiant.length() > 50) {
     JOptionPane.showMessageDialog(this,
             "L'adresse mail ne doit pas dépasser 50 caractères.",
@@ -130,7 +132,7 @@ if (motDePasse.length() > 50) {
             this.dispose();
             new FenetreChoixAdmin().setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(this, "Erreur lors de la modification car ce Code Postal n'est associé à aucun compte.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Code Postal associé à aucun compte.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
 
     }

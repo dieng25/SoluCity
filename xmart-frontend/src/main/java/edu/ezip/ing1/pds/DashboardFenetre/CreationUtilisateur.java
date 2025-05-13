@@ -81,11 +81,13 @@ public class CreationUtilisateur extends JFrame {
     }
 
     // Validation de l'email
-if (!identifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
-    JOptionPane.showMessageDialog(this, "L'email n'est pas valide. Il doit contenir '@' et un point '.'", "Erreur",
-            JOptionPane.ERROR_MESSAGE);
+if (!identifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$") || !identifiant.equals(identifiant.toLowerCase())) {
+    JOptionPane.showMessageDialog(this,
+            "L'email n'est pas valide. Il doit contenir '@' et un point '.' et être en minuscules.",
+            "Erreur", JOptionPane.ERROR_MESSAGE);
     return;
 }
+
 if (identifiant.length() > 50) {
     JOptionPane.showMessageDialog(this,
             "L'adresse mail ne doit pas dépasser 50 caractères.",
@@ -118,7 +120,7 @@ if (motDePasse.length() > 50) {
             new FenetreChoixAdmin().setVisible(true);
         } 
         else {
-            JOptionPane.showMessageDialog(this, "Erreur lors de l'inscription Code postal déjà associé à un compte.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Erreur lors de l'inscription: Code postal déjà associé à un compte.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
 
     }
