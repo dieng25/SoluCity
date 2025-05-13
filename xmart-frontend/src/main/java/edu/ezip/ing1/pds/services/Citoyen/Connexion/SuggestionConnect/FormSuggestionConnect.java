@@ -6,6 +6,7 @@ import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.services.Citoyen.CategorieSuggestionService;
 import edu.ezip.ing1.pds.services.Citoyen.ConfirmeExit;
 import edu.ezip.ing1.pds.services.Citoyen.Connexion.AccueilConnexion;
+import edu.ezip.ing1.pds.services.Citoyen.LimiteCaractere;
 import edu.ezip.ing1.pds.services.Citoyen.MairieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,6 +109,7 @@ public class FormSuggestionConnect extends ConfirmeExit {
         formPanel.add(new JLabel("Titre: "));
         titreField = new JTextField();
         formPanel.add(titreField);
+        titreField.setDocument(new LimiteCaractere(50));
         setUppercaseKeyListener(titreField);
 
 
@@ -117,6 +119,7 @@ public class FormSuggestionConnect extends ConfirmeExit {
         descriptionArea = new JTextArea();
         descriptionArea.setLineWrap(true);
         descriptionArea.setWrapStyleWord(true);
+        descriptionArea.setDocument(new LimiteCaractere(20000));
         JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
         descriptionPanel.add(descriptionScrollPane, BorderLayout.CENTER);
 

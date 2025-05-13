@@ -6,6 +6,7 @@ import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.services.Citoyen.CategorieSuggestionService;
 import edu.ezip.ing1.pds.services.Citoyen.ConfirmeExit;
+import edu.ezip.ing1.pds.services.Citoyen.LimiteCaractere;
 import edu.ezip.ing1.pds.services.Citoyen.MairieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,11 +78,13 @@ public class FormulaireSuggestion extends ConfirmeExit {
         formPanel.add(new JLabel("Nom: "));
         nomField = new JTextField();
         formPanel.add(nomField);
+        nomField.setDocument(new LimiteCaractere(50));
         setUppercaseKeyListener(nomField);
 
         formPanel.add(new JLabel("Prénom: "));
         prenomField = new JTextField();
         formPanel.add(prenomField);
+        prenomField.setDocument(new LimiteCaractere(50));
         setUppercaseKeyListener(prenomField);
 
         formPanel.add(new JLabel("Numéro de téléphone: "));
@@ -111,6 +114,7 @@ public class FormulaireSuggestion extends ConfirmeExit {
         formPanel.add(new JLabel("Titre: "));
         titreField = new JTextField();
         formPanel.add(titreField);
+        titreField.setDocument(new LimiteCaractere(50));
         setUppercaseKeyListener(titreField);
 
 
@@ -120,6 +124,7 @@ public class FormulaireSuggestion extends ConfirmeExit {
         descriptionArea = new JTextArea();
         descriptionArea.setLineWrap(true);
         descriptionArea.setWrapStyleWord(true);
+        descriptionArea.setDocument(new LimiteCaractere(20000));
         JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
         descriptionPanel.add(descriptionScrollPane, BorderLayout.CENTER);
 
