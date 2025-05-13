@@ -94,22 +94,23 @@ public class UpdateAdmin extends JFrame {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-        // Validation de l'email
-        if (!identifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$") || !identifiant.equals(identifiant.toLowerCase())) {
-            JOptionPane.showMessageDialog(this,
-                    "L'email n'est pas valide. Il doit contenir '@' et un point '.' et être en minuscules.",
-                    "Erreur", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-if (identifiant.length() > 50) {
+
+        // Validation de l'email Old
+if (!OldIdentifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$") || !identifiant.equals(identifiant.toLowerCase())) {
     JOptionPane.showMessageDialog(this,
-            "L'adresse mail ne doit pas dépasser 50 caractères.",
+            "Alerte anciennes données : L'email n'est pas valide. Il doit contenir '@' et un point '.' et être en minuscules.",
             "Erreur", JOptionPane.ERROR_MESSAGE);
     return;
 }
 
-        // Validation du mot de passe Old
+if (OldIdentifiant.length() > 50) {
+JOptionPane.showMessageDialog(this,
+    "Alerte anciennes données: L'adresse mail ne doit pas dépasser 50 caractères.",
+    "Erreur", JOptionPane.ERROR_MESSAGE);
+return;
+}
+
+               // Validation du mot de passe Old
 if (!OldMotDePasse.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{8,}$")) {
     JOptionPane.showMessageDialog(this,
             "Alterte anciennes données:Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, un chiffre et un caractère spécial.",
@@ -123,19 +124,19 @@ if (OldMotDePasse.length() > 50) {
     return;
 }
 
-// Validation de l'email Old
-if (!OldIdentifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$") || !identifiant.equals(identifiant.toLowerCase())) {
+        // Validation de l'email
+        if (!identifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$") || !identifiant.equals(identifiant.toLowerCase())) {
+            JOptionPane.showMessageDialog(this,
+                    "L'email n'est pas valide. Il doit contenir '@' et un point '.' et être en minuscules.",
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+if (identifiant.length() > 50) {
     JOptionPane.showMessageDialog(this,
-            "Alerte anciennes données : L'email n'est pas valide. Il doit contenir '@' et un point '.' et être en minuscules.",
+            "L'adresse mail ne doit pas dépasser 50 caractères.",
             "Erreur", JOptionPane.ERROR_MESSAGE);
     return;
-}
-
-if (OldIdentifiant.length() > 50) {
-JOptionPane.showMessageDialog(this,
-    "Alerte anciennes données: L'adresse mail ne doit pas dépasser 50 caractères.",
-    "Erreur", JOptionPane.ERROR_MESSAGE);
-return;
 }
 
 // Validation du mot de passe
