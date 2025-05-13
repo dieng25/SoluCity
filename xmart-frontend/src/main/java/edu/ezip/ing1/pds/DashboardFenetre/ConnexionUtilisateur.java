@@ -47,6 +47,16 @@ public class ConnexionUtilisateur extends JFrame{
         add(new JLabel("Email :"));
         usernameField = new JTextField();
         add(usernameField);
+        usernameField.addKeyListener(new java.awt.event.KeyAdapter() {
+    @Override
+    public void keyReleased(java.awt.event.KeyEvent e) {
+        String currentText = usernameField.getText();
+        int position = usernameField.getCaretPosition(); 
+        usernameField.setText(currentText.toLowerCase());
+        usernameField.setCaretPosition(Math.min(position, usernameField.getText().length()));
+    }
+});
+
 
         add(new JLabel("Mot de passe :"));
         passwordField = new JPasswordField();

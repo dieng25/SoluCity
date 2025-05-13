@@ -44,10 +44,22 @@ public class CreationUtilisateur extends JFrame {
         add(new JLabel("Email :"));
         usernameField = new JTextField();
         add(usernameField);
+        usernameField.addKeyListener(new java.awt.event.KeyAdapter() {
+    @Override
+    public void keyReleased(java.awt.event.KeyEvent e) {
+        String currentText = usernameField.getText();
+        int position = usernameField.getCaretPosition();
+        usernameField.setText(currentText.toLowerCase());
+        usernameField.setCaretPosition(Math.min(position, usernameField.getText().length()));
+    }
+});
+
 
         add(new JLabel("Mot de passe :"));
         passwordField = new JPasswordField();
         add(passwordField);
+
+        add(new JLabel("Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, un chiffre et un caractère spécial"));
 
         submitButton = new JButton("Inscrire");
         submitButton.addActionListener(e -> inscrireUtilisateur());
@@ -71,6 +83,41 @@ public class CreationUtilisateur extends JFrame {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
+         // Je veux que le code postal = entier de 5 chiffres exactement
+    if (!CodePostal.matches("\\d{5}")) {
+        JOptionPane.showMessageDialog(this, "Le code postal doit contenir exactement 5 chiffres.", "Code Postal invalide",
+                JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // Validation de l'email
+if (!identifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$") || !identifiant.equals(identifiant.toLowerCase())) {
+    JOptionPane.showMessageDialog(this,
+            "L'email n'est pas valide. Il doit contenir '@' et un point '.'",
+            "Erreur", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+if (identifiant.length() > 50) {
+    JOptionPane.showMessageDialog(this,
+            "L'adresse mail ne doit pas dépasser 50 caractères.",
+            "Erreur", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+        // Validation du mot de passe
+if (!motDePasse.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{8,}$")) {
+    JOptionPane.showMessageDialog(this,
+            "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, un chiffre et un caractère spécial.",
+            "Erreur", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+if (motDePasse.length() > 50) {
+    JOptionPane.showMessageDialog(this,
+            "Le mot de passe ne doit pas dépasser 50 caractères.",
+            "Erreur", JOptionPane.ERROR_MESSAGE);
+    return;
+}
 
         UserDashboard userDashboard = new UserDashboard(CodePostal, identifiant, motDePasse);
 
@@ -80,8 +127,10 @@ public class CreationUtilisateur extends JFrame {
         if (isCorrect) {
             JOptionPane.showMessageDialog(this, "Inscription réussie !", "Succès", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
-        } else {
-            JOptionPane.showMessageDialog(this, "Erreur lors de l'inscription.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            new FenetreChoixAdmin().setVisible(true);
+        } 
+        else {
+            JOptionPane.showMessageDialog(this, "Erreur lors de l'inscription: Code postal déjà associé à un compte.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
 
     }

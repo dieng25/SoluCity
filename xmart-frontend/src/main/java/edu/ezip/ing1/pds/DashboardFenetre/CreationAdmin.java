@@ -42,9 +42,22 @@ public class CreationAdmin extends JFrame {
         usernameField = new JTextField();
         add(usernameField);
 
+    usernameField.addKeyListener(new java.awt.event.KeyAdapter() {
+    @Override
+    public void keyReleased(java.awt.event.KeyEvent e) {
+        String currentText = usernameField.getText();
+        int position = usernameField.getCaretPosition(); 
+        usernameField.setText(currentText.toLowerCase());
+        usernameField.setCaretPosition(Math.min(position, usernameField.getText().length()));
+    }
+});
+
+
         add(new JLabel("Mot de passe :"));
         passwordField = new JPasswordField();
         add(passwordField);
+
+        add(new JLabel("Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, un chiffre et un caractère spécial"));
 
         // Bouton d'inscription
         submitButton = new JButton("S'inscrire");
@@ -70,6 +83,37 @@ public class CreationAdmin extends JFrame {
             return;
         }
 
+// Validation de l'email
+if (!identifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+    JOptionPane.showMessageDialog(this,
+            "L'email n'est pas valide. Il doit contenir '@' et un point '.'",
+            "Erreur", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+if (identifiant.length() > 50) {
+    JOptionPane.showMessageDialog(this,
+            "L'adresse mail ne doit pas dépasser 50 caractères.",
+            "Erreur", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+        // Validation du mot de passe
+if (!motDePasse.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{8,}$")) {
+    JOptionPane.showMessageDialog(this,
+            "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, un chiffre et un caractère spécial.",
+            "Erreur", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+if (motDePasse.length() > 50) {
+    JOptionPane.showMessageDialog(this,
+            "Le mot de passe ne doit pas dépasser 50 caractères.",
+            "Erreur", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+
+
         AdminDashboard adminDashboard = new AdminDashboard(null, null, identifiant, motDePasse);
 
         AdminDashboardService adminDashboardService = new AdminDashboardService(networkConfig);
@@ -77,16 +121,17 @@ public class CreationAdmin extends JFrame {
 
         if (isCorrect) {
             JOptionPane.showMessageDialog(this, "Inscription réussie !", "Succès", JOptionPane.INFORMATION_MESSAGE);
-            // Fermer la fenêtre d'inscription et reddirection vers la page de d'authentification
+            // Fermer et aller vers la page de connexion
             this.dispose();
             new ConnexionAdmin();
-        } else {
-            JOptionPane.showMessageDialog(this, "Erreur lors de l'inscription.", "Erreur", JOptionPane.ERROR_MESSAGE);
+        } 
+        else {
+            JOptionPane.showMessageDialog(this, "Erreur lors de l'inscription: Email déjà associé à un compte.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
-
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(CreationAdmin::new);
     }
+
 }

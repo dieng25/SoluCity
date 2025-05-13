@@ -22,7 +22,7 @@ public class AdminDashboard {
     public AdminDashboard(String NewUsername, String NewPassword, String Username, String Password) {
         this.Username = Username;
         this.Password = Password;
-        this.NewUsername = NewPassword;
+        this.NewUsername = NewUsername;
         this.NewPassword = NewPassword;
     }
 
