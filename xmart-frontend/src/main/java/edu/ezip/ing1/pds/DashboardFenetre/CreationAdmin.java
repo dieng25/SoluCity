@@ -46,6 +46,8 @@ public class CreationAdmin extends JFrame {
         passwordField = new JPasswordField();
         add(passwordField);
 
+        add(new JLabel("Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, un chiffre et un caractère spécial"));
+
         // Bouton d'inscription
         submitButton = new JButton("S'inscrire");
         submitButton.addActionListener(e -> inscrireAdmin());
@@ -70,6 +72,35 @@ public class CreationAdmin extends JFrame {
             return;
         }
 
+// Validation de l'email
+if (!identifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+    JOptionPane.showMessageDialog(this, "L'email n'est pas valide. Il doit contenir '@' et un point '.'", "Erreur",
+            JOptionPane.ERROR_MESSAGE);
+    return;
+}
+if (identifiant.length() > 50) {
+    JOptionPane.showMessageDialog(this,
+            "L'adresse mail ne doit pas dépasser 50 caractères.",
+            "Erreur", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+        // Validation du mot de passe
+if (!motDePasse.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{8,}$")) {
+    JOptionPane.showMessageDialog(this,
+            "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, un chiffre et un caractère spécial.",
+            "Erreur", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+if (motDePasse.length() > 50) {
+    JOptionPane.showMessageDialog(this,
+            "Le mot de passe ne doit pas dépasser 50 caractères.",
+            "Erreur", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+
+
         AdminDashboard adminDashboard = new AdminDashboard(null, null, identifiant, motDePasse);
 
         AdminDashboardService adminDashboardService = new AdminDashboardService(networkConfig);
@@ -80,8 +111,9 @@ public class CreationAdmin extends JFrame {
             // Fermer la fenêtre d'inscription et reddirection vers la page de d'authentification
             this.dispose();
             new ConnexionAdmin();
-        } else {
-            JOptionPane.showMessageDialog(this, "Erreur lors de l'inscription.", "Erreur", JOptionPane.ERROR_MESSAGE);
+        } 
+        else {
+            JOptionPane.showMessageDialog(this, "Erreur lors de l'inscription ou Email déjà associé à un compte.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
 
     }

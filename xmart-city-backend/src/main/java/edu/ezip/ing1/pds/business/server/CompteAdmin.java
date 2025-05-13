@@ -110,6 +110,9 @@ public class CompteAdmin {
             boolean success = rowsInserted > 0;
 
             return new Response(request.getRequestId(), String.valueOf(success));
+        }catch (SQLIntegrityConstraintViolationException e) {
+            // Pour si l'utilisateur met une adresse mail déja existante et autres
+            return new Response(request.getRequestId(), "false");
         }
     }
 
@@ -140,6 +143,10 @@ public class CompteAdmin {
 
             return new Response(request.getRequestId(), String.valueOf(success));
         }
+        catch (SQLIntegrityConstraintViolationException e) {
+            // Code postal déja utilisé
+            return new Response(request.getRequestId(), "false");
+        }
     }
 
     public Response MajAdmin(final Request request, final Connection connection, AdminDashboard adminDashboard)
@@ -156,6 +163,10 @@ public class CompteAdmin {
 
         return new Response(request.getRequestId(), String.valueOf(success));
     }
+    catch (SQLIntegrityConstraintViolationException e) {
+        // Pour si l'utilisateur met une adresse mail déja existante et autres
+        return new Response(request.getRequestId(), "false");
+    }
 }
 
 public Response MajUser(final Request request, final Connection connection, final UserDashboard userDashboard)
@@ -170,7 +181,8 @@ public Response MajUser(final Request request, final Connection connection, fina
         boolean success = rowsUpdated > 0;
 
         return new Response(request.getRequestId(), String.valueOf(success));
+    }catch (SQLIntegrityConstraintViolationException e) {
+        return new Response(request.getRequestId(), "false");
     }
 }
-
 }

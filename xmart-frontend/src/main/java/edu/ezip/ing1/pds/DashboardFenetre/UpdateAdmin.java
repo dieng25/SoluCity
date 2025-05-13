@@ -24,7 +24,7 @@ public class UpdateAdmin extends JFrame {
 
     public UpdateAdmin() {
         setTitle("Modifier mes infos de connexion");
-        setSize(600, 400);  // Ajuster la taille de la fenêtre
+        setSize(600, 400); 
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -32,7 +32,6 @@ public class UpdateAdmin extends JFrame {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Charger la configuration réseau
         try {
             networkConfig = ConfigLoader.loadConfig(NetworkConfig.class, networkConfigFile);
             logger.debug("Chargement du fichier de configuration réseau : {}", networkConfig.toString());
@@ -43,36 +42,34 @@ public class UpdateAdmin extends JFrame {
             return;
         }
 
-        // Champs du formulaire
         panel.add(new JLabel("Ancienne adresse mail :"));
         OldUsernameField = new JTextField();
-        OldUsernameField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); // Taille ajustée
+        OldUsernameField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); 
         panel.add(OldUsernameField);
 
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         panel.add(new JLabel("Ancien mot de passe :"));
         OldPasswordField = new JPasswordField();
-        OldPasswordField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); // Taille ajustée
+        OldPasswordField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); 
         panel.add(OldPasswordField);
 
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         panel.add(new JLabel("Nouvelle adresse mail :"));
         usernameField = new JTextField();
-        usernameField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); // Taille ajustée
+        usernameField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); 
         panel.add(usernameField);
 
         panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         panel.add(new JLabel("Nouveau mot de passe :"));
         passwordField = new JPasswordField();
-        passwordField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); // Taille ajustée
+        passwordField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); 
         panel.add(passwordField);
 
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
 
-        // Bouton de soumission
         submitButton = new JButton("Mettre à jour");
         submitButton.addActionListener(e -> ReinscrireAdmin());
         submitButton.setBackground(new Color(0, 123, 255));
@@ -87,17 +84,42 @@ public class UpdateAdmin extends JFrame {
     }
 
     private void ReinscrireAdmin() {
-        String identifiant = usernameField.getText();
         String OldIdentifiant = OldUsernameField.getText();
         String OldMotDePasse = new String(OldPasswordField.getPassword());
+        String identifiant = usernameField.getText();
         String motDePasse = new String(passwordField.getPassword());
 
-        // Contrôle de validation
         if (OldIdentifiant.isEmpty() || OldMotDePasse.isEmpty() || identifiant.isEmpty() || motDePasse.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Tous les champs sont obligatoires.", "Erreur",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
+        // Validation de l'email
+if (!identifiant.matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")) {
+    JOptionPane.showMessageDialog(this, "L'email n'est pas valide. Il doit contenir '@' et un point '.'", "Erreur",
+            JOptionPane.ERROR_MESSAGE);
+    return;
+}
+if (identifiant.length() > 50) {
+    JOptionPane.showMessageDialog(this,
+            "L'adresse mail ne doit pas dépasser 50 caractères.",
+            "Erreur", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+
+        // Validation du mot de passe
+if (!motDePasse.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{8,}$")) {
+    JOptionPane.showMessageDialog(this,
+            "Le mot de passe doit contenir au moins 8 caractères, une lettre majuscule, un chiffre et un caractère spécial.",
+            "Erreur", JOptionPane.ERROR_MESSAGE);
+    return;
+}
+if (motDePasse.length() > 50) {
+    JOptionPane.showMessageDialog(this,
+            "Le mot de passe ne doit pas dépasser 50 caractères.",
+            "Erreur", JOptionPane.ERROR_MESSAGE);
+    return;
+}
 
         AdminDashboard adminDashboard = new AdminDashboard(identifiant, motDePasse, OldIdentifiant, OldMotDePasse);
 
@@ -107,8 +129,9 @@ public class UpdateAdmin extends JFrame {
         if (isCorrect) {
             JOptionPane.showMessageDialog(this, "Modification réussie !", "Succès", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
+            new FenetreChoixAdmin().setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(this, "Erreur lors de la modification.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Erreur lors de la modification ou nouvelle adresse mail déjà associée à un compte.", "Erreur", JOptionPane.ERROR_MESSAGE);
         }
     }
 
