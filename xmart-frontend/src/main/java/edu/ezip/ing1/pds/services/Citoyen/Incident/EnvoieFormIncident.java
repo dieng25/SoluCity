@@ -81,9 +81,8 @@ public class EnvoieFormIncident implements ActionListener {
             incidentService.insertIncident(incident);
         } catch (InterruptedException | IOException ex) {
             logger.error("Erreur lors de l'envoie des données ticket incident", ex);
-            JOptionPane.showMessageDialog(form, "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
+            JOptionPane.showMessageDialog(form, "Erreur de connexion au serveur. Veuillez réessayer plus tard. Incident non envoyé.",
                     "Erreur", JOptionPane.ERROR_MESSAGE);
-            return;
         }
 
         try {

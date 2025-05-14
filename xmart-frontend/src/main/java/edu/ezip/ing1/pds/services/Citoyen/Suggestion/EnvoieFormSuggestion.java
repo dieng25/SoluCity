@@ -80,9 +80,8 @@ public class EnvoieFormSuggestion implements ActionListener {
             suggestionService.insertSuggestion(suggestion);
         } catch (InterruptedException | IOException ex) {
             logger.error("Erreur lors de l'envoie des données ticket suggestion", ex);
-            JOptionPane.showMessageDialog(form, "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
+            JOptionPane.showMessageDialog(form, "Erreur de connexion au serveur. Veuillez réessayer plus tard. Suggestion non envoyé.",
                     "Erreur", JOptionPane.ERROR_MESSAGE);
-            return;
         }
 
         try {

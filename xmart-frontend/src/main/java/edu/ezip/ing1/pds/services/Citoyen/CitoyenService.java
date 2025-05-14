@@ -70,14 +70,13 @@ public class CitoyenService {
             final ClientRequest clientRequest = clientRequests.pop();
             clientRequest.join();
 
-            if (clientRequest.getResult() == null) {
-                throw new IOException("Échec de la requête : le résultat de l'insertion citoyen est null.");
-            }
-
             final Citoyen guy = (Citoyen) clientRequest.getInfo();
+            if (guy == null) {
+                throw new IOException("L'information du citoyen retournée est nulle.");
+            }
             logger.debug("Thread {} complete : {} {} {} --> {}",
                     clientRequest.getThreadName(),
-                    guy.getTelNum(), guy.getNom(), guy.getPrenom(), guy.getEmail(), guy.getEmail(),
+                    guy.getTelNum(), guy.getNom(), guy.getPrenom(), guy.getEmail(),
                     clientRequest.getResult());
         }
     }
