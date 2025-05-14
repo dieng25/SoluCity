@@ -1,4 +1,4 @@
-databaseName: "solucity"
+databaseName: "solucity_v1"
 host: "172.31.250.110" #"127.0.0.1"
 port: 3306
 username : "root"
