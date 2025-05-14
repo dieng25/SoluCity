@@ -34,6 +34,9 @@ public class MainFrameCitoyen {
                         "Est-ce la première fois que vous déclarez un incident ou faites une suggestion ?",
                         "Confirmation",
                         JOptionPane.YES_NO_OPTION);
+                if (response == JOptionPane.CLOSED_OPTION) {
+                    return;
+                }
                 if (response == JOptionPane.NO_OPTION) {
                     JOptionPane.showMessageDialog(mainFrame, "Veuillez vous connecter pour déclarer un incident.");
                 } else {
@@ -49,6 +52,9 @@ public class MainFrameCitoyen {
                         "Est-ce la première fois que vous faites une suggestion ou déclarez un incident ?",
                         "Confirmation",
                         JOptionPane.YES_NO_OPTION);
+                if (response == JOptionPane.CLOSED_OPTION) {
+                    return;
+                }
                 if (response == JOptionPane.NO_OPTION) {
                     JOptionPane.showMessageDialog(mainFrame, "Veuillez vous connecter pour faire une suggestion.");
                 } else {
