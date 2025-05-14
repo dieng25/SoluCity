@@ -177,9 +177,6 @@ public class CitoyenService {
             joinedClientRequest.join();
             logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
 
-            if (joinedClientRequest.getResult() == null) {
-                throw new IOException("Connexion au serveur échouée. Résultat null.");
-            }
 
             Citoyen citoyen = (Citoyen) joinedClientRequest.getResult();
             if (citoyen == null)  {
