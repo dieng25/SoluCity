@@ -21,10 +21,12 @@ public class RecupIncident implements ActionListener {
     private final static String networkConfigFile = "network.yaml";
 
     private Citoyen citoyen;
+    private final JFrame parentWindow;
 
 
-    public RecupIncident(Citoyen citoyen) {
+    public RecupIncident(Citoyen citoyen, JFrame parentWindow) {
         this.citoyen = citoyen;
+        this.parentWindow = parentWindow;
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -36,9 +38,10 @@ public class RecupIncident implements ActionListener {
         try {
             List<Incident> incidents = incidentService.selectIncidentsByTel(tel);
             if (incidents.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Aucun incident trouvé pour cet utilisateur.",
+                JOptionPane.showMessageDialog(null, "Aucun incident trouvé.",
                         "Information", JOptionPane.INFORMATION_MESSAGE);
             } else {
+                parentWindow.dispose();
                 new IncidentConsulte(incidents, citoyen);
             }
 
