@@ -1,4 +1,4 @@
-package edu.ezip.ing1.pds;
+package edu.ezip.ing1.pds.MarieFrames;
 import edu.ezip.ing1.pds.DashboardFenetre.*;
 import javax.swing.*;
 import java.awt.*;
@@ -79,7 +79,7 @@ public class MairieGUI {
         //Actions des boutons
         incidentsButton.addActionListener(e -> new FenetreIncident());
         suggestionsButton.addActionListener(e -> new FenetreSuggestion());
-        statistiqueButton.addActionListener(e ->  new ConnexionUtilisateur().setVisible(true));
+        statistiqueButton.addActionListener(e ->  new MainDashboard().setVisible(true));
         // trierButton.addActionListener(e -> new FenetreTrier());
 
         frame.setVisible(true);

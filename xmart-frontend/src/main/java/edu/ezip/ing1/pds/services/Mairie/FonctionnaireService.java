@@ -3,9 +3,9 @@ package edu.ezip.ing1.pds.services.Mairie;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.commons.Request;
+import edu.ezip.ing1.pds.requests.MairieRequests.AuthenticateFonctionnaireClientRequest;
+import edu.ezip.ing1.pds.requests.MairieRequests.RegisterFonctionnaireClientRequest;
 import edu.ezip.ing1.pds.business.dto.Fonctionnaire;
-import edu.ezip.ing1.pds.requests.RegisterFonctionnaireClientRequest;
-import edu.ezip.ing1.pds.requests.AuthenticateFonctionnaireClientRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

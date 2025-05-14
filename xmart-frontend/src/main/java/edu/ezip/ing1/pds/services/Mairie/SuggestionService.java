@@ -2,13 +2,12 @@ package edu.ezip.ing1.pds.services.Mairie;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import edu.ezip.commons.LoggingUtils;
-import edu.ezip.ing1.pds.business.dto.Suggestion;
 import edu.ezip.ing1.pds.business.dto.Suggestions;
 import edu.ezip.ing1.pds.client.commons.ClientRequest;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.commons.Request;
-// import edu.ezip.ing1.pds.requests.InsertIncidentClientRequest;
-import edu.ezip.ing1.pds.requests.SelectAllSuggestionsClientRequest;
+import edu.ezip.ing1.pds.requests.MairieRequests.SelectAllSuggestionsClientRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;

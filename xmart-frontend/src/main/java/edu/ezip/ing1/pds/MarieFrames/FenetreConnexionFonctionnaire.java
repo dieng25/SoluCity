@@ -1,31 +1,30 @@
-package edu.ezip.ing1.pds;
-
+package edu.ezip.ing1.pds.MarieFrames;
 import edu.ezip.ing1.pds.business.dto.Fonctionnaire;
 import edu.ezip.ing1.pds.services.Mairie.FonctionnaireService;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.swing.*;
 import java.awt.*;
 
-public class FenetreCreationCompteFonctionnaire extends JFrame {
+public class FenetreConnexionFonctionnaire extends JFrame {
 
-    private static final Logger logger = LoggerFactory.getLogger(FenetreCreationCompteFonctionnaire.class);
+    private static final Logger logger = LoggerFactory.getLogger(FenetreConnexionFonctionnaire.class);
     private final static String networkConfigFile = "network.yaml";
 
     private NetworkConfig networkConfig;
     private JTextField emailField, codePostalField;
     private JPasswordField passwordField;
     private JButton submitButton;
+    private JButton registerButton;
 
-    public FenetreCreationCompteFonctionnaire() {
-        setTitle("Inscription Fonctionnaire");
+    public FenetreConnexionFonctionnaire() {
+        setTitle("Connexion Fonctionnaire");
         setLayout(new GridLayout(4, 2, 10, 10));
-        setSize(700, 650);
+        setSize(650, 700);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        // setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
 
         // Charger la configuration réseau
         try {
@@ -51,43 +50,49 @@ public class FenetreCreationCompteFonctionnaire extends JFrame {
         codePostalField = new JTextField();
         add(codePostalField);
 
-        // Bouton d'inscription
-        submitButton = new JButton("S'inscrire");
-        submitButton.addActionListener(e -> inscrireFonctionnaire());
+        // Bouton de connexion
+        submitButton = new JButton("Se connecter");
+        submitButton.addActionListener(e -> authentifierFonctionnaire());
         add(submitButton);
+        
+        registerButton = new JButton("Creer un compte");
+        registerButton.addActionListener(e -> new FenetreCreationCompteFonctionnaire());
+        add(registerButton);
 
         setVisible(true);
     }
 
-    private void inscrireFonctionnaire() {
+    private void authentifierFonctionnaire() {
         String email = emailField.getText();
         String motDePasse = new String(passwordField.getPassword());
         String codePostal = codePostalField.getText();
 
-        // controle de validation
+        // controles de validation 
         if (email.isEmpty() || motDePasse.isEmpty() || codePostal.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Tous les champs sont obligatoires.", "Erreur",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
 
+        // Création du fonctionnaire pour l'authentification
         Fonctionnaire fonctionnaire = new Fonctionnaire(email, motDePasse, codePostal);
 
         FonctionnaireService fonctionnaireService = new FonctionnaireService(networkConfig);
-        boolean isCorrect = fonctionnaireService.registerFonctionnaire(fonctionnaire);
+        boolean result = fonctionnaireService.authenticateFonctionnaire(fonctionnaire);
 
-        if (isCorrect) {
-            JOptionPane.showMessageDialog(this, "Inscription réussie !", "Succès", JOptionPane.INFORMATION_MESSAGE);
-            // Fermer la fenêtre d'inscription et reddirection vers la page de d'authentification
+        if (result) {
+            JOptionPane.showMessageDialog(this, "Connexion réussie !", "Succès", JOptionPane.INFORMATION_MESSAGE);
+            // Fermer la fenêtre d'auth et rediriger vers la page d'accueil
             this.dispose();
-            new FenetreConnexionFonctionnaire();
+            new MairieGUI();
         } else {
-            JOptionPane.showMessageDialog(this, "Erreur lors de l'inscription.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Erreur lors de la connexion. Email ou mot de passe incorrect.",
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
         }
 
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(FenetreCreationCompteFonctionnaire::new);
+        SwingUtilities.invokeLater(FenetreConnexionFonctionnaire::new);
     }
 }

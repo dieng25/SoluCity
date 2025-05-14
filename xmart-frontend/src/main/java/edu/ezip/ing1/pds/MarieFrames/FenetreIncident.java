@@ -1,4 +1,4 @@
-package edu.ezip.ing1.pds;
+package edu.ezip.ing1.pds.MarieFrames;
 
 import edu.ezip.ing1.pds.business.dto.Incident;
 import edu.ezip.ing1.pds.business.dto.Incidents;
