@@ -48,7 +48,7 @@ public class UpdateUtilisateur extends JFrame {
 
         panel.add(Box.createRigidArea(new Dimension(0, 10))); 
 
-        panel.add(new JLabel("Modifier l'Email :"));
+        panel.add(new JLabel("Nouvelle adresse mail :"));
         usernameField = new JTextField();
         usernameField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
         usernameField.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -65,7 +65,7 @@ public class UpdateUtilisateur extends JFrame {
 
         panel.add(Box.createRigidArea(new Dimension(0, 10))); 
 
-        panel.add(new JLabel("Modifier le Mot de passe :"));
+        panel.add(new JLabel("Nouveau mot de passe :"));
         passwordField = new JPasswordField();
         passwordField.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
         panel.add(passwordField);

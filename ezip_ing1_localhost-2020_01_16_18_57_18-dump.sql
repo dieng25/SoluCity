@@ -67,3 +67,14 @@ CREATE TABLE Suggestion(
                            FOREIGN KEY(tel_num) REFERENCES Citoyen(tel_num),
                            FOREIGN KEY(CategorieSuggestion) REFERENCES CategorieSuggestion(CategorieSuggestion)
 );
+
+CREATE TABLE Administrateur (
+    Username VARCHAR(50) PRIMARY KEY,
+    Password VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Acces (
+    CodePostal VARCHAR(50) PRIMARY KEY,
+    Utilisateur VARCHAR(50) NOT NULL,
+    MotDePasse VARCHAR(50) NOT NULL
+);
