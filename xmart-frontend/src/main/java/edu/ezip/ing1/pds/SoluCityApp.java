@@ -18,12 +18,10 @@ public class SoluCityApp extends JFrame {
 
         getContentPane().setBackground(Color.WHITE);
 
-
         JLabel welcomeLabel = new JLabel("Bienvenue sur SoluCityApp!", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
         welcomeLabel.setForeground(new Color(0, 123, 255));
         welcomeLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
-
 
         JButton citoyenButton = new JButton("Citoyen");
         JButton mairieButton = new JButton("Mairie");
@@ -38,11 +36,10 @@ public class SoluCityApp extends JFrame {
             btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         }
 
-
         dashboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MainDashboard().setVisible(true);
+                new ConnexionAdmin().setVisible(true);
 
             }
         });
@@ -63,17 +60,14 @@ public class SoluCityApp extends JFrame {
             }
         });
 
-
         setLayout(new BorderLayout());
 
-
         add(welcomeLabel, BorderLayout.NORTH);
-
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(3, 1, 10, 10));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
-        buttonPanel.setBackground(Color.WHITE);
+        buttonPanel.setBackground(Color.LIGHT_GRAY);
 
         buttonPanel.add(citoyenButton);
         buttonPanel.add(mairieButton);
