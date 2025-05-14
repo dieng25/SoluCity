@@ -1,6 +1,9 @@
 package edu.ezip.ing1.pds.business.server;
 
 import edu.ezip.ing1.pds.business.server.RequestInterfaceCitoyenService.*;
+import edu.ezip.ing1.pds.business.server.RequestMairie.FonctionnaireService;
+import edu.ezip.ing1.pds.business.server.RequestMairie.IncidentService;
+import edu.ezip.ing1.pds.business.server.RequestMairie.SuggestionService;
 import edu.ezip.ing1.pds.commons.Request;
 import edu.ezip.ing1.pds.commons.Response;
 import org.slf4j.Logger;
@@ -28,7 +31,6 @@ public class SoluCityService {
     private final FonctionnaireService fonctionnaireService;
     private final DashboardRepository dashboardRepository;
     private final RequestCategorieSuggestion requestCategorieSuggestion;
-    private final CompteAdmin compteAdmin;
 
     public SoluCityService() {
         this.dashboardRepository = DashboardRepository.getInstance();
@@ -41,7 +43,6 @@ public class SoluCityService {
         this.resquestCategorieIncident = ResquestCategorieIncident.getInstance();
         this.requestSuggestion = RequestSuggestion.getInstance();
         this.requestCategorieSuggestion = RequestCategorieSuggestion.getInstance();
-        this.compteAdmin = CompteAdmin.getInstance();
     }
 
 
@@ -82,21 +83,13 @@ public class SoluCityService {
                 case "SELECT_CITOYEN_BY_TEL":
                     response = requestCitoyen.dispatch(request, connection);
                     break;
+                case "DASHBOARD_REQUEST":
                 case "GLOBAL_REQUEST":
                 case "STAT_INCIDENT_REQUEST":
                 case "STAT_SUGGESTION_REQUEST":
                 case "STAT_MAIRIE_REQUEST":
                     response = dashboardRepository.dispatch(request, connection, dateDebut, dateFin, codePostal);
                     break;
-                case "AUTHENTIFICATION":
-                case "ENREGISTREMENT":
-                case "ADMIN_UPDATE":
-                case "USER_UPDATE":
-                case "USER_AUTH":
-                case "USER_ENG":
-                    response = compteAdmin.dispatch(request, connection);
-                    break;
-
                 case "UPDATE_INCIDENT":
                 case "SELECT_ALL_INCIDENTS":
                     response = incidentService.dispatch(request, connection);

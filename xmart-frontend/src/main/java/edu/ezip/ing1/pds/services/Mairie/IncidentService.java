@@ -9,9 +9,8 @@ import edu.ezip.ing1.pds.business.dto.Incidents;
 import edu.ezip.ing1.pds.client.commons.ClientRequest;
 import edu.ezip.ing1.pds.client.commons.NetworkConfig;
 import edu.ezip.ing1.pds.commons.Request;
-// import edu.ezip.ing1.pds.requests.InsertIncidentClientRequest;
-import edu.ezip.ing1.pds.requests.SelectAllIncidentsClientRequest;
-import edu.ezip.ing1.pds.requests.UpdateIncidentClientRequest;
+import edu.ezip.ing1.pds.requests.MairieRequests.SelectAllIncidentsClientRequest;
+import edu.ezip.ing1.pds.requests.MairieRequests.UpdateIncidentClientRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

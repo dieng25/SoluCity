@@ -1,4 +1,4 @@
-package edu.ezip.ing1.pds;
+package edu.ezip.ing1.pds.MarieFrames;
 import edu.ezip.ing1.pds.business.dto.Fonctionnaire;
 import edu.ezip.ing1.pds.services.Mairie.FonctionnaireService;
 import edu.ezip.ing1.pds.client.commons.ConfigLoader;

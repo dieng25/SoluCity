@@ -1,4 +1,4 @@
-package edu.ezip.ing1.pds;
+package edu.ezip.ing1.pds.MarieFrames;
 
 import edu.ezip.ing1.pds.business.dto.Suggestion;
 import edu.ezip.ing1.pds.business.dto.Suggestions;

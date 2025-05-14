@@ -1,4 +1,4 @@
-package edu.ezip.ing1.pds.business.server;
+package edu.ezip.ing1.pds.business.server.RequestMairie;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ezip.ing1.pds.business.dto.Fonctionnaire;

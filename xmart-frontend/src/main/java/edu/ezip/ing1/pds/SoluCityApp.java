@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import edu.ezip.ing1.pds.DashboardFenetre.*;
+import edu.ezip.ing1.pds.MarieFrames.FenetreConnexionFonctionnaire;
+
 
 public class SoluCityApp extends JFrame {
     public SoluCityApp() {
@@ -13,12 +15,15 @@ public class SoluCityApp extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+
         getContentPane().setBackground(Color.WHITE);
+
 
         JLabel welcomeLabel = new JLabel("Bienvenue sur SoluCityApp!", SwingConstants.CENTER);
         welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
         welcomeLabel.setForeground(new Color(0, 123, 255));
         welcomeLabel.setBorder(BorderFactory.createEmptyBorder(20, 10, 20, 10));
+
 
         JButton citoyenButton = new JButton("Citoyen");
         JButton mairieButton = new JButton("Mairie");
@@ -33,10 +38,11 @@ public class SoluCityApp extends JFrame {
             btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         }
 
+
         dashboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ConnexionAdmin().setVisible(true);
+                new MainDashboard().setVisible(true);
 
             }
         });
@@ -57,14 +63,17 @@ public class SoluCityApp extends JFrame {
             }
         });
 
+
         setLayout(new BorderLayout());
 
+
         add(welcomeLabel, BorderLayout.NORTH);
+
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(3, 1, 10, 10));
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 100, 20, 100));
-        buttonPanel.setBackground(Color.LIGHT_GRAY);
+        buttonPanel.setBackground(Color.WHITE);
 
         buttonPanel.add(citoyenButton);
         buttonPanel.add(mairieButton);
