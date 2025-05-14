@@ -57,18 +57,21 @@ public class EnvoieFormSuggestion implements ActionListener {
                 JOptionPane.showMessageDialog(form, "Vous avez déjà un compte. Veuillez vous connecter.", "Information", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
-        }catch (InterruptedException | IOException ex) {
-            logger.error("ne peut pas vérifié le numéro de téléphone", e);
+        }catch (InterruptedException | IOException | IllegalStateException ex) {
+            logger.error("ne peut pas vérifié le numéro de téléphone", ex);
             JOptionPane.showMessageDialog(form, "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
                     "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         try {
             citoyenService.insertCitoyen(citoyen);
         } catch (InterruptedException | IOException ex) {
-            logger.error("Erreur lors de l'envoie des données du citoyen", e);
+            logger.error("Erreur lors de l'envoie des données du citoyen", ex);
             JOptionPane.showMessageDialog(form, "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
                     "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
+
         }
 
         Suggestion suggestion = new Suggestion(titre, description, date, categorie, 0, cp, null,null, tel, cp, categorie);
@@ -76,9 +79,10 @@ public class EnvoieFormSuggestion implements ActionListener {
         try {
             suggestionService.insertSuggestion(suggestion);
         } catch (InterruptedException | IOException ex) {
-            logger.error("Erreur lors de l'envoie des données ticket incident", e);
+            logger.error("Erreur lors de l'envoie des données ticket suggestion", ex);
             JOptionPane.showMessageDialog(form, "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
                     "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         try {

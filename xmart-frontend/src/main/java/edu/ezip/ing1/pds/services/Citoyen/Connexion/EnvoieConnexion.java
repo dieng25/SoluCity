@@ -47,7 +47,7 @@ public class EnvoieConnexion implements ActionListener {
 
             }
         }catch (InterruptedException | IOException ex){
-            logger.error("erreur connexion serveur", e);
+            logger.error("erreur connexion serveur", ex);
             JOptionPane.showMessageDialog(connect, "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
                     "Erreur", JOptionPane.ERROR_MESSAGE);
         }

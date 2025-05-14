@@ -64,6 +64,11 @@ public class IncidentService {
         while (!clientRequests.isEmpty()) {
             final ClientRequest clientRequest = clientRequests.pop();
             clientRequest.join();
+
+            if (clientRequest.getResult() == null) {
+                throw new IOException("Échec de la requête : le résultat de l'insertion de l'incident est null.");
+            }
+
             final Incident ticket = (Incident) clientRequest.getInfo();
             logger.debug("Thread {} complete : {} {} {} --> {}",
                     clientRequest.getThreadName(),
@@ -127,6 +132,11 @@ public class IncidentService {
             final ClientRequest joinedClientRequest = clientRequests.pop();
             joinedClientRequest.join();
             logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
+
+            if (joinedClientRequest.getResult() == null) {
+                logger.error("Résultat null pour la requête de sélection des incidents.");
+                throw new IOException("Échec de récupération des incidents : réponse null.");
+            }
 
             return (List<Incident>) joinedClientRequest.getResult();
         } else {

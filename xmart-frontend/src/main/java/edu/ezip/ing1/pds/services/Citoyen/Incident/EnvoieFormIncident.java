@@ -59,18 +59,20 @@ public class EnvoieFormIncident implements ActionListener {
                 JOptionPane.showMessageDialog(form, "Vous avez déjà un compte. Veuillez vous connecter.", "Information", JOptionPane.INFORMATION_MESSAGE);
                 return;
             }
-        }catch (InterruptedException | IOException ex) {
-            logger.error("ne peut pas vérifié le numéro de téléphone", e);
+        }catch (InterruptedException | IOException | IllegalStateException ex) {
+            logger.error("ne peut pas vérifié le numéro de téléphone", ex);
             JOptionPane.showMessageDialog(form, "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
                     "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         try {
             citoyenService.insertCitoyen(citoyen);
         } catch (InterruptedException | IOException ex) {
-            logger.error("Erreur lors de l'envoie des données du citoyen", e);
+            logger.error("Erreur lors de l'envoie des données du citoyen", ex);
             JOptionPane.showMessageDialog(form, "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
                     "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         Incident incident = new Incident(titre, description, date, categorie, 0, cp, priorite, null, tel, cp, categorie);
@@ -78,9 +80,10 @@ public class EnvoieFormIncident implements ActionListener {
         try {
             incidentService.insertIncident(incident);
         } catch (InterruptedException | IOException ex) {
-            logger.error("Erreur lors de l'envoie des données ticket incident", e);
+            logger.error("Erreur lors de l'envoie des données ticket incident", ex);
             JOptionPane.showMessageDialog(form, "Erreur de connexion au serveur. Veuillez réessayer plus tard.",
                     "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         try {

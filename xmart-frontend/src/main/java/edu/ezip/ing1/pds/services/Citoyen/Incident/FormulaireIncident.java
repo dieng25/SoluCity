@@ -61,6 +61,10 @@ public class FormulaireIncident extends ConfirmeExit {
             final CategorieIncidentService categorieIncidentService = new CategorieIncidentService(networkConfig);
             CategorieIncidents categorieIncidents = categorieIncidentService.selectCategorieIncidents();
 
+            if (categorieIncidents == null || categorieIncidents.getCategorieIncidents() == null) {
+                throw new Exception("Réponse vide lors de la récupération des catégories d'incident.");
+            }
+
             formPanel.add(new JLabel("Catégorie : "));
             categorieI = new JComboBox<>();
             for (CategorieIncident categorieIncident : categorieIncidents.getCategorieIncidents()) {
@@ -68,8 +72,15 @@ public class FormulaireIncident extends ConfirmeExit {
             }
             formPanel.add(categorieI);
 
-        } catch (IOException | InterruptedException e) {
-            logger.error("Erreur lors du chargement des catégorie incident", e);
+        } catch (Exception e) {
+            logger.error("Erreur lors du chargement des catégories d'incidents", e);
+            JOptionPane.showMessageDialog(this,
+                    "Erreur de connexion au serveur. Veuillez vérifier votre connexion ou réessayer plus tard.",
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+            this.dispose();
+            new MainFrameCitoyen();
+            return;
+
         }
 
 
@@ -104,6 +115,10 @@ public class FormulaireIncident extends ConfirmeExit {
             final MairieService mairieService = new MairieService(networkConfig);
             Mairies mairies = mairieService.selectMairies();
 
+            if (mairies == null || mairies.getMairies() == null) {
+                throw new Exception("Réponse vide lors de la récupération des mairies.");
+            }
+
             formPanel.add(new JLabel("Code Postal: "));
             cpField = new JComboBox<>();
             for (Mairie mairie : mairies.getMairies()) {
@@ -111,8 +126,14 @@ public class FormulaireIncident extends ConfirmeExit {
             }
             formPanel.add(cpField);
 
-        } catch (IOException | InterruptedException e) {
+        } catch (Exception e) {
             logger.error("Erreur lors du chargement des codes postaux", e);
+            JOptionPane.showMessageDialog(this,
+                    "Erreur de connexion au serveur. Veuillez vérifier votre connexion ou réessayer plus tard.",
+                    "Erreur", JOptionPane.ERROR_MESSAGE);
+            this.dispose();
+            new MainFrameCitoyen();
+            return;
         }
 
         formPanel.add(new JLabel("Titre: "));

@@ -69,6 +69,11 @@ public class CitoyenService {
         while (!clientRequests.isEmpty()) {
             final ClientRequest clientRequest = clientRequests.pop();
             clientRequest.join();
+
+            if (clientRequest.getResult() == null) {
+                throw new IOException("Échec de la requête : le résultat de l'insertion citoyen est null.");
+            }
+
             final Citoyen guy = (Citoyen) clientRequest.getInfo();
             logger.debug("Thread {} complete : {} {} {} --> {}",
                     clientRequest.getThreadName(),
@@ -172,6 +177,10 @@ public class CitoyenService {
             final ClientRequest joinedClientRequest = clientRequests.pop();
             joinedClientRequest.join();
             logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
+
+            if (joinedClientRequest.getResult() == null) {
+                throw new IOException("Connexion au serveur échouée. Résultat null.");
+            }
 
             Citoyen citoyen = (Citoyen) joinedClientRequest.getResult();
             if (citoyen == null)  {

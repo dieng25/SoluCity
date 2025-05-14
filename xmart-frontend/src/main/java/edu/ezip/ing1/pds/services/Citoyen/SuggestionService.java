@@ -63,6 +63,11 @@ public class SuggestionService {
         while (!clientRequests.isEmpty()) {
             final ClientRequest clientRequest = clientRequests.pop();
             clientRequest.join();
+
+            if (clientRequest.getResult() == null) {
+                throw new IOException("Échec de la requête : le résultat de l'insertion de la suggestion est null.");
+            }
+
             final Suggestion ticket = (Suggestion) clientRequest.getInfo();
             logger.debug("Thread {} complete : {} {} {} --> {}",
                     clientRequest.getThreadName(),
@@ -126,6 +131,11 @@ public class SuggestionService {
             final ClientRequest joinedClientRequest = clientRequests.pop();
             joinedClientRequest.join();
             logger.debug("Thread {} complete.", joinedClientRequest.getThreadName());
+
+            if (joinedClientRequest.getResult() == null) {
+                logger.error("Résultat null pour la requête de sélection des suggestions.");
+                throw new IOException("Échec de récupération des suggestions : réponse null.");
+            }
 
             return (List<Suggestion>) joinedClientRequest.getResult();
         } else {
