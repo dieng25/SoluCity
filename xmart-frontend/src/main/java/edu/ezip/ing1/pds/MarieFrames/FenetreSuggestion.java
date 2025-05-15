@@ -92,7 +92,7 @@ public class FenetreSuggestion extends JFrame {
                 return;
 
             String prompt = crit.equals("Par statut")
-                    ? "Entrez le statut (reçu / en cours de traitement / demande traitée) :"
+                    ? "Entrez le statut (Ouvert / En cours de traitement / Fermé) :"
                     : "Entrez la catégorie :";
             String val = JOptionPane.showInputDialog(this, prompt);
             if (val == null)
@@ -138,13 +138,13 @@ public class FenetreSuggestion extends JFrame {
         String res;
         switch (s) {
             case 0:
-                res = "reçu";
+                res = "Ouvert";
                 break;
             case 1:
-                res = "en cours de traitement";
+                res = "En cours de traitement";
                 break;
             case 2:
-                res = "demande traitée";
+                res = "Fermé";
                 break;
             default:
                 res = "non définie";

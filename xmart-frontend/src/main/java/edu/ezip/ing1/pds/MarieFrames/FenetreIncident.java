@@ -118,7 +118,7 @@ public class FenetreIncident extends JFrame {
                 return;
 
             String prompt = crit.equals("Par statut")
-                    ? "Entrez le statut (reçu / en cours de traitement / demande traitée) :"
+                    ? "Entrez le statut (Ouvert / En cours de traitement / Fermé) :"
                     : "Entrez la priorité (faible / moyen / élevé) :";
 
             String val = JOptionPane.showInputDialog(this, prompt);
@@ -165,7 +165,7 @@ public class FenetreIncident extends JFrame {
     private void appliquerFiltre(String critere) {
         int col = critere.equals("statut") ? 8 : 7;
         String valeur = critere.equals("statut")
-                ? JOptionPane.showInputDialog(this, "Statut à afficher (reçu/en cours/demande traitée) :")
+                ? JOptionPane.showInputDialog(this, "Statut à afficher (Ouvert/en cours/Fermé) :")
                 : JOptionPane.showInputDialog(this, "Priorité à afficher (faible/moyen/élevé) :");
         if (valeur != null) {
             // expression exacte, case-sensitive
@@ -190,11 +190,11 @@ public class FenetreIncident extends JFrame {
     private String convertStatut(int s) {
         switch (s) {
             case 0:
-                return "reçu";
+                return "Ouvert";
             case 1:
-                return "en cours de traitement";
+                return "En cours de traitement";
             case 2:
-                return "demande traitée";
+                return "Fermé";
             default:
                 return "inconnu";
         }
@@ -229,7 +229,7 @@ public class FenetreIncident extends JFrame {
                 int row = incidentTable.getSelectedRow();
                 if (row >= 0) {
                     String actuel = (String) incidentTable.getValueAt(row, 7);
-                    String[] opts = { "reçu", "en cours de traitement", "demande traitée" };
+                    String[] opts = { "Ouvert", "En cours de traitement", "Fermé" };
                     String nv = (String) JOptionPane.showInputDialog(
                             FenetreIncident.this,
                             "Choisissez le nouveau statut :",
@@ -240,13 +240,13 @@ public class FenetreIncident extends JFrame {
                         int id = (int) incidentTable.getValueAt(row, 0);
                         int code;
                         switch (nv) {
-                            case "reçu":
+                            case "Ouvert":
                                 code = 0;
                                 break;
-                            case "en cours de traitement":
+                            case "En cours de traitement":
                                 code = 1;
                                 break;
-                            case "demande traitée":
+                            case "Fermé":
                                 code = 2;
                                 break;
                             default:
