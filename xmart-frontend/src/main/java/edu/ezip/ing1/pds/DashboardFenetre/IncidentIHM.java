@@ -175,9 +175,9 @@ public class IncidentIHM extends JFrame {
         // Répartition des incidents par statut
         @SuppressWarnings("rawtypes")
         DefaultPieDataset pieDataset = new DefaultPieDataset();
-        pieDataset.setValue("Non Ouverts", incidentNonResolu);
+        pieDataset.setValue("Ouvert", incidentNonResolu);
         pieDataset.setValue("En cours de traitement", incidentEnCours);
-        pieDataset.setValue("Résolu", incidentResolu);
+        pieDataset.setValue("Fermé", incidentResolu);
         JFreeChart pieChart = ChartFactory.createPieChart("Repartition des Incidents par Statut", pieDataset, true, true, false);
         chartPanel.add(new ChartPanel(pieChart));
 

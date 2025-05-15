@@ -171,12 +171,12 @@ public class SuggestionIHM extends JFrame {
 
         }
 
-        // Répartition des incidents par statut
+        // Répartition des suggestionspar statut
         @SuppressWarnings("rawtypes")
         DefaultPieDataset pieDataset = new DefaultPieDataset();
-        pieDataset.setValue("Non Ouverts", suggestionNonResolu);
+        pieDataset.setValue("Ouvert", suggestionNonResolu);
         pieDataset.setValue("En cours de traitement", suggestionEnCours);
-        pieDataset.setValue("Résolu", suggestionResolu);
+        pieDataset.setValue("Accepté", suggestionResolu);
         JFreeChart pieChart = ChartFactory.createPieChart("Repartition des Suggestions par Statut", pieDataset, true, true, false);
         chartPanel.add(new ChartPanel(pieChart));
 
