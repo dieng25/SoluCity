@@ -17,8 +17,8 @@ public class StatMairieData {
     private String SuggestionMairieTop1;
     private String SuggestionMairieTop2;
     private String SuggestionMairieTop3;
-    private int delaiIncidentMairie;
-    private int delaiSuggestionMairie;
+    private double delaiIncidentMairie;
+    private double delaiSuggestionMairie;
 
     // Getters
     public String getIncidentMairieTop1() {
@@ -45,11 +45,11 @@ public class StatMairieData {
         return SuggestionMairieTop3;
     }
 
-    public int getDelaiIncidentMairie() {
+    public double getDelaiIncidentMairie() {
         return delaiIncidentMairie;
     }
 
-    public int getDelaiSuggestionMairie() {
+    public double getDelaiSuggestionMairie() {
         return delaiSuggestionMairie;
     }
 
@@ -85,12 +85,12 @@ public class StatMairieData {
     }
 
     @JsonProperty("delai_incident_mairie")
-    public void setDelaiIncidentMairie(int delaiIncidentMairie) {
+    public void setDelaiIncidentMairie(double delaiIncidentMairie) {
         this.delaiIncidentMairie = delaiIncidentMairie;
     }
 
     @JsonProperty("delai_suggestion_mairie")
-    public void setDelaiSuggestionMairie(int delaiSuggestionMairie) {
+    public void setDelaiSuggestionMairie(double delaiSuggestionMairie) {
         this.delaiSuggestionMairie = delaiSuggestionMairie;
     }
     
@@ -98,7 +98,7 @@ public class StatMairieData {
     public StatMairieData build(final ResultSet resultSet)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
         setFieldsFromResultSet(resultSet, "IncidentMairieTop1", "IncidentMairieTop2", "IncidentMairieTop3", 
-                "SuggestionMairieTop1", "SuggestionMairieTop2", "SuggestionMairieTop3");
+                "SuggestionMairieTop1", "SuggestionMairieTop2", "SuggestionMairieTop3, delaiIncidentMairie, delaiSuggestionMairie");
         return this;
     }
 
@@ -106,7 +106,7 @@ public class StatMairieData {
     public final PreparedStatement build(PreparedStatement preparedStatement)
             throws SQLException, NoSuchFieldException, IllegalAccessException {
         return buildPreparedStatement(preparedStatement, IncidentMairieTop1, IncidentMairieTop2, IncidentMairieTop3, 
-                SuggestionMairieTop1, SuggestionMairieTop2, SuggestionMairieTop3);
+                SuggestionMairieTop1, SuggestionMairieTop2, SuggestionMairieTop3, delaiIncidentMairie, delaiSuggestionMairie);
     }
 
     private void setFieldsFromResultSet(final ResultSet resultSet, final String... fieldNames)
@@ -138,6 +138,8 @@ public class StatMairieData {
                 ", SuggestionMairieTop1='" + SuggestionMairieTop1 + '\'' +
                 ", SuggestionMairieTop2='" + SuggestionMairieTop2 + '\'' +
                 ", SuggestionMairieTop3='" + SuggestionMairieTop3 + '\'' +
+                ", delaiIncidentMairie='" + delaiIncidentMairie + '\'' +
+                ", delaiSuggestionMairie='" + delaiSuggestionMairie + '\'' +
                 '}';
     }
 }

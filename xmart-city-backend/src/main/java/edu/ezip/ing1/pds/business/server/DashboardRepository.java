@@ -123,10 +123,10 @@ public class DashboardRepository {
                         "    (SELECT CodePostal_ticket FROM (SELECT CodePostal_ticket, COUNT(*) AS total FROM Suggestion WHERE (date_creation BETWEEN ? AND ?) GROUP BY CodePostal_ticket ORDER BY total DESC LIMIT 1 OFFSET 2) AS top3) AS topSuggestionMairie3,\r\n" + //
                         "\r\n" + //
                         "    -- Délai moyen de traitement des incidents par mairie (filtrés par dates et mairie)\n" + //
-                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? or 'tout')) AS delaiIncidentParMairie,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Statut = 2 AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiIncidentParMairie,\r\n" + //
                         "\r\n" + //
                         "    -- Délai moyen de traitement des suggestions par mairie (filtrés par dates et mairie)\n" +
-                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Suggestion WHERE date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? or 'tout')) AS delaiSuggestionParMairie\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Suggestion WHERE Statut = 2 AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiSuggestionParMairie\r\n" + //
                         "");
                     
         
@@ -288,11 +288,11 @@ public Response fetchIncidentStatData(final Request request, final Connection co
     try (PreparedStatement statPs = connection.prepareStatement(Queries.STAT_MAIRIE_REQUEST.query)) {
         int index = 1; 
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 6; i++) {
             statPs.setDate(index++, dateDebut);
             statPs.setDate(index++, dateFin);
         }
-        for (int i = 7; i<8; i++) {
+        for (int i = 6; i<8; i++) {
             statPs.setDate(index++, dateDebut);
             statPs.setDate(index++, dateFin);
             statPs.setString(index++, codePostal);
@@ -310,8 +310,8 @@ public Response fetchIncidentStatData(final Request request, final Connection co
             statMairieData.setSuggestionMairieTop2(statResult.getString("topSuggestionMairie2"));
             statMairieData.setSuggestionMairieTop3(statResult.getString("topSuggestionMairie3"));
 
-            statMairieData.setDelaiIncidentMairie(statResult.getInt("delaiIncidentParMairie"));
-            statMairieData.setDelaiSuggestionMairie(statResult.getInt("delaiSuggestionParMairie"));
+            statMairieData.setDelaiIncidentMairie(statResult.getDouble("delaiIncidentParMairie"));
+            statMairieData.setDelaiSuggestionMairie(statResult.getDouble("delaiSuggestionParMairie"));
         }
 
     statMairieDatas.getStatMairieDataSet().add(statMairieData);
