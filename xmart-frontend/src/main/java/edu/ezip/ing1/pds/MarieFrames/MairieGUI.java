@@ -1,6 +1,10 @@
 package edu.ezip.ing1.pds.MarieFrames;
-import edu.ezip.ing1.pds.DashboardFenetre.*;
+
 import javax.swing.*;
+
+import edu.ezip.ing1.pds.DashboardFenetre.ConnexionUtilisateur;
+import edu.ezip.ing1.pds.DashboardFenetre.MainDashboard;
+
 import java.awt.*;
 
 public class MairieGUI {
@@ -16,9 +20,16 @@ public class MairieGUI {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(700, 500);
         frame.setLocationRelativeTo(null);
-        frame.setLayout(new BorderLayout(10, 10));
+        frame.setLayout(new GridBagLayout());
         frame.getContentPane().setBackground(Color.WHITE);
 
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 15, 10, 15);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+
+
+        
         // Création du menu
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(new Color(0, 123, 255));
@@ -29,6 +40,9 @@ public class MairieGUI {
         JMenuItem logoutItem = new JMenuItem("Se déconnecter");
         JMenuItem exitItem = new JMenuItem("Quitter");
         exitItem.addActionListener(e -> System.exit(0));
+        logoutItem.addActionListener(e -> {frame.dispose();
+            new FenetreConnexionFonctionnaire();
+        });
         menu.add(profileItem);
         menu.add(settingItem);
         menu.add(logoutItem);
@@ -37,57 +51,69 @@ public class MairieGUI {
         menuBar.add(menu);
         frame.setJMenuBar(menuBar);
 
-        // Panel central pour les boutons avec GridBagLayout
-        JPanel centerPanel = new JPanel(new GridBagLayout());
-        centerPanel.setBackground(Color.WHITE);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 15, 10, 15);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1.0;
-
-        incidentsButton = new JButton("Afficher Incidents");
-        suggestionsButton = new JButton("Afficher Suggestions");
-        statistiqueButton = new JButton("Statistiques et Prédictions");
-        trierButton = new JButton("Trier par Statut");
+        incidentsButton      = new JButton("Afficher Incidents");
+        suggestionsButton    = new JButton("Afficher Suggestions");
+        statistiqueButton    = new JButton("Statistiques et Prédictions");
+        trierButton          = new JButton("Trier par Statut/Priorité");
 
         // Configuration uniforme des boutons
-        JButton[] buttons = {incidentsButton, suggestionsButton, statistiqueButton, trierButton};
-        for (JButton btn : buttons) {
+        for (JButton btn : new JButton[]{incidentsButton, suggestionsButton, statistiqueButton, trierButton}) {
             btn.setBackground(new Color(0, 123, 255));
             btn.setForeground(Color.WHITE);
             btn.setFont(new Font("Arial", Font.BOLD, 14));
             btn.setFocusPainted(false);
         }
 
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        centerPanel.add(incidentsButton, gbc);
-
+        gbc.gridx = 0; gbc.gridy = 0;
+        frame.add(incidentsButton, gbc);
         gbc.gridx = 1;
-        centerPanel.add(suggestionsButton, gbc);
-
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        centerPanel.add(statistiqueButton, gbc);
-
+        frame.add(suggestionsButton, gbc);
+        gbc.gridx = 0; gbc.gridy = 1;
+        frame.add(statistiqueButton, gbc);
         gbc.gridx = 1;
-        centerPanel.add(trierButton, gbc);
+        frame.add(trierButton, gbc);
 
-        // Ajouter le panel dans la fenêtre principale
-        frame.add(centerPanel, BorderLayout.CENTER);
+        // Actions des boutons
+        incidentsButton.addActionListener(e ->
+            new FenetreIncident()  // affiche tout
+        );
 
-        //Actions des boutons
-        incidentsButton.addActionListener(e -> new FenetreIncident());
-        suggestionsButton.addActionListener(e -> new FenetreSuggestion());
-        statistiqueButton.addActionListener(e ->  new MainDashboard().setVisible(true));
-        // trierButton.addActionListener(e -> new FenetreTrier());
+        suggestionsButton.addActionListener(e ->
+            new FenetreSuggestion()
+        );
+
+        statistiqueButton.addActionListener(e ->
+            new MainDashboard().setVisible(true)
+            // new ConnexionUtilisateur()
+        );
+
+        trierButton.addActionListener(e -> {
+            // Boîte de dialogue pour choisir “statut” ou “priorité”
+            String[] options = {"Statut", "Priorité"};
+            String choix = (String) JOptionPane.showInputDialog(
+                frame,
+                "Afficher uniquement par :",
+                "Filtrer les incidents",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]
+            );
+            if (choix != null) {
+                if (choix.equals("Statut")) {
+                    // filtre par statut
+                    new FenetreIncident("statut");
+                } else {
+                    // filtre par priorité
+                    new FenetreIncident("priorite");
+                }
+            }
+        });
 
         frame.setVisible(true);
     }
 
-
     public static void main(String[] args) {
-        new MairieGUI();
-        // User.initMainFrame(); //pour l'authentification
+        SwingUtilities.invokeLater(MairieGUI::new);
     }
 }
