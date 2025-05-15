@@ -28,6 +28,29 @@ public class MairieGUI {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
 
+
+        
+        // Création du menu
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.setBackground(new Color(0, 123, 255));
+        JMenu menu = new JMenu("Options");
+        menu.setForeground(Color.WHITE);
+        JMenuItem profileItem = new JMenuItem("Profil");
+        JMenuItem settingItem = new JMenuItem("Paramètre");
+        JMenuItem logoutItem = new JMenuItem("Se déconnecter");
+        JMenuItem exitItem = new JMenuItem("Quitter");
+        exitItem.addActionListener(e -> System.exit(0));
+        logoutItem.addActionListener(e -> {frame.dispose();
+            new FenetreConnexionFonctionnaire();
+        });
+        menu.add(profileItem);
+        menu.add(settingItem);
+        menu.add(logoutItem);
+        menu.addSeparator();
+        menu.add(exitItem);
+        menuBar.add(menu);
+        frame.setJMenuBar(menuBar);
+
         incidentsButton      = new JButton("Afficher Incidents");
         suggestionsButton    = new JButton("Afficher Suggestions");
         statistiqueButton    = new JButton("Statistiques et Prédictions");
