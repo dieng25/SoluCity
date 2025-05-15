@@ -63,7 +63,7 @@ public class FenetreIncident extends JFrame {
         // Tableau
         String[] columns = {
                 "ID", "Titre", "Description", "Date de création",
-                "Date de clôture", "Code Postal", "Priorité", "Statut", "Modifier"
+                "Date de clôture", "Code Postal", "Priorité", "Statut", "Catégorie", "Modifier"
         };
         tableModel = new DefaultTableModel(columns, 0);
         incidentTable = new JTable(tableModel);
@@ -82,9 +82,55 @@ public class FenetreIncident extends JFrame {
         // RowSorter et filtre initial nul
         sorter = new TableRowSorter<>(tableModel);
         incidentTable.setRowSorter(sorter);
+        sorter.setSortKeys(
+                Collections.singletonList(new RowSorter.SortKey(3, SortOrder.DESCENDING)));
 
         add(new JScrollPane(incidentTable), BorderLayout.CENTER);
         setVisible(true);
+        // --- Panel de contrôle ---
+        JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+
+        JButton btnVoir = new JButton("Voir les incidents");
+        JButton btnFiltrer = new JButton("Filtrer incidents");
+
+        styleButton(btnVoir, new Color(0, 123, 255)); // bleu
+        styleButton(btnFiltrer, new Color(108, 117, 125)); // gris foncé
+
+        topPanel.add(btnVoir);
+        topPanel.add(btnFiltrer);
+        add(topPanel, BorderLayout.NORTH);
+        btnVoir.addActionListener(e -> {
+            displayIncidents();
+            sorter.setRowFilter(null);
+        });
+
+        btnFiltrer.addActionListener(e -> {
+            String[] opts = { "Par statut", "Par priorité" };
+            String crit = (String) JOptionPane.showInputDialog(
+                    this,
+                    "Critère de filtre :",
+                    "Filtrer incidents",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    opts,
+                    opts[0]);
+            if (crit == null)
+                return;
+
+            String prompt = crit.equals("Par statut")
+                    ? "Entrez le statut (reçu / en cours de traitement / demande traitée) :"
+                    : "Entrez la priorité (faible / moyen / élevé) :";
+
+            String val = JOptionPane.showInputDialog(this, prompt);
+            if (val == null)
+                return;
+
+            int col = crit.equals("Par statut") ? 7 : 6;
+            RowFilter<DefaultTableModel, Object> rf = RowFilter.regexFilter(
+                    "^" + Pattern.quote(val) + "$", col);
+            sorter.setRowFilter(rf);
+        });
+
     }
 
     /** Remplit le tableau depuis le backend */
@@ -103,6 +149,7 @@ public class FenetreIncident extends JFrame {
                         i.getCP_Ticket(),
                         convertPriorite(i.getPriorite()),
                         convertStatut(i.getStatut()),
+                        i.getCategorie(),
                         "Modifier"
                 });
             }
@@ -116,7 +163,7 @@ public class FenetreIncident extends JFrame {
      * le statut (col 7) ou la priorité (col 6) correspond
      */
     private void appliquerFiltre(String critere) {
-        int col = critere.equals("statut") ? 7 : 6;
+        int col = critere.equals("statut") ? 8 : 7;
         String valeur = critere.equals("statut")
                 ? JOptionPane.showInputDialog(this, "Statut à afficher (reçu/en cours/demande traitée) :")
                 : JOptionPane.showInputDialog(this, "Priorité à afficher (faible/moyen/élevé) :");
@@ -157,6 +204,8 @@ public class FenetreIncident extends JFrame {
     class ButtonRenderer extends JButton implements TableCellRenderer {
         public ButtonRenderer() {
             setText("Modifier");
+            setBackground(Color.BLUE);
+            setForeground(Color.WHITE);
         }
 
         public Component getTableCellRendererComponent(JTable t, Object v,
@@ -172,6 +221,9 @@ public class FenetreIncident extends JFrame {
         public ButtonEditor(JCheckBox cb) {
             super(cb);
             button.setOpaque(true);
+            button.setBackground(Color.BLUE);
+            button.setForeground(Color.WHITE);
+
             button.addActionListener(e -> {
                 fireEditingStopped();
                 int row = incidentTable.getSelectedRow();
@@ -223,6 +275,13 @@ public class FenetreIncident extends JFrame {
                 boolean s, int r, int c) {
             return button;
         }
+    }
+
+    private void styleButton(JButton btn, Color bgColor) {
+        btn.setFocusPainted(false);
+        btn.setBackground(bgColor);
+        btn.setForeground(Color.WHITE);
+        btn.setFont(new Font("SansSerif", Font.BOLD, 13));
     }
 
     public static void main(String[] args) {

@@ -1,10 +1,6 @@
 package edu.ezip.ing1.pds.MarieFrames;
-
 import javax.swing.*;
-
 import edu.ezip.ing1.pds.DashboardFenetre.ConnexionUtilisateur;
-import edu.ezip.ing1.pds.DashboardFenetre.MainDashboard;
-
 import java.awt.*;
 
 public class MairieGUI {
@@ -18,7 +14,7 @@ public class MairieGUI {
         // fenêtre principale App Mairie
         frame = new JFrame("Dashboard Mairie");
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setSize(700, 500);
+        frame.setSize(950, 650);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new GridBagLayout());
         frame.getContentPane().setBackground(Color.WHITE);
@@ -83,8 +79,7 @@ public class MairieGUI {
         );
 
         statistiqueButton.addActionListener(e ->
-            new MainDashboard().setVisible(true)
-            // new ConnexionUtilisateur()
+            new ConnexionUtilisateur() //redirection
         );
 
         trierButton.addActionListener(e -> {
