@@ -39,28 +39,28 @@ public class DashboardRepository {
                         "    (SELECT COUNT(*) FROM Suggestion WHERE (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS totalSuggestion,\r\n" + //
                         "\r\n" + //
                         "    -- Répartition des incidents par catégorie\r\n" + //
-                        "    (SELECT COUNT(*) FROM Incident WHERE Categorie = 'Voirie' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentCatVoirie,\r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE Categorie = 'Voiries' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentCatVoirie,\r\n" + //
                         "    \r\n" + //
                         "    (SELECT COUNT(*) FROM Incident WHERE Categorie = 'Eclairage Public' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentCatEclairagePublic,\r\n" + //
                         "    \r\n" + //
-                        "    (SELECT COUNT(*) FROM Incident WHERE Categorie = 'Espaces Verts' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentCatEspaceVerts,\r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE Categorie = 'Espace verts' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentCatEspaceVerts,\r\n" + //
                         "    \r\n" + //
-                        "    (SELECT COUNT(*) FROM Incident WHERE Categorie = 'Proprete' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentCatProprete,\r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE Categorie = 'Propreté' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentCatProprete,\r\n" + //
                         "    \r\n" + //
-                        "    (SELECT COUNT(*) FROM Incident WHERE Categorie = 'Animaux errants ou retrouvés morts' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentCatAnimauxErrants,\r\n" + //
+                        "    (SELECT COUNT(*) FROM Incident WHERE Categorie = 'Animaux errants ou retrouvés mort' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentCatAnimauxErrants,\r\n" + //
                         "    \r\n" + //
                         "    (SELECT COUNT(*) FROM Incident WHERE Categorie = 'Autres' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentCatAutres,\r\n" + //
                         "\r\n" + //
                         "    -- Répartition des suggestions par catégorie\r\n" + //
-                        "    (SELECT COUNT(*) FROM Suggestion WHERE Categorie = 'Voirie' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS suggestionCatVoirie,\r\n" + //
+                        "    (SELECT COUNT(*) FROM Suggestion WHERE Categorie = 'Voiries' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS suggestionCatVoirie,\r\n" + //
                         "    \r\n" + //
-                        "    (SELECT COUNT(*) FROM Suggestion WHERE Categorie = 'Éclairage Public' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS suggestionCatEclairagePublic,\r\n" + //
+                        "    (SELECT COUNT(*) FROM Suggestion WHERE Categorie = 'Eclairage Public' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS suggestionCatEclairagePublic,\r\n" + //
                         "    \r\n" + //
-                        "    (SELECT COUNT(*) FROM Suggestion WHERE Categorie = 'Espaces Verts' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS suggestionCatEspaceVerts,\r\n" + //
+                        "    (SELECT COUNT(*) FROM Suggestion WHERE Categorie = 'Espaces verts' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS suggestionCatEspaceVerts,\r\n" + //
                         "    \r\n" + //
                         "    (SELECT COUNT(*) FROM Suggestion WHERE Categorie = 'Propreté' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS suggestionCatProprete,\r\n" + //
                         "    \r\n" + //
-                        "    (SELECT COUNT(*) FROM Suggestion WHERE Categorie = 'Animaux errants ou retrouvés morts' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS suggestionCatAnimauxErrants,\r\n" + //
+                        "    (SELECT COUNT(*) FROM Suggestion WHERE Categorie = 'Animaux errants ou retrouvés mort' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS suggestionCatAnimauxErrants,\r\n" + //
                         "    \r\n" + //
                         "    (SELECT COUNT(*) FROM Suggestion WHERE Categorie = 'Autres' AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS suggestionCatAutres,\r\n" + //
                         "\r\n" + //
@@ -82,12 +82,12 @@ public class DashboardRepository {
                         "    (SELECT COUNT(*) FROM Incident WHERE Statut = 2 AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS incidentStatutResolus,\r\n" + //
                         "\r\n" + //
                         "    -- Délai moyen de résolution des incidents par catégorie\r\n" + //
-                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Categorie = 'Voirie' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenVoirie,\r\n" + //
-                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Categorie = 'Eclairage Public' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenEclairagePublic,\r\n" + //
-                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Categorie = 'Espaces Verts' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenEspaceVerts,\r\n" + //
-                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Categorie = 'Proprete' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenProprete,\r\n" + //
-                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Categorie = 'Animaux errants ou retrouvés morts' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenAnimaux,\r\n" + //
-                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Categorie = 'Autres' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenAutres,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Statut = 2 AND Categorie = 'Voiries' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenVoirie,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Statut = 2 AND Categorie = 'Eclairage Public' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenEclairagePublic,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Statut = 2 AND Categorie = 'Espace verts' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenEspaceVerts,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Statut = 2 AND Categorie = 'Proprete' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenProprete,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Statut = 2 AND Categorie = 'Animaux errants ou retrouvés mort' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenAnimaux,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Statut = 2 AND Categorie = 'Autres' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenAutres,\r\n" + //
                         "\r\n" + //
                         "    -- Top 2 des catégories des incidents les plus signalées\r\n" + //
                         "    (SELECT Categorie FROM (SELECT Categorie, COUNT(*) AS total FROM Incident WHERE (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout') GROUP BY Categorie ORDER BY total DESC LIMIT 1) AS sub) AS topIncidentCategorie1,\n" + //
@@ -100,12 +100,12 @@ public class DashboardRepository {
                         "    (SELECT COUNT(*) FROM Suggestion WHERE Statut = 2 AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS suggestionStatutResolus,\r\n" + //
                         "\r\n" + //
                         "    -- Délai moyen de résolution des suggestions par catégorie\r\n" + //
-                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Suggestion WHERE Categorie = 'Voirie' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenVoirie,\r\n" + //
-                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Suggestion WHERE Categorie = 'Eclairage Public' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenEclairagePublic,\r\n" + //
-                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Suggestion WHERE Categorie = 'Espaces Verts' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenEspaceVerts,\r\n" + //
-                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Suggestion WHERE Categorie = 'Proprete' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenProprete,\r\n" + //
-                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Suggestion WHERE Categorie = 'Animaux errants ou retrouvés morts' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenAnimaux,\r\n" + //
-                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Suggestion WHERE Categorie = 'Autres' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenAutres,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Suggestion WHERE Statut = 2 AND Categorie = 'VoirieS' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenVoirie,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Suggestion WHERE Statut = 2 AND Categorie = 'Eclairage Public' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenEclairagePublic,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Suggestion WHERE Statut = 2 AND Categorie = 'Espace Verts' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenEspaceVerts,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Suggestion WHERE Statut = 2 AND Categorie = 'Propreté' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenProprete,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Suggestion WHERE Statut = 2 AND Categorie = 'Animaux errants ou retrouvés mort' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenAnimaux,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Suggestion WHERE Statut = 2 AND Categorie = 'Autres' AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiMoyenAutres,\r\n" + //
                         "\r\n" + //
                         "    -- Top 2 des catégories des suggestionss les plus signalées\r\n" + //
                         "    (SELECT Categorie FROM (SELECT Categorie, COUNT(*) AS total FROM Suggestion WHERE (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout') GROUP BY Categorie ORDER BY total DESC LIMIT 1) AS sub) AS topSuggestionCategorie1,\n" + //
@@ -123,10 +123,10 @@ public class DashboardRepository {
                         "    (SELECT CodePostal_ticket FROM (SELECT CodePostal_ticket, COUNT(*) AS total FROM Suggestion WHERE (date_creation BETWEEN ? AND ?) GROUP BY CodePostal_ticket ORDER BY total DESC LIMIT 1 OFFSET 2) AS top3) AS topSuggestionMairie3,\r\n" + //
                         "\r\n" + //
                         "    -- Délai moyen de traitement des incidents par mairie (filtrés par dates et mairie)\n" + //
-                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? or 'tout')) AS delaiIncidentParMairie,\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Incident WHERE Statut = 2 AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiIncidentParMairie,\r\n" + //
                         "\r\n" + //
                         "    -- Délai moyen de traitement des suggestions par mairie (filtrés par dates et mairie)\n" +
-                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Suggestion WHERE date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? or 'tout')) AS delaiSuggestionParMairie\r\n" + //
+                        "    (SELECT ROUND(AVG(DATEDIFF(date_cloture, date_creation)), 2) FROM Suggestion WHERE Statut = 2 AND date_cloture IS NOT NULL AND (date_creation BETWEEN ? AND ?) AND (CodePostal_ticket = ? OR ? = 'tout')) AS delaiSuggestionParMairie\r\n" + //
                         "");
                     
         
@@ -288,11 +288,11 @@ public Response fetchIncidentStatData(final Request request, final Connection co
     try (PreparedStatement statPs = connection.prepareStatement(Queries.STAT_MAIRIE_REQUEST.query)) {
         int index = 1; 
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 6; i++) {
             statPs.setDate(index++, dateDebut);
             statPs.setDate(index++, dateFin);
         }
-        for (int i = 7; i<8; i++) {
+        for (int i = 6; i<8; i++) {
             statPs.setDate(index++, dateDebut);
             statPs.setDate(index++, dateFin);
             statPs.setString(index++, codePostal);
@@ -310,8 +310,8 @@ public Response fetchIncidentStatData(final Request request, final Connection co
             statMairieData.setSuggestionMairieTop2(statResult.getString("topSuggestionMairie2"));
             statMairieData.setSuggestionMairieTop3(statResult.getString("topSuggestionMairie3"));
 
-            statMairieData.setDelaiIncidentMairie(statResult.getInt("delaiIncidentParMairie"));
-            statMairieData.setDelaiSuggestionMairie(statResult.getInt("delaiSuggestionParMairie"));
+            statMairieData.setDelaiIncidentMairie(statResult.getDouble("delaiIncidentParMairie"));
+            statMairieData.setDelaiSuggestionMairie(statResult.getDouble("delaiSuggestionParMairie"));
         }
 
     statMairieDatas.getStatMairieDataSet().add(statMairieData);
