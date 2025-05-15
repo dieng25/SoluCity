@@ -68,13 +68,11 @@ public class AccueilConnexion extends ConfirmeExit {
             );
 
             if (choice == 0) {
-                dispose();
-                RecupIncident recupIncident = new RecupIncident(citoyen);
+                RecupIncident recupIncident = new RecupIncident(citoyen, this);
                 recupIncident.actionPerformed(new ActionEvent(consulterTicketButton, ActionEvent.ACTION_PERFORMED, null));
 
             } else if (choice == 1) {
-                dispose();
-                RecupSuggestion recupSuggestion = new RecupSuggestion(citoyen);
+                RecupSuggestion recupSuggestion = new RecupSuggestion(citoyen, this);
                 recupSuggestion.actionPerformed(new ActionEvent(consulterTicketButton, ActionEvent.ACTION_PERFORMED, null));
             }
 

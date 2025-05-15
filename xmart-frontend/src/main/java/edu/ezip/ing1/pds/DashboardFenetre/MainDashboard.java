@@ -13,7 +13,6 @@ public class MainDashboard extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-
         JPanel backgroundPanel = new JPanel();
         backgroundPanel.setBackground(Color.WHITE);
         backgroundPanel.setLayout(new BorderLayout());

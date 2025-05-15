@@ -21,10 +21,12 @@ public class RecupSuggestion implements ActionListener {
     private final static String networkConfigFile = "network.yaml";
 
     private Citoyen citoyen;
+    private final JFrame parentWindow;
 
 
-    public RecupSuggestion(Citoyen citoyen) {
+    public RecupSuggestion(Citoyen citoyen, JFrame parentWindow) {
         this.citoyen = citoyen;
+        this.parentWindow = parentWindow;
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -36,9 +38,10 @@ public class RecupSuggestion implements ActionListener {
         try {
             List<Suggestion> suggestions = suggestionService.selectSuggestionsByTel(tel);
             if (suggestions.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Aucune suggestion trouvé pour cet utilisateur.",
+                JOptionPane.showMessageDialog(null, "Aucune suggestion trouvée.",
                         "Information", JOptionPane.INFORMATION_MESSAGE);
             } else {
+                parentWindow.dispose();
                 new SuggestionConsulte(suggestions, citoyen);
             }
 
