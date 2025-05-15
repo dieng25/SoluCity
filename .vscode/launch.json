@@ -13,56 +13,16 @@
         },
         {
             "type": "java",
-<<<<<<< Updated upstream
-            "name": "CreationUtilisateur",
-            "request": "launch",
-            "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.CreationUtilisateur",
-=======
             "name": "FenetreConnexionFonctionnaire",
             "request": "launch",
             "mainClass": "edu.ezip.ing1.pds.FenetreConnexionFonctionnaire",
->>>>>>> Stashed changes
             "projectName": "xmart-frontend"
         },
         {
             "type": "java",
-<<<<<<< Updated upstream
-            "name": "UpdateUtilisateur",
-            "request": "launch",
-            "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.UpdateUtilisateur",
-            "projectName": "xmart-frontend"
-        },
-        {
-            "type": "java",
-            "name": "UpdateAdmin",
-            "request": "launch",
-            "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.UpdateAdmin",
-            "projectName": "xmart-frontend"
-        },
-        {
-            "type": "java",
-            "name": "ConnexionUtilisateur",
-            "request": "launch",
-            "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.ConnexionUtilisateur",
-            "projectName": "xmart-frontend"
-        },
-        {
-            "type": "java",
-            "name": "CreationAdmin",
-            "request": "launch",
-            "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.CreationAdmin",
-            "projectName": "xmart-frontend"
-        },
-        {
-            "type": "java",
-            "name": "ConnexionAdmin",
-            "request": "launch",
-            "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.ConnexionAdmin",
-=======
             "name": "FenetreCreationCompteFonctionnaire",
             "request": "launch",
             "mainClass": "edu.ezip.ing1.pds.FenetreCreationCompteFonctionnaire",
->>>>>>> Stashed changes
             "projectName": "xmart-frontend"
         },
         {
