@@ -13,13 +13,20 @@
         },
         {
             "type": "java",
+<<<<<<< Updated upstream
             "name": "CreationUtilisateur",
             "request": "launch",
             "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.CreationUtilisateur",
+=======
+            "name": "FenetreConnexionFonctionnaire",
+            "request": "launch",
+            "mainClass": "edu.ezip.ing1.pds.FenetreConnexionFonctionnaire",
+>>>>>>> Stashed changes
             "projectName": "xmart-frontend"
         },
         {
             "type": "java",
+<<<<<<< Updated upstream
             "name": "UpdateUtilisateur",
             "request": "launch",
             "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.UpdateUtilisateur",
@@ -51,6 +58,11 @@
             "name": "ConnexionAdmin",
             "request": "launch",
             "mainClass": "edu.ezip.ing1.pds.DashboardFenetre.ConnexionAdmin",
+=======
+            "name": "FenetreCreationCompteFonctionnaire",
+            "request": "launch",
+            "mainClass": "edu.ezip.ing1.pds.FenetreCreationCompteFonctionnaire",
+>>>>>>> Stashed changes
             "projectName": "xmart-frontend"
         },
         {
