@@ -147,8 +147,10 @@ public class FormulaireIncident extends ConfirmeExit {
         formPanel.add(prioriteBox);
 
         JPanel descriptionPanel = new JPanel(new BorderLayout());
-        descriptionPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
-        descriptionPanel.add(new JLabel("Description: "), BorderLayout.NORTH);
+        descriptionPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
+        JLabel descriptionLabel = new JLabel("Description: ");
+        descriptionLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+        descriptionPanel.add(descriptionLabel, BorderLayout.NORTH);
         descriptionArea = new JTextArea();
         descriptionArea.setLineWrap(true);
         descriptionArea.setWrapStyleWord(true);
